@@ -3,3 +3,6 @@
 
 # Executables
 *.exe
+
+# Bash scripts
+*.sh

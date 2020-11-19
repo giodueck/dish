@@ -38,7 +38,7 @@ void dish_loop()
         printf("[%s] > ", current_dir);
         line = dish_read_line();
         args = dish_split_line(line);
-        // status = dish_execute(args);
+        status = dish_execute(args);
 
         // Como a line y args se asignan bloques de memoria dinamica hay que liberarlos 
         free(line);

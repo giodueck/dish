@@ -2,7 +2,7 @@
     Funciones basicas de DISH
 */
 
-// #include <sys/wait.h>
+#include <sys/wait.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -10,6 +10,7 @@
 
 #include "dish.h"
 #include "defines.h"
+#include "builtins.h"
 
 // Lee una linea de stdin hasta encontrar EOF o '\n'
 char *dish_read_line()
@@ -87,4 +88,58 @@ char **dish_split_line(char *line)
 }
 
 // Ejecuta el comando dado por args
-int dish_execute(char **args);
+//  Retorno:
+//      0: cuando el comando ejecutado cierra el shell
+//      otro valor: cuando el shell sigue en ejecucion
+int dish_execute(char **args)
+{
+    if (args[0] == NULL)
+    {
+        // comando vacio
+        return 1;
+    }
+
+    // Comandos built-in
+    for (int i = 0; i < num_builtins(); i++)
+    {
+        if (strcmp(args[0], builtin_str[i]) == 0)
+        {
+            return (*builtin_func[i])(args);
+        }
+    }
+
+    // Comandos externos
+    return dish_launch(args);
+}
+
+// Inicia un nuevo proceso para ejecutar un comando
+int dish_launch(char **args)
+{
+    pid_t pid, wpid;
+    int status;
+
+    pid = fork();
+    if (pid == 0)
+    {
+        // Child process
+        // Se modifica el proceso para que ejecute el
+        //   comando dado
+        if (execvp(args[0], args) == -1)
+        {
+            perror("dish");
+        }
+        exit(FAILURE);
+    } else if (pid < 0)
+    {
+        // fork error
+        perror("dish");
+    } else
+    {
+        do
+        {
+            wpid = waitpid(pid, &status, WUNTRACED);
+        } while (!WIFEXITED(status) && !WIFSIGNALED(status));
+    }
+
+    return 1;
+}

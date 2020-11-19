@@ -11,10 +11,20 @@
 #include "builtins.h"
 #include "defines.h"
 
-int num_builtins()
+// Arrays de nombres de builtins con sus respectivas funciones
+char *builtin_str[] = 
 {
-    return sizeof(builtin_str) / sizeof(char*);
-}
+    "cd",
+    "help",
+    "exit"
+};
+
+int (*builtin_func[]) (char**) =
+{
+    &dish_cd,
+    &dish_help,
+    &dish_exit
+};
 
 int dish_cd(char **args)
 {
@@ -35,7 +45,7 @@ int dish_help(char **args)
     printf("      Ingresa un comando y sus argumentos y presiona enter.\n");
     printf("      Los comandos integrados son:\n");
 
-    for (int i = 0; i < num_builtins(); i++)
+    for (int i = 0; i < NUM_BUILTINS; i++)
     {
         printf("        %s\n", builtin_str[i]);
     }

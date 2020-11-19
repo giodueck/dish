@@ -11,21 +11,10 @@ int dish_help(char **args);
 int dish_exit(char **args);
 
 // Arrays de nombres de builtins con sus respectivas funciones
-char *builtin_str[] = 
-{
-    "cd",
-    "help",
-    "exit"
-};
+#define NUM_BUILTINS 3
 
-int (*builtin_func[]) (char**) =
-{
-    &dish_cd,
-    &dish_help,
-    &dish_exit
-};
+char *builtin_str[NUM_BUILTINS];
 
-// Retorna el numero de funciones builtin
-int num_builtins();
+int (*builtin_func[NUM_BUILTINS]) (char**);
 
 #endif // BUILTIN_H

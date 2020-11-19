@@ -2,7 +2,7 @@
     Funciones basicas de DISH
 */
 
-#include <sys/wait.h>
+// #include <sys/wait.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -100,7 +100,7 @@ int dish_execute(char **args)
     }
 
     // Comandos built-in
-    for (int i = 0; i < num_builtins(); i++)
+    for (int i = 0; i < NUM_BUILTINS; i++)
     {
         if (strcmp(args[0], builtin_str[i]) == 0)
         {

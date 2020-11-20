@@ -109,7 +109,7 @@ int dish_execute(char **args)
     }
 
     // Comandos externos
-    if (args[0][0] == '#')
+    if (strcmp(args[0], "sys"))
     {
         return dish_launch(args);
     }
@@ -123,13 +123,6 @@ int dish_launch(char **args)
 {
     pid_t pid, wpid;
     int status;
-    char **tmp = args;
-
-    // Se elimina el # del comando
-    for (int i = 1; i < (sizeof(args[0]) / sizeof(char)); i++)
-    {
-        tmp[0][i-1] = args[0][i];
-    }
 
     pid = fork();
     if (pid == 0)
@@ -137,7 +130,7 @@ int dish_launch(char **args)
         // Child process
         // Se modifica el proceso para que ejecute el
         //   comando dado
-        if (execvp(tmp[0], tmp) == -1)
+        if (execvp(args[1], &args[1]) == -1)
         {
             perror("dish");
         }
@@ -162,7 +155,7 @@ int dish_command_not_found(char **args)
 {
     char *shell_name = "dish";
     char *msg = "Comando no existe.";
-    char *help = "Usa #[comando] para ejecutar comandos del sistema, o usa el comando ayuda.";
+    char *help = "Usa sys [comando] para ejecutar comandos del sistema, o usa el comando ayuda.";
 
     printf("%s: %s\n\t%s\n", shell_name, msg, help);
 

@@ -142,6 +142,26 @@ int dish_exit(char **args)
         "-h",
         "--ayuda"
     };
+    char help_flag = FALSE;
+
+    // Opciones
+    for (int i = 1; args[i] != NULL; i++)
+    {
+        if (args[i][0] != '-')
+        {
+            continue;
+        }
+
+        if (strcmp(args[i], options[0]) == 0 || strcmp(args[i], options[1]) == 0)
+        {
+            help_flag = TRUE;
+        } else
+        {
+            printf("dish: Opcion invalida.\n      Ingresa \"salir --ayuda\" para ver las opciones disponibles.\n");
+            // en caso de opcion invalida se termina la ejecucion del comando
+            return 1;
+        }
+    }
 
     if (args[1] == NULL)
     {

@@ -1,0 +1,47 @@
+# TODO: tareas por hacer
+// Tareas completadas son marcadas con "//" al comienzo de la linea
+
+- modificar nombres de comandos:
+    cd = ir
+    help = ayuda
+    exit = salir
+
+# Comandos
+- copiar
+- mover
+- renombrar
+- listar: listar elementos en directorio (como ls)
+- creardir: crear un directorio
+- permisos: cambiar los permisos de un archivo o conjunto de archivos
+- propietario: cambiar los propietarios de un archivo o conjunto de archivos
+- usuario: agregar usuario
+    deben registrarse sus datos:
+        - horario de trabajo
+        - lugares de conexion (IPs o localhost)
+        - otros
+- contraseña: cambiar la contraseña del usuario
+- : levantar y apagar demonios del sistema, utilizando una herramienta como service de CentOS
+- : ejecutar transferencia por ftp o scp
+
+# Logs
+    Deben guardarse en /var/log/shell
+- guardar todos los comandos dados, junto con un timestamp (YYYY-MM-DD hh:min:seg) al comienzo de la linea
+- usuario_horarios.log: guardar inicios y cierres de sesion
+    - comparar con horarios de trabajo
+    - comparar con lugares de conexion habilitados
+- sistema_error.log: guardar errores
+    Ejemplos:
+        - Acceso a un directorio no permitido
+        - Error al copiar o renombrar archivos
+        - Cambio de contraseña exitoso o equivocado
+        - Servicio no inicializado
+
+# Documentacion
+- Todo el codigo debe estar bien comentado
+- Manual de documentacion
+- Manual de uso e instalacion del shell
+
+# Adicionales
+- Agregar la opcion --ayuda a todos los comandos
+- historia: agregar -v que muestra los timestamp. Si no se especifica, solo mostrar numero de comando y comando
+- manual: imprimir el manual de uso

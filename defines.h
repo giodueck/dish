@@ -12,6 +12,7 @@
 #define CURRDIR_BUFSIZE 1024
 #define LINE_BUFSIZE 1024
 #define ARGS_BUFSIZE 64
+#define FILENAME_LENGTH 256
 
 #define TOK_DELIM " \t\n\r\a"
 

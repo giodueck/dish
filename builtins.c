@@ -30,10 +30,11 @@ int (*builtin_func[]) (char**) =
 
 int dish_print_help(char *command_name)
 {
-    char *filename = strcat(command_name, ".txt");
+    char *filename[FILENAME_LENGTH] = "help/";
     int c;
     FILE file;
     
+    filename = strcat(filename, strcat(command_name, ".txt"));
     file = fopen(filename, "r");
 
     if (!file)  // error de fopen

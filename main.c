@@ -5,8 +5,6 @@
     Desarrollo del Shell
 
     Giovanni Dueck
-
-    version 0.1
 */
 
 #include <unistd.h>

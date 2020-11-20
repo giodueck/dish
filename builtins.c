@@ -52,7 +52,7 @@ int dish_print_help(char *command_name)
     if (!file)  // error de fopen
     {
         fprintf(stderr, "dish: no se pudo abrir el archivo\n");
-        return 1;
+        return 2;
     }
 
     // Se lee e imprime todo el archivo
@@ -66,7 +66,7 @@ int dish_print_help(char *command_name)
     // se cierra el archivo y termina la funcion
     free(filename);
     fclose(file);
-    return 0;
+    return 1;
 }
 
 // Cambia el directorio actual
@@ -81,14 +81,27 @@ int dish_cd(char **args)
     if (args[1] == NULL)
     {
         fprintf(stderr, "dish: se espera un argumento para \"ir\"\n");
-    } else if (chdir(args[1]) != 0)
+    } else
     {
         // Opciones
-        if (strcmp(args[1], options[0]) == 0 || strcmp(args[1], options[1]) == 0)
+        for (int i = 0; args[i] != NULL; i++)
         {
-            // -h / --ayuda
-            dish_print_help(builtin_str[0]);
-        } else
+            // No se comparan argumentos que no sean opciones
+            if (args[i][0] != '-')
+            {
+                continue;
+            }
+
+            // -h || --ayuda
+            if (strcmp(args[1], options[0]) == 0 || strcmp(args[1], options[1]) == 0)
+            {
+                dish_print_help(builtin_str[0]);
+                return 1;
+            }
+        }
+
+        // Se ejecuta el cambio de directorio
+        if (chdir(args[1]) != 0)
         {
             perror("dish");
         }

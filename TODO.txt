@@ -1,10 +1,13 @@
 # TODO: tareas por hacer
 // Tareas completadas son marcadas con "//" al comienzo de la linea
 
-- modificar nombres de comandos:
+- Modificar nombres de comandos:
     cd = ir
     help = ayuda
     exit = salir
+- Muchos (todos) de los comandos son comandos ya existentes en sistemas Linux,
+    asi que basar su funcionamiento en el funcionamiento de sus contrapartes en
+    Linux es una buena idea.
 
 # Comandos
 - copiar
@@ -14,7 +17,7 @@
 - creardir: crear un directorio
 - permisos: cambiar los permisos de un archivo o conjunto de archivos
 - propietario: cambiar los propietarios de un archivo o conjunto de archivos
-- usuario: agregar usuario
+- usuario: agregar, modificar, y borrar usuarios
     deben registrarse sus datos:
         - horario de trabajo
         - lugares de conexion (IPs o localhost)
@@ -45,3 +48,5 @@
 - Agregar la opcion --ayuda a todos los comandos
 - historia: agregar -v que muestra los timestamp. Si no se especifica, solo mostrar numero de comando y comando
 - manual: imprimir el manual de uso
+- remover: borrar archivos
+- removerdir: borrar directorio

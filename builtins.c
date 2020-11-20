@@ -28,15 +28,51 @@ int (*builtin_func[]) (char**) =
     &dish_sys
 };
 
+int dish_print_help(char *command_name)
+{
+    char *filename = strcat(command_name, ".txt");
+    int c;
+    FILE file;
+    
+    file = fopen(filename, "r");
+
+    if (!file)  // error de fopen
+    {
+        fprintf(stderr, "dish: no se pudo abrir el archivo\n");
+        return 1;
+    }
+
+    c = fgetc(file);
+    while (c != EOF)
+    {
+        putc(c, stdout);
+    }
+
+    fclose(file);
+}
+
 // Cambia el directorio actual
 int dish_cd(char **args)
 {
+    char *options[] = 
+    {
+        "--ayuda"
+    };
+
     if (args[1] == NULL)
     {
         fprintf(stderr, "dish: se espera un argumento para \"ir\"\n");
     } else if (chdir(args[1]) != 0)
     {
-        perror("dish");
+        // Opciones
+        if (strcmp(args[1], options[0]) == 0)
+        {
+            // --ayuda
+            dish_print_help(builtin_str[0]);
+        } else
+        {
+            perror("dish");
+        }
     }
 
     return 1;

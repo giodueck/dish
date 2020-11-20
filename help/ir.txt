@@ -1,0 +1,9 @@
+Cambia el directorio actual.
+Uso:
+    ir [DEST]
+    ir [OPCIONES]
+
+    DEST    Directorio de destino.
+
+    OPCIONES
+     -h,    --ayuda     Muestra esta ayuda.

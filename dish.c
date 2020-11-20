@@ -155,7 +155,7 @@ int dish_command_not_found(char **args)
 {
     char *shell_name = "dish";
     char *msg = "Comando no existe.";
-    char *help = "Usa sys [comando] para ejecutar comandos del sistema, o usa el comando ayuda.";
+    char *help = "Usa sys [comando] para ejecutar comandos del sistema,\n\to usa el comando ayuda.";
 
     printf("%s: %s\n\t%s\n", shell_name, msg, help);
 

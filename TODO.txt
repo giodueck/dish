@@ -1,10 +1,10 @@
 # TODO: tareas por hacer
 // Tareas completadas son marcadas con "//" al comienzo de la linea
 
-- Modificar nombres de comandos:
-    cd = ir
-    help = ayuda
-    exit = salir
+// - Modificar nombres de comandos:
+//    cd = ir
+//  help = ayuda
+//  exit = salir
 - Muchos (todos) de los comandos son comandos ya existentes en sistemas Linux,
     asi que basar su funcionamiento en el funcionamiento de sus contrapartes en
     Linux es una buena idea.

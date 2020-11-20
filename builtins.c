@@ -49,6 +49,7 @@ int dish_help(char **args)
     {
         printf("        %s\n", builtin_str[i]);
     }
+    printf("\n      Ingresa #[comando] para ejecutar un comando del sistema.");
     
     printf ("\n");
     return 1;

@@ -109,7 +109,13 @@ int dish_execute(char **args)
     }
 
     // Comandos externos
-    return dish_launch(args);
+    if (args[0][0] == '#')
+    {
+        return dish_launch(args);
+    }
+
+    // Comando desconocido
+    return dish_command_not_found(args);
 }
 
 // Inicia un nuevo proceso para ejecutar un comando
@@ -117,6 +123,13 @@ int dish_launch(char **args)
 {
     pid_t pid, wpid;
     int status;
+    char **tmp = args;
+
+    // Se elimina el # del comando
+    for (int i = 1; i < (sizeof(args[0]) / sizeof(char)); i++)
+    {
+        tmp[0][i-1] = args[0][i];
+    }
 
     pid = fork();
     if (pid == 0)
@@ -124,7 +137,7 @@ int dish_launch(char **args)
         // Child process
         // Se modifica el proceso para que ejecute el
         //   comando dado
-        if (execvp(args[0], args) == -1)
+        if (execvp(tmp[0], tmp) == -1)
         {
             perror("dish");
         }
@@ -140,6 +153,18 @@ int dish_launch(char **args)
             wpid = waitpid(pid, &status, WUNTRACED);
         } while (!WIFEXITED(status) && !WIFSIGNALED(status));
     }
+
+    return 1;
+}
+
+// Imprime un mensaje de error en caso de que el comando dado no existe
+int dish_command_not_found(char **args)
+{
+    char *shell_name = "dish";
+    char *msg = "Comando no existe.";
+    char *help = "Usa #[comando] para ejecutar comandos del sistema, o usa el comando ayuda.";
+
+    printf("%s: %s\n\t%s\n", shell_name, msg, help);
 
     return 1;
 }

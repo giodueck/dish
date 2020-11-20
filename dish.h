@@ -14,9 +14,6 @@ char **dish_split_line(char *line);
 // Ejecuta el comando dado por args
 int dish_execute(char **args);
 
-// Inicia un nuevo proceso para ejecutar un comando
-int dish_launch(char **args);
-
 // Imprime un mensaje de error en caso de que el comando dado no existe
 int dish_command_not_found(char **args);
 #endif // DISH_H

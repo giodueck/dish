@@ -1,0 +1,25 @@
+*Descripcion corta del comando*
+Uso:
+    cmd_name [ARG1]
+    cmd_name [OPCIONES]
+    cmd_name <OPCIONES> [ARG1] [ARG2]
+
+    // cmd_name es el comando
+    // ARGn (n=1,2,...) es un argumento
+    // OPCIONES son opciones del comando
+    // [] denota un argumento necesario
+    // <> denota un argumento opcional
+
+    ARG1    *Explicacion de lo que es*
+    ARG2    *Explicacion de lo que es*
+
+    OPCIONES
+     -o,    --opcion    *Descripcion de opcion*
+                        *Segunda linea*
+     -h,    --ayuda     Muestra esta ayuda
+    
+    // - son opciones de un caracter
+    // -- son opciones de palabras
+
+// la ultima linea del archivo debe ser una linea vacia
+//  para que se imprima correctamente

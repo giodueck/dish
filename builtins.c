@@ -174,7 +174,7 @@ int dish_sys(char **args)
     {
         if (args[i][0] != '-')
         {
-            continue
+            continue;
         }
 
         if (strcmp(args[i], options[0]) == 0 || strcmp(args[i], options[1]) == 0)

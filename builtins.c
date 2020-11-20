@@ -72,6 +72,7 @@ int dish_print_help(char *command_name)
 // Cambia el directorio actual
 int dish_cd(char **args)
 {
+    char help_flag = FALSE;
     char *options[] = 
     {
         "-h",
@@ -84,7 +85,7 @@ int dish_cd(char **args)
     } else
     {
         // Opciones
-        for (int i = 0; args[i] != NULL; i++)
+        for (int i = 1; args[i] != NULL; i++)
         {
             // No se comparan argumentos que no sean opciones
             if (args[i][0] != '-')
@@ -95,13 +96,21 @@ int dish_cd(char **args)
             // -h || --ayuda
             if (strcmp(args[1], options[0]) == 0 || strcmp(args[1], options[1]) == 0)
             {
-                dish_print_help(builtin_str[0]);
+                help_flag = TRUE;
+                continue;
+            } else
+            {
+                printf("dish: Opcion invalida\n");
+                // en caso de opcion invalida se termina la ejecucion del comando
                 return 1;
             }
         }
 
-        // Se ejecuta el cambio de directorio
-        if (chdir(args[1]) != 0)
+        // Se ejecuta el comando
+        if (help_flag)
+        {
+            dish_print_help(builtin_str[0]);
+        } else if (chdir(args[1]) != 0)
         {
             perror("dish");
         }

@@ -28,6 +28,7 @@ int (*builtin_func[]) (char**) =
     &dish_sys
 };
 
+// Imprime la ayuda de un comando guardada en help/command_name.txt
 int dish_print_help(char *command_name)
 {
     char *filename;
@@ -41,6 +42,7 @@ int dish_print_help(char *command_name)
         exit(FAILURE);
     }
 
+    // Se construye el camino absoluto del archivo
     filename[0] = '\0';
     filename = strcat(filename, "/root/shell/dish/help/");
     filename = strcat(filename, command_name);
@@ -53,6 +55,7 @@ int dish_print_help(char *command_name)
         return 1;
     }
 
+    // Se lee e imprime todo el archivo
     c = fgetc(file);
     while (c != EOF)
     {
@@ -60,7 +63,9 @@ int dish_print_help(char *command_name)
         c = fgetc(file);
     }
 
+    // se cierra el archivo y termina la funcion
     fclose(file);
+    return 0;
 }
 
 // Cambia el directorio actual
@@ -68,6 +73,7 @@ int dish_cd(char **args)
 {
     char *options[] = 
     {
+        "-h",
         "--ayuda"
     };
 
@@ -77,9 +83,9 @@ int dish_cd(char **args)
     } else if (chdir(args[1]) != 0)
     {
         // Opciones
-        if (strcmp(args[1], options[0]) == 0)
+        if (strcmp(args[1], options[0]) == 0 || strcmp(args[1], options[1]) == 0)
         {
-            // --ayuda
+            // -h / --ayuda
             dish_print_help(builtin_str[0]);
         } else
         {

@@ -3,8 +3,8 @@
 
 // - Modificar nombres de comandos:
 //    cd = ir
-//  help = ayuda
-//  exit = salir
+//    help = ayuda
+//    exit = salir
 - Muchos (todos) de los comandos son comandos ya existentes en sistemas Linux,
     asi que basar su funcionamiento en el funcionamiento de sus contrapartes en
     Linux es una buena idea.
@@ -50,3 +50,6 @@
 - manual: imprimir el manual de uso
 - remover: borrar archivos
 - removerdir: borrar directorio
+
+# Instalacion
+- config: path de instalacion debe afectar cosas como el camino de los archivos de ayuda: [path]/help/cmd.txt

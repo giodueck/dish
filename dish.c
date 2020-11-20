@@ -88,7 +88,7 @@ char **dish_split_line(char *line)
 }
 
 // Ejecuta el comando dado por args
-//  Retorno:
+//  Retorno: retorna el resultado del comando ejecutado
 //      0: cuando el comando ejecutado cierra el shell
 //      otro valor: cuando el shell sigue en ejecucion
 int dish_execute(char **args)

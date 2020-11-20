@@ -14,9 +14,9 @@
 // Arrays de nombres de builtins con sus respectivas funciones
 char *builtin_str[] = 
 {
-    "cd",
-    "help",
-    "exit"
+    "ir",
+    "ayuda",
+    "salir"
 };
 
 int (*builtin_func[]) (char**) =
@@ -30,7 +30,7 @@ int dish_cd(char **args)
 {
     if (args[1] == NULL)
     {
-        fprintf(stderr, "dish: se espera un argumento para \"cd\"\n");
+        fprintf(stderr, "dish: se espera un argumento para \"ir\"\n");
     } else if (chdir(args[1]) != 0)
     {
         perror("dish");

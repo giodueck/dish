@@ -163,15 +163,14 @@ int dish_exit(char **args)
         }
     }
 
-    if (args[1] == NULL)
+    if (help_flag)
+    {
+        dish_print_help(builtin_str[2]);
+        return 1;
+    } else
     {
         // retornar 0 causa que la variable status en dish_loop sea 0, por lo que termina la ejecucion.
         return 0;
-    } else if ((args[1], options[0]) == 0 || strcmp(args[1], options[1]) == 0)
-    {
-        dish_print_help(builtin_str[2]);
-        // si se pide la ayuda, el comando no se ejecuta
-        return 1;
     }
 }
 

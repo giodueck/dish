@@ -7,7 +7,7 @@ Uso:
     OPCIONES    Opciones para el comando a ejecutarse
     ARGUMENTOS  Argumentos para el comando a ejecutarse
      Ojo: los comandos no propios de este shell no se
-          documentan desde DISH.
+          encuentran documentados aqui.
 
     OPCIONES
      -h,    --ayuda     Muestra esta ayuda

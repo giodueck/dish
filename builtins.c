@@ -30,11 +30,21 @@ int (*builtin_func[]) (char**) =
 
 int dish_print_help(char *command_name)
 {
-    char *filename[FILENAME_LENGTH] = "help/";
+    char *filename;
     int c;
-    FILE file;
+    FILE *file;
     
-    filename = strcat(filename, strcat(command_name, ".txt"));
+    filename = malloc(FILENAME_LENGTH * sizeof(char));
+    if (!filename)  // error de malloc
+    {
+        fprintf(stderr, "dish: allocation error\n");
+        exit(FAILURE);
+    }
+
+    filename[0] = '\0';
+    filename = strcat(filename, "/help");
+    filename = strcat(filename, command_name);
+    filename = strcat(filename, ".txt");
     file = fopen(filename, "r");
 
     if (!file)  // error de fopen

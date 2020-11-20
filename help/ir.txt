@@ -1,7 +1,7 @@
 Cambia el directorio actual.
 Uso:
     ir [DEST]
-    ir [OPCIONES]
+    ir [OPCION]
 
     DEST    Directorio de destino.
 

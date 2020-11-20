@@ -72,13 +72,13 @@ int dish_print_help(char *command_name)
 // Cambia el directorio actual
 int dish_cd(char **args)
 {
-    char help_flag = FALSE;
     char *options[] = 
     {
         "-h",
         "--ayuda"
     };
-
+    char help_flag = FALSE;
+    
     if (args[1] == NULL)
     {
         fprintf(stderr, "dish: se espera un argumento para \"ir\"\n");
@@ -100,7 +100,7 @@ int dish_cd(char **args)
                 continue;
             } else
             {
-                printf("dish: Opcion invalida\n");
+                printf("dish: Opcion invalida.\n      Ingresa \"ir --ayuda\" para ver las opciones disponibles.\n");
                 // en caso de opcion invalida se termina la ejecucion del comando
                 return 1;
             }
@@ -125,13 +125,11 @@ int dish_help(char **args)
     printf("DISH: Giovanni Dueck's Interactive Shell\n");
     printf("      Ingresa un comando y sus argumentos y presiona enter.\n");
     printf("      Los comandos disponibles son:\n");
-
     for (int i = 0; i < NUM_BUILTINS; i++)
     {
         printf("        %s\n", builtin_str[i]);
     }
     printf("\n      Ingresa sys [comando] para ejecutar un comando del sistema.");
-    
     printf ("\n");
     return 1;
 }
@@ -139,7 +137,22 @@ int dish_help(char **args)
 // Cierra y sale del shell
 int dish_exit(char **args)
 {
-    return 0;
+    char *options[] = 
+    {
+        "-h",
+        "--ayuda"
+    };
+
+    if (args[1] == NULL)
+    {
+        // retornar 0 causa que la variable status en dish_loop sea 0, por lo que termina la ejecucion.
+        return 0;
+    } else if ((args[1], options[0]) == 0 || strcmp(args[1], options[1]) == 0)
+    {
+        dish_print_help(builtin_str[2]);
+        // si se pide la ayuda, el comando no se ejecuta
+        return 1;
+    }
 }
 
 // Inicia un nuevo proceso para ejecutar un comando del sistema;
@@ -149,28 +162,60 @@ int dish_sys(char **args)
     pid_t pid, wpid;
     int status;
 
-    pid = fork();
-    if (pid == 0)
+    char *options[] = 
     {
-        // Child process
-        // Se modifica el proceso para que ejecute el
-        //   comando dado
-        if (execvp(args[1], &args[1]) == -1)
+        "-h",
+        "--ayuda"
+    };
+    char help_flag = FALSE;
+
+    // Opciones
+    for (int i = 1; args[i] != NULL; i++)
+    {
+        if (args[i][0] != '-')
         {
-            perror("dish");
+            continue
         }
-        exit(FAILURE);
-    } else if (pid < 0)
-    {
-        // fork error
-        perror("dish");
-    } else
-    {
-        do
+
+        if (strcmp(args[i], options[0]) == 0 || strcmp(args[i], options[1]) == 0)
         {
-            wpid = waitpid(pid, &status, WUNTRACED);
-        } while (!WIFEXITED(status) && !WIFSIGNALED(status));
+            help_flag = TRUE;
+        } else
+        {
+            printf("dish: Opcion invalida.\n      Ingresa \"salir --ayuda\" para ver las opciones disponibles.\n");
+            // en caso de opcion invalida se termina la ejecucion del comando
+            return 1;
+        }
     }
 
+    // Ejecucion
+    if (help_flag)
+    {
+        dish_print_help(builtin_str[3]);
+    } else
+    {
+        pid = fork();
+        if (pid == 0)
+        {
+            // Child process
+            // Se modifica el proceso para que ejecute el
+            //   comando dado
+            if (execvp(args[1], &args[1]) == -1)
+            {
+                perror("dish");
+            }
+            exit(FAILURE);
+        } else if (pid < 0)
+        {
+            // fork error
+            perror("dish");
+        } else
+        {
+            do
+            {
+                wpid = waitpid(pid, &status, WUNTRACED);
+            } while (!WIFEXITED(status) && !WIFSIGNALED(status));
+        }
+    }
     return 1;
 }

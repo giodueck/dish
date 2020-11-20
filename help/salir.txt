@@ -1,0 +1,7 @@
+Cierra DISH
+Uso:
+    salir
+    salir [OPCION]
+
+    OPCIONES
+     -h,    --ayuda     Muestra esta ayuda

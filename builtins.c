@@ -202,7 +202,7 @@ int dish_sys(char **args)
             help_flag = TRUE;
         } else
         {
-            printf("dish: Opcion invalida.\n      Ingresa \"salir --ayuda\" para ver las opciones disponibles.\n");
+            printf("dish: Opcion invalida.\n      Ingresa \"sys --ayuda\" para ver las opciones disponibles.\n");
             // en caso de opcion invalida se termina la ejecucion del comando
             return 1;
         }

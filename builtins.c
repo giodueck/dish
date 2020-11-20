@@ -42,7 +42,7 @@ int dish_print_help(char *command_name)
     }
 
     filename[0] = '\0';
-    filename = strcat(filename, "/root/shell/deish/help/");
+    filename = strcat(filename, "/root/shell/dish/help/");
     filename = strcat(filename, command_name);
     filename = strcat(filename, ".txt");
     file = fopen(filename, "r");
@@ -57,6 +57,7 @@ int dish_print_help(char *command_name)
     while (c != EOF)
     {
         putc(c, stdout);
+        c = fgetc(file);
     }
 
     fclose(file);

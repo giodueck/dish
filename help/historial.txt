@@ -1,0 +1,9 @@
+Muestra el historial de comandos ejecutados
+
+Uso:
+    historial
+    historial [OPCION]
+
+    OPCIONES
+     -h,    --ayuda     Muestra esta ayuda
+     -v                 Muestra informacion adicional sobre la hora de ejecucion

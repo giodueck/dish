@@ -99,7 +99,7 @@ void dish_loop()
     {
         // Se imprime el directotio actual y se lee el comando a ejecutarse
         current_dir = getcwd(current_dir, CURRDIR_BUFSIZE);
-        printf("%s@%s DISH [%s]\n", p->pw_name, hostname, current_dir);
+        printf("%s@%s DISH [%s]\n", username, hostname, current_dir);
         printf("> ");
         line = dish_read_line();
         log_add(line);  // Historial

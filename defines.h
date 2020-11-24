@@ -17,6 +17,8 @@
 #define ARGS_BUFSIZE 64
 #define FILENAME_LENGTH 256
 
+#define HOST_NAME_MAX 64
+
 #define TOK_DELIM " \t\n\r\a"
 
 #endif // DEFINES_H

@@ -286,7 +286,25 @@ int dish_history(char **args)
         dish_print_help(builtin_str[4]);
     } else
     {
-        printf("1 comando 1\n2 comando 2\n");
+        int c, i = 0;
+
+        // Recorre el archivo de historial e imprime los comandos guardados
+        while (c != EOF)
+        {
+            c = fgetc(log);
+            if (c == ']')
+            {
+                i++;
+                printf("%d", i);
+                c = fgetc(log);
+                while (c != '\n' && c != EOF)
+                {
+                    putc(c, stdout);
+                    c = fgetc(log);
+                }
+                putc('\n', stdout);
+            }
+        }
     }
 
     fclose(log);

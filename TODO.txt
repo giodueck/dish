@@ -28,7 +28,7 @@
 
 # Logs
     Deben guardarse en /var/log/shell
-- guardar todos los comandos dados, junto con un timestamp (YYYY-MM-DD hh:min:seg) al comienzo de la linea
+// - guardar todos los comandos dados, junto con un timestamp (YYYY-MM-DD hh:min:seg) al comienzo de la linea
 - usuario_horarios.log: guardar inicios y cierres de sesion
     - comparar con horarios de trabajo
     - comparar con lugares de conexion habilitados
@@ -45,8 +45,9 @@
 - Manual de uso e instalacion del shell
 
 # Adicionales
-- Agregar la opcion --ayuda a todos los comandos
-- historia: agregar -v que muestra los timestamp. Si no se especifica, solo mostrar numero de comando y comando
+// - Agregar la opcion --ayuda a todos los comandos
+// - historial: agregar -v que muestra los timestamp. Si no se especifica, solo mostrar numero de comando y comando
+- historial: agregar opciones para resetear historial
 - manual: imprimir el manual de uso
 - remover: borrar archivos
 - removerdir: borrar directorio

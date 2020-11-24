@@ -34,6 +34,8 @@ int (*builtin_func[]) (char**) =
     &dish_passwd
 };
 
+extern char *username;
+
 // Imprime la ayuda de un comando guardada en help/command_name.txt
 int dish_print_help(char *command_name)
 {
@@ -257,7 +259,9 @@ int dish_history(char **args)
     char help_flag = FALSE;
     char verbose_flag = FALSE;
 
-    FILE *log = fopen("/var/log/dish/dish.log", "r");
+    char *filename = malloc(sizeof(char) * FILENAME_LENGTH);
+    sprintf(filename, "/var/log/dish/%s.log", username);
+    FILE *log = fopen(filename, "r");
 
     if (!log)  // error de fopen
     {

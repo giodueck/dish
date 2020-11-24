@@ -11,9 +11,11 @@ int dish_help(char **args);
 int dish_exit(char **args);
 int dish_sys(char **args);
 int dish_history(char **args);
+int dish_useradd(char **args);
+int dish_passwd(char **args);
 
 // Arrays de nombres de builtins con sus respectivas funciones
-#define NUM_BUILTINS 5
+#define NUM_BUILTINS 7
 
 char *builtin_str[NUM_BUILTINS];
 

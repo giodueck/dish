@@ -18,7 +18,9 @@ char *builtin_str[] =
     "ayuda",
     "salir",
     "sys",
-    "historial"
+    "historial",
+    "usuario",
+    "contrasena"
 };
 
 int (*builtin_func[]) (char**) =
@@ -27,7 +29,9 @@ int (*builtin_func[]) (char**) =
     &dish_help,
     &dish_exit,
     &dish_sys,
-    &dish_history
+    &dish_history,
+    &dish_useradd,
+    &dish_passwd
 };
 
 // Imprime la ayuda de un comando guardada en help/command_name.txt
@@ -347,5 +351,19 @@ int dish_history(char **args)
     }
 
     fclose(log);
+    return 1;
+}
+
+// Agrega un usuario
+int dish_useradd(char **args)
+{
+    printf("placeholder\n");
+    return 1;
+}
+
+// Modifica la contrasenha del usuario dado
+int dish_passwd(char **args)
+{
+    printf("placeholder\n");
     return 1;
 }

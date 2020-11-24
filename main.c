@@ -8,8 +8,6 @@
 */
 
 #include <unistd.h>
-#include <sys/types.h>
-#include <pwd.h>
 #include <dirent.h>
 #include <sys/stat.h>
 #include <errno.h>
@@ -21,19 +19,13 @@
 #include "defines.h"
 #include "dish.h"
 
-struct passwd *p;
+char *username;
 char hostname[HOST_NAME_MAX];
 
 // Setea el struct passwd *p
 void check_user()
 {
-    p = getpwuid(getuid());
-    if (!p)
-    {
-        fprintf(stderr, "dish: user error\n");
-        exit(FAILURE);
-    }
-
+    username = getlogin();
     gethostname(hostname, sizeof(hostname));
 }
 
@@ -107,8 +99,8 @@ void dish_loop()
     {
         // Se imprime el directotio actual y se lee el comando a ejecutarse
         current_dir = getcwd(current_dir, CURRDIR_BUFSIZE);
-        printf("%s@%s DISH\n", p->pw_name, hostname);
-        printf("[%s] > ", current_dir);
+        printf("%s@%s DISH [%s]\n", p->pw_name, hostname, current_dir);
+        printf("> ");
         line = dish_read_line();
         log_add(line);  // Historial
         args = dish_split_line(line);

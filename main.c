@@ -64,7 +64,7 @@ void log_add(char *line)
 {
     time_t t = time(NULL);
     struct tm tms = *localtime(&t);
-    FILE *log = fopen("/var/log/dish/dish.log", "w");
+    FILE *log = fopen("/var/log/dish/dish.log", "a");
     
     fprintf(log, "[%d-%02d-%02d %02d:%02d:%02d] %s\n", tms.tm_year + 1900, tms.tm_mon + 1, tms.tm_mday, tms.tm_hour, tms.tm_min, tms.tm_sec, line);
     

@@ -17,7 +17,8 @@ char *builtin_str[] =
     "ir",
     "ayuda",
     "salir",
-    "sys"
+    "sys",
+    "historial"
 };
 
 int (*builtin_func[]) (char**) =
@@ -25,7 +26,8 @@ int (*builtin_func[]) (char**) =
     &dish_cd,
     &dish_help,
     &dish_exit,
-    &dish_sys
+    &dish_sys,
+    &dish_history
 };
 
 // Imprime la ayuda de un comando guardada en help/command_name.txt
@@ -51,7 +53,7 @@ int dish_print_help(char *command_name)
 
     if (!file)  // error de fopen
     {
-        fprintf(stderr, "dish: no se pudo abrir el archivo\n");
+        fprintf(stderr, "dish: no se pudo abrir el archivo %s\n", filename);
         return 2;
     }
 
@@ -236,5 +238,57 @@ int dish_sys(char **args)
             } while (!WIFEXITED(status) && !WIFSIGNALED(status));
         }
     }
+    return 1;
+}
+
+// Muestra el historial de comandos
+int dish_history(char **args)
+{
+    char *options[] = 
+    {
+        "-h",
+        "--ayuda"
+    };
+    char help_flag = FALSE;
+    FILE *log = fopen("/var/log/dish/dish.log", "r");
+
+    if (!log)  // error de fopen
+    {
+        fprintf(stderr, "dish: no se pudo abrir el historial\n");
+        return 2;
+    }
+
+    // Opciones
+    for (int i = 1; args[i] != NULL; i++)
+    {
+        // No se comparan argumentos que no sean opciones
+        if (args[i][0] != '-')
+        {
+            continue;
+        }
+
+        // -h || --ayuda
+        if (strcmp(args[1], options[0]) == 0 || strcmp(args[1], options[1]) == 0)
+        {
+            help_flag = TRUE;
+            continue;
+        } else
+        {
+            printf("dish: Opcion invalida.\n      Ingresa \"ir --ayuda\" para ver las opciones disponibles.\n");
+            // en caso de opcion invalida se termina la ejecucion del comando
+            return 1;
+        }
+    }
+
+    // Se ejecuta el comando
+    if (help_flag)
+    {
+        dish_print_help(builtin_str[4]);
+    } else
+    {
+        printf("1 comando 1\n2 comando 2\n");
+    }
+
+    fclose(log);
     return 1;
 }

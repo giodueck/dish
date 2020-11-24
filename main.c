@@ -74,7 +74,7 @@ void check_logs()
 // Agrega una entrada al log de historial
 void log_add(char *line)
 {
-    if (sizeof(*line) / sizeof(char) == 1)
+    if (line[0] == '\0')
     {
         return;
     }

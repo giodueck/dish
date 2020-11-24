@@ -92,10 +92,8 @@ void dish_loop()
         printf("[%s] > ", current_dir);
         line = dish_read_line();
         args = dish_split_line(line);
+        log_add(line);  // Historial
         status = dish_execute(args);
-
-        // Historial
-        log_add(line);
 
         // Como a line y args se asignan bloques de memoria dinamica hay que liberarlos 
         free(line);

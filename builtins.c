@@ -247,9 +247,12 @@ int dish_history(char **args)
     char *options[] = 
     {
         "-h",
-        "--ayuda"
+        "--ayuda",
+        "-v"
     };
     char help_flag = FALSE;
+    char verbose_flag = FALSE;
+
     FILE *log = fopen("/var/log/dish/dish.log", "r");
 
     if (!log)  // error de fopen
@@ -268,13 +271,29 @@ int dish_history(char **args)
         }
 
         // -h || --ayuda
-        if (strcmp(args[1], options[0]) == 0 || strcmp(args[1], options[1]) == 0)
+        if (strcmp(args[i], options[0]) == 0 || strcmp(args[i], options[1]) == 0)
         {
+            if (verbose_flag)
+            {
+                printf("dish: Opcion invalida.\n      La opcion ayuda no toma parametros adicionales.\n");
+                return 1;
+            }
+
             help_flag = TRUE;
+            continue;
+        } else if (strcmp(args[i], options[2]) == 0)
+        {
+            if (help_flag)
+            {
+                printf("dish: Opcion invalida.\n      La opcion -v no toma parametros adicionales.\n");
+                return 1;
+            }
+
+            verbose_flag = TRUE;
             continue;
         } else
         {
-            printf("dish: Opcion invalida.\n      Ingresa \"ir --ayuda\" para ver las opciones disponibles.\n");
+            printf("dish: Opcion invalida.\n      Ingresa \"historial --ayuda\" para ver las opciones disponibles.\n");
             // en caso de opcion invalida se termina la ejecucion del comando
             return 1;
         }
@@ -284,6 +303,26 @@ int dish_history(char **args)
     if (help_flag)
     {
         dish_print_help(builtin_str[4]);
+    } else if (verbose_flag)
+    {
+        int c, i = 0;
+
+        // Recorre el archivo de historial e imprime los comandos guardados
+        while (c != EOF)
+        {
+            c = fgetc(log);
+            if (c == '[')
+            {
+                i++;
+                printf("%d ", i);
+                while (c != '\n' && c != EOF)
+                {
+                    putc(c, stdout);
+                    c = fgetc(log);
+                }
+                putc('\n', stdout);
+            }
+        }
     } else
     {
         int c, i = 0;

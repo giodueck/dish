@@ -9,6 +9,7 @@
 
 #include <unistd.h>
 #include <dirent.h>
+#include <sys/stat.h>
 #include <errno.h>
 #include <time.h>
 #include <stdlib.h>
@@ -64,7 +65,7 @@ void check_logs()
     } else if (ENOENT == errno)
     {
         // No existe el directorio y se crea
-        mkdir("/var/log/dish");
+        mkdir("/var/log/dish", 0777);
     } else
     {
         // Error de opendir()
@@ -75,7 +76,7 @@ void check_logs()
     // Se revisa si existen los archivos
     FILE *log;
 
-    if ((log = fopen("/var/log/dish/dish.log", "r");))
+    if ((log = fopen("/var/log/dish/dish.log", "r")))
     {
         // Existe el archivo
         fclose(log);

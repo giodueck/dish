@@ -52,8 +52,10 @@ void check_logs()
     
     // Se revisa si existen los archivos
     FILE *log;
+    char *filename = malloc(sizeof(char) * FILENAME_LENGTH);
 
-    if ((log = fopen("/var/log/dish/dish.log", "r")))
+    sprintf(filename, "/var/log/dish/%s.log", username);
+    if ((log = fopen(filename, "r")))
     {
         // Existe el archivo
         fclose(log);
@@ -72,6 +74,11 @@ void check_logs()
 // Agrega una entrada al log de historial
 void log_add(char *line)
 {
+    if (sizeof(*line) / sizeof(char) == 1)
+    {
+        return;
+    }
+
     time_t t = time(NULL);
     struct tm tms = *localtime(&t);
     FILE *log = fopen("/var/log/dish/dish.log", "a");

@@ -53,8 +53,8 @@ void check_logs()
     // Se revisa si existen los archivos
     FILE *log;
     char *filename = malloc(sizeof(char) * FILENAME_LENGTH);
-
     sprintf(filename, "/var/log/dish/%s.log", username);
+
     if ((log = fopen(filename, "r")))
     {
         // Existe el archivo
@@ -65,7 +65,7 @@ void check_logs()
         time_t t = time(NULL);
         struct tm tms = *localtime(&t);
 
-        log = fopen("/var/log/dish/dish.log", "w");
+        log = fopen(filename, "w");
         fprintf(log, "LOG creado %d-%02d-%02d %02d:%02d:%02d\n\n", tms.tm_year + 1900, tms.tm_mon + 1, tms.tm_mday, tms.tm_hour, tms.tm_min, tms.tm_sec);
         fclose(log);
     }

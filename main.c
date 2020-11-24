@@ -8,6 +8,9 @@
 */
 
 #include <unistd.h>
+#include <dirent.h>
+#include <errno.h>
+#include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -48,9 +51,50 @@ void dish_loop()
     free(current_dir);
 }
 
+// Revisa si los archivos log necesarios existen, y si no, los crea
+void check_logs()
+{
+    DIR *dir = opendir("/var/log/dish");
+
+    // Se revisa si existe el directorio
+    if (dir)
+    {
+        // Existe el directorio
+        closedir(dir);
+    } else if (ENOENT == errno)
+    {
+        // No existe el directorio y se crea
+        mkdir("/var/log/dish");
+    } else
+    {
+        // Error de opendir()
+        fprintf(stderr, "dish: opendir() error\n");
+        exit(FAILURE);
+    }
+    
+    // Se revisa si existen los archivos
+    FILE *log;
+
+    if ((log = fopen("/var/log/dish/dish.log", "r");))
+    {
+        // Existe el archivo
+        fclose(log);
+    } else
+    {
+        // No existe el archivo y se crea
+        time_t t = time(NULL);
+        struct tm tms = *localtime(&t);
+
+        log = fopen("/var/log/dish/dish.log", "w");
+        fprintf(log, "LOG creado %d-%02d-%02d %02d:%02d:%02d\n\n", tms.tm_year + 1900, tms.tm_mon + 1, tms.tm_mday, tms.tm_hour, tms.tm_min, tms.tm_sec);
+        fclose(log);
+    }
+}
+
 int main (int argc, char **argv)
 {
     // Inicializacion
+    check_logs();
 
     // Main command loop
     dish_loop();

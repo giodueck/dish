@@ -41,7 +41,7 @@ void check_logs()
         sprintf(dirname, "/var/log/dish");
     } else
     {
-        sprintf(dirname, "/home/%s/log/dish", username);
+        sprintf(dirname, "/home/%s/log", username);
     }
 
     DIR *dir = opendir(dirname);
@@ -55,6 +55,13 @@ void check_logs()
     {
         // No existe el directorio y se crea
         mkdir(dirname, 0777);
+
+        if (strcmp(username, "root") != 0)
+        {
+            // Para crear este directorio primero se crea el anterior
+            sprintf(dirname, "/home/%s/log/dish", username);
+            mkdir(dirname, 0777);
+        }
     } else
     {
         // Error de opendir()

@@ -26,7 +26,6 @@ char *hostname_short;
 // Setea username y hostname
 void check_user()
 {
-    hostname_short = malloc(sizeof(char) * HOST_NAME_MAX);
     username = getlogin();
     gethostname(hostname, sizeof(hostname));
     hostname_short = strtok(hostname, ".");
@@ -126,7 +125,6 @@ void dish_loop()
     } while (status);
     
     free(current_dir);
-    free(hostname_short);
 }
 
 int main (int argc, char **argv)

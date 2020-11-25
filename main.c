@@ -64,7 +64,7 @@ void check_logs()
     
     // Se revisa si existen los archivos
     FILE *log;
-    char *log_filename = malloc(sizeof(char) * FILENAME_LENGTH);
+    log_filename = malloc(sizeof(char) * FILENAME_LENGTH);
     sprintf(log_filename, "%s/%s.log", dirname, username);
 
     if ((log = fopen(log_filename, "r")))

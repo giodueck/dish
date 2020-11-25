@@ -22,6 +22,7 @@
 char *username;
 char hostname[HOST_NAME_MAX];
 char *hostname_short;
+char *log_filename;
 
 // Setea username y hostname
 void check_user()
@@ -63,10 +64,10 @@ void check_logs()
     
     // Se revisa si existen los archivos
     FILE *log;
-    char *filename = malloc(sizeof(char) * FILENAME_LENGTH);
-    sprintf(filename, "%s/%s.log", dirname, username);
+    char *log_filename = malloc(sizeof(char) * FILENAME_LENGTH);
+    sprintf(log_filename, "%s/%s.log", dirname, username);
 
-    if ((log = fopen(filename, "r")))
+    if ((log = fopen(log_filename, "r")))
     {
         // Existe el archivo
         fclose(log);
@@ -76,7 +77,7 @@ void check_logs()
         time_t t = time(NULL);
         struct tm tms = *localtime(&t);
 
-        log = fopen(filename, "w");
+        log = fopen(log_filename, "w");
         fprintf(log, "LOG creado %d-%02d-%02d %02d:%02d:%02d\n\n", tms.tm_year + 1900, tms.tm_mon + 1, tms.tm_mday, tms.tm_hour, tms.tm_min, tms.tm_sec);
         fclose(log);
     }
@@ -92,9 +93,7 @@ void log_add(char *line)
 
     time_t t = time(NULL);
     struct tm tms = *localtime(&t);
-    char *filename = malloc(sizeof(char) * FILENAME_LENGTH);
-    sprintf(filename, "/var/log/dish/%s.log", username);
-    FILE *log = fopen(filename, "a");
+    FILE *log = fopen(log_filename, "a");
     
     fprintf(log, "[%d-%02d-%02d %02d:%02d:%02d] %s\n", tms.tm_year + 1900, tms.tm_mon + 1, tms.tm_mday, tms.tm_hour, tms.tm_min, tms.tm_sec, line);
     
@@ -134,6 +133,7 @@ void dish_loop()
     } while (status);
     
     free(current_dir);
+    free(log_filename);
 }
 
 int main (int argc, char **argv)

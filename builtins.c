@@ -258,10 +258,9 @@ int dish_history(char **args)
     };
     char help_flag = FALSE;
     char verbose_flag = FALSE;
+    extern char *log_filename;
 
-    char *filename = malloc(sizeof(char) * FILENAME_LENGTH);
-    sprintf(filename, "/var/log/dish/%s.log", username);
-    FILE *log = fopen(filename, "r");
+    FILE *log = fopen(log_filename, "r");
 
     if (!log)  // error de fopen
     {

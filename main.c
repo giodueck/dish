@@ -20,16 +20,16 @@
 #include "dish.h"
 
 char *username;
-char *hostname;
+char hostname[HOST_NAME_MAX];
+char *hostname_short;
 
 // Setea username y hostname
 void check_user()
 {
-    char hostname_tmp[HOST_NAME_MAX];
-    hostname = malloc(sizeof(char) * HOST_NAME_MAX);
+    hostname_short = malloc(sizeof(char) * HOST_NAME_MAX);
     username = getlogin();
-    gethostname(hostname_tmp, sizeof(hostname));
-    hostname = strtok(hostname_tmp, ".");
+    gethostname(hostname, sizeof(hostname));
+    hostname_short = strtok(hostname, ".");
 }
 
 // Revisa si los archivos log necesarios existen, y si no, los crea
@@ -126,7 +126,7 @@ void dish_loop()
     } while (status);
     
     free(current_dir);
-    free(hostname);
+    free(hostname_short);
 }
 
 int main (int argc, char **argv)

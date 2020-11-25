@@ -41,7 +41,7 @@ void check_logs()
         sprintf(dirname, "/var/log/dish");
     } else
     {
-        sprintf(dirname, "/home/%s/dish", username);
+        sprintf(dirname, "/home/%s/log/dish", username);
     }
 
     DIR *dir = opendir(dirname);

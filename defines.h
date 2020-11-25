@@ -12,7 +12,7 @@
 #define FALSE 0
 
 /* Buffer sizes */
-#define CURRDIR_BUFSIZE 1024
+#define DIR_BUFSIZE 1024
 #define LINE_BUFSIZE 1024
 #define ARGS_BUFSIZE 64
 #define FILENAME_LENGTH 256

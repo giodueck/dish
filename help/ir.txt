@@ -5,6 +5,7 @@ Uso:
     ir [OPCION]
 
     DEST    Directorio de destino.
+            Si se deja vacio, DEST es el home del usuario.
 
     OPCIONES
      -h,    --ayuda     Muestra esta ayuda.

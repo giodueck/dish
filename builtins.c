@@ -35,6 +35,7 @@ int (*builtin_func[]) (char**) =
 };
 
 extern char *username;
+extern char *home;
 
 // Imprime la ayuda de un comando guardada en help/command_name.txt
 int dish_print_help(char *command_name)
@@ -89,7 +90,8 @@ int dish_cd(char **args)
     
     if (args[1] == NULL)
     {
-        fprintf(stderr, "dish: se espera un argumento para \"ir\"\n");
+        args[1] = home;
+        args[2] = NULL;
     } else
     {
         // Opciones

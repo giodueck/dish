@@ -23,6 +23,7 @@ char *username;
 char hostname[HOST_NAME_MAX];
 char *hostname_short;
 char *log_filename;
+char *home;
 
 // Setea username y hostname
 void check_user()
@@ -30,12 +31,20 @@ void check_user()
     username = getlogin();
     gethostname(hostname, sizeof(hostname));
     hostname_short = strtok(hostname, ".");
+    home = malloc(sizeof(char) * DIR_BUFSIZE);
+    if (strcmp(username, "root") == 0)
+    {
+        sprintf(home, "/root");
+    } else
+    {
+        sprintf(home, "/home/%s", username);
+    }
 }
 
 // Revisa si los archivos log necesarios existen, y si no, los crea
 void check_logs()
 {
-    char dirname[CURRDIR_BUFSIZE];
+    char dirname[DIR_BUFSIZE];
     if (strcmp(username, "root") == 0)
     {
         sprintf(dirname, "/var/log/dish");
@@ -112,7 +121,7 @@ void dish_loop()
 {
     char *line;
     char **args;
-    char *current_dir = malloc (sizeof(char) * CURRDIR_BUFSIZE);
+    char *current_dir = malloc (sizeof(char) * DIR_BUFSIZE);
     int status = 0;
 
     if (!current_dir) // error de malloc
@@ -124,7 +133,7 @@ void dish_loop()
     do
     {
         // Se imprime el directotio actual y se lee el comando a ejecutarse
-        current_dir = getcwd(current_dir, CURRDIR_BUFSIZE);
+        current_dir = getcwd(current_dir, DIR_BUFSIZE);
         printf("[%s@%s %s]\n", username, hostname, current_dir);
         printf("> ");
         line = dish_read_line();

@@ -34,7 +34,16 @@ void check_user()
 // Revisa si los archivos log necesarios existen, y si no, los crea
 void check_logs()
 {
-    DIR *dir = opendir("/var/log/dish");
+    char dirname[CURRDIR_BUFSIZE];
+    if (strcmp(username, "root") == 0)
+    {
+        sprintf(dirname, "/var/log/dish");
+    } else
+    {
+        sprintf(dirname, "/home/%s/dish", username);
+    }
+
+    DIR *dir = opendir(dirname);
 
     // Se revisa si existe el directorio
     if (dir)
@@ -44,7 +53,7 @@ void check_logs()
     } else if (ENOENT == errno)
     {
         // No existe el directorio y se crea
-        mkdir("/var/log/dish", 0777);
+        mkdir(dirname, 0777);
     } else
     {
         // Error de opendir()
@@ -55,7 +64,7 @@ void check_logs()
     // Se revisa si existen los archivos
     FILE *log;
     char *filename = malloc(sizeof(char) * FILENAME_LENGTH);
-    sprintf(filename, "/var/log/dish/%s.log", username);
+    sprintf(filename, "%s/%s.log", dirname, username);
 
     if ((log = fopen(filename, "r")))
     {

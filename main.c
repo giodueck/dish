@@ -20,13 +20,16 @@
 #include "dish.h"
 
 char *username;
-char hostname[HOST_NAME_MAX];
+char *hostname;
 
-// Setea el struct passwd *p
+// Setea username y hostname
 void check_user()
 {
+    char hostname_tmp[HOST_NAME_MAX];
+    hostname = malloc(sizeof(char) * HOST_NAME_MAX);
     username = getlogin();
-    gethostname(hostname, sizeof(hostname));
+    gethostname(hostname_tmp, sizeof(hostname));
+    hostname = strtok(hostname_tmp, ".");
 }
 
 // Revisa si los archivos log necesarios existen, y si no, los crea
@@ -108,7 +111,7 @@ void dish_loop()
     {
         // Se imprime el directotio actual y se lee el comando a ejecutarse
         current_dir = getcwd(current_dir, CURRDIR_BUFSIZE);
-        printf("%s@%s DISH [%s]\n", username, hostname, current_dir);
+        printf("[%s@%s %s]\n", username, hostname, current_dir);
         printf("> ");
         line = dish_read_line();
         log_add(line);  // Historial
@@ -123,6 +126,7 @@ void dish_loop()
     } while (status);
     
     free(current_dir);
+    free(hostname);
 }
 
 int main (int argc, char **argv)

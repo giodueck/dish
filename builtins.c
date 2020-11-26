@@ -521,11 +521,13 @@ int dish_cp(char **args)
                         new_file = fopen(new_filename, "w");
                     }
 
-                    do
+                    // La copia en si
+                    c = fgetc(file);
+                    while (c != EOF)
                     {
-                        c = fgetc(file);
                         fputc(c, new_file);
-                    } while (c != EOF);
+                        c = fgetc(file);
+                    }
                     
                     fclose(file);
                     fclose(new_file);
@@ -593,11 +595,13 @@ int dish_cp(char **args)
                     new_file = fopen(new_filename, "w");
                 }
 
-                do
+                // La copia en si
+                c = fgetc(file);
+                while (c != EOF)
                 {
-                    c = fgetc(file);
                     fputc(c, new_file);
-                } while (c != EOF);
+                    c = fgetc(file);
+                }
                 
                 fclose(file);
                 fclose(new_file);

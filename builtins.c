@@ -487,7 +487,7 @@ int dish_cp(char **args)
                 int c;
 
                 // Cambia el directorio al directorio dado
-                curr_dir = gtcwd(curr_dir, DIR_BUFSIZE);
+                curr_dir = getcwd(curr_dir, DIR_BUFSIZE);
                 if (chdir(dir) != 0)
                 {
                     perror("dish");

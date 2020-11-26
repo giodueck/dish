@@ -514,7 +514,7 @@ int dish_cp(char **args)
                         while ((new_file = fopen(new_filename, "r")))
                         {
                             fclose(new_file);
-                            if (i) sprintf(new_filename, "%s-Copia %d", filename, i);
+                            if (i) sprintf(new_filename, "%s-Copia%d", filename, i);
                             else sprintf(new_filename, "%s-Copia", filename);
                             i++;
                         }
@@ -589,7 +589,7 @@ int dish_cp(char **args)
                     while ((new_file = fopen(new_filename, "r")))
                     {
                         fclose(new_file);
-                        sprintf(new_filename, "%s-Copia %d", args[1], i);
+                        sprintf(new_filename, "%s-Copia%d", args[1], i);
                         i++;
                     }
                     new_file = fopen(new_filename, "w");

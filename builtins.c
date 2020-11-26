@@ -92,8 +92,7 @@ int dish_cd(char **args)
     {
         args[1] = home;
         args[2] = NULL;
-    } else
-    {
+    }
         // Opciones
         for (int i = 1; args[i] != NULL; i++)
         {
@@ -115,15 +114,15 @@ int dish_cd(char **args)
                 return 1;
             }
         }
+    }
 
-        // Se ejecuta el comando
-        if (help_flag)
-        {
-            dish_print_help(builtin_str[0]);
-        } else if (chdir(args[1]) != 0)
-        {
-            perror("dish");
-        }
+    // Se ejecuta el comando
+    if (help_flag)
+    {
+        dish_print_help(builtin_str[0]);
+    } else if (chdir(args[1]) != 0)
+    {
+        perror("dish");
     }
 
     return 1;

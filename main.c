@@ -141,14 +141,14 @@ void dish_loop()
         args = dish_split_line(line);
         status = dish_execute(args);
 
-        // Como a line y args se asignan bloques de memoria dinamica hay que liberarlos 
+        // Como a line y args se asignan bloques de memoria dinamica hay que liberarlos
+        free(current_dir);
         free(line);
         free(args);
 
         // Mientras que status != 0, el shell sigue leyendo comandos
     } while (status);
     
-    free(current_dir);
     free(log_filename);
 }
 

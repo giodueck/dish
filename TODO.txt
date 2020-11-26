@@ -2,7 +2,6 @@
 // Tareas completadas son marcadas con "//" al comienzo de la linea
 
 # Issues:
-- check_logs causa segmentation fault cuando dish es ejecutado por un usuario no root
 
 - Muchos (todos) de los comandos son comandos ya existentes en sistemas Linux,
     asi que basar su funcionamiento en el funcionamiento de sus contrapartes en

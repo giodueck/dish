@@ -483,6 +483,9 @@ int dish_cp(char **args)
                         fclose(new_file);
                         fprintf(stderr, "dish: archivo de destino ya existe\n");
                         return 1;
+                    } else
+                    {
+                        new_file = fopen(new_filename, "w");
                     }
                 } else
                 {

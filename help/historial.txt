@@ -5,5 +5,5 @@ Uso:
     historial [OPCION]
 
     OPCIONES
-     -h,    --ayuda     Muestra esta ayuda
-     -v                 Muestra informacion adicional sobre la hora de ejecucion
+     -v                 Muestra informacion adicional sobre la hora de ejecucion.
+     -h,    --ayuda     Muestra esta ayuda y termina.

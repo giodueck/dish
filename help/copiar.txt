@@ -1,0 +1,16 @@
+Copia un archivo
+
+Uso:
+    copiar <OPCIONES> [ORIGEN] <[DESTINO]> <DIRECTORIO>
+    
+
+    ORIGEN      Nombre del archivo a copiarse.
+    DESTINO     Nombre del nuevo archivo. En caso de
+                no especificar, se autogenera un nombre.
+    DIRECTORIO  Directorio de destino, en caso de no
+                especificar, se copia en el directorio
+                actual.
+
+    OPCIONES
+     -d                 Copia al directorio dado.
+     -h,    --ayuda     Muestra esta ayuda y termina.

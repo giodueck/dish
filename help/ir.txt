@@ -8,4 +8,4 @@ Uso:
             Si se deja vacio, DEST es el home del usuario.
 
     OPCIONES
-     -h,    --ayuda     Muestra esta ayuda.
+     -h,    --ayuda     Muestra esta ayuda y termina.

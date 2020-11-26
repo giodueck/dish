@@ -17,7 +17,7 @@ Uso:
     OPCIONES
      -o,    --opcion    *Descripcion de opcion*
                         *Segunda linea*
-     -h,    --ayuda     Muestra esta ayuda
+     -h,    --ayuda     Muestra esta ayuda y termina.
     
     // - son opciones de un caracter
     // -- son opciones de palabras

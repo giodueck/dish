@@ -5,4 +5,4 @@ Uso:
     salir [OPCION]
 
     OPCIONES
-     -h,    --ayuda     Muestra esta ayuda
+     -h,    --ayuda     Muestra esta ayuda y termina.

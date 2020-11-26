@@ -4,11 +4,12 @@ Uso:
     sys [COMANDO, OPCIONES, ARGUMENTOS]
     sys [OPCION]
 
-    COMANDO     Comando a ejecutarse
-    OPCIONES    Opciones para el comando a ejecutarse
-    ARGUMENTOS  Argumentos para el comando a ejecutarse
+    COMANDO     Comando a ejecutarse.
+    OPCIONES    Opciones para el comando a ejecutarse.
+    ARGUMENTOS  Argumentos para el comando a ejecutarse.
+
      Ojo: los comandos no propios de este shell no se
           encuentran documentados aqui.
 
     OPCIONES
-     -h,    --ayuda     Muestra esta ayuda
+     -h,    --ayuda     Muestra esta ayuda y termina.

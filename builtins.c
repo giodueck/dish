@@ -112,14 +112,15 @@ int dish_cd(char **args)
             // No se comparan argumentos que no sean opciones
             if (args[i][0] != '-')
             {
-                continue;
+                // Opciones siempre van antes del resto de los argumentos para ser validas
+                break;
             }
 
             // -h || --ayuda
             if (strcmp(args[1], options[0]) == 0 || strcmp(args[1], options[1]) == 0)
             {
                 help_flag = TRUE;
-                continue;
+                break;
             } else
             {
                 printf("dish: Opcion invalida.\n      Ingresa \"ir --ayuda\" para ver las opciones disponibles.\n");
@@ -171,12 +172,14 @@ int dish_exit(char **args)
     {
         if (args[i][0] != '-')
         {
-            continue;
+            // Opciones siempre van antes del resto de los argumentos para ser validas
+            break;
         }
 
         if (strcmp(args[i], options[0]) == 0 || strcmp(args[i], options[1]) == 0)
         {
             help_flag = TRUE;
+            break;
         } else
         {
             printf("dish: Opcion invalida.\n      Ingresa \"salir --ayuda\" para ver las opciones disponibles.\n");
@@ -215,12 +218,14 @@ int dish_sys(char **args)
     {
         if (args[i][0] != '-')
         {
-            continue;
+            // Opciones siempre van antes del resto de los argumentos para ser validas
+            break;
         }
 
         if (strcmp(args[i], options[0]) == 0 || strcmp(args[i], options[1]) == 0)
         {
             help_flag = TRUE;
+            break;
         } else
         {
             printf("dish: Opcion invalida.\n      Ingresa \"sys --ayuda\" para ver las opciones disponibles.\n");
@@ -288,7 +293,8 @@ int dish_history(char **args)
         // No se comparan argumentos que no sean opciones
         if (args[i][0] != '-')
         {
-            continue;
+            // Opciones siempre van antes del resto de los argumentos para ser validas
+            break;
         }
 
         // -h || --ayuda
@@ -301,7 +307,7 @@ int dish_history(char **args)
             }
 
             help_flag = TRUE;
-            continue;
+            break;
         } else if (strcmp(args[i], options[2]) == 0)
         {
             if (help_flag)
@@ -388,7 +394,47 @@ int dish_passwd(char **args)
 // Copia un archivo
 int dish_cp(char **args)
 {
-    return 1;
+    char *options[] = 
+    {
+        "-h",
+        "--ayuda",
+        "-d"
+    };
+    char help_flag = FALSE;
+    char dir_flag = FALSE;
+
+    // Opciones
+    for (int i = 1; args[i] != NULL; i++)
+    {
+        if (args[i][0] != '-')
+        {
+            // Opciones siempre van antes del resto de los argumentos para ser validas
+            break;
+        }
+
+        if (strcmp(args[i], options[0]) == 0 || strcmp(args[i], options[1]) == 0)
+        {
+            help_flag = TRUE;
+            break;
+        } else if (strcmp(args[i], options[2]) == 0)
+        {
+            dir_flag = TRUE;
+        } else
+        {
+            printf("dish: Opcion invalida.\n      Ingresa \"copiar --ayuda\" para ver las opciones disponibles.\n");
+            // en caso de opcion invalida se termina la ejecucion del comando
+            return 1;
+        }
+    }
+
+    if (help_flag)
+    {
+        dish_print_help(builtin_str[7]);
+        return 1;
+    } else
+    {
+        return 1;
+    }
 }
 
 // Mueve un archivo a otro directorio

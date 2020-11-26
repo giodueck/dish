@@ -488,7 +488,8 @@ int dish_cp(char **args)
                     {
                         fclose(new_file);
                         sprintf(new_filename, "%s - Copia %d", args[1], i);
-                    }
+                        i++;
+		    }
                     new_file = fopen(new_filename, "w");
                 }
 

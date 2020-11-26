@@ -514,8 +514,8 @@ int dish_cp(char **args)
                         while ((new_file = fopen(new_filename, "r")))
                         {
                             fclose(new_file);
-                            if (i) sprintf(new_filename, "%s - Copia %d", filename, i);
-                            else sprintf(new_filename, "%s - Copia", filename);
+                            if (i) sprintf(new_filename, "%s-Copia %d", filename, i);
+                            else sprintf(new_filename, "%s-Copia", filename);
                             i++;
                         }
                         new_file = fopen(new_filename, "w");
@@ -550,7 +550,7 @@ int dish_cp(char **args)
             if (!new_filename_given)
             {
                 new_filename = malloc(sizeof(char) * FILENAME_LENGTH);
-                sprintf(new_filename, "%s - Copia", args[1]);
+                sprintf(new_filename, "%s-Copia", args[1]);
             }
 
             // Copia
@@ -587,7 +587,7 @@ int dish_cp(char **args)
                     while ((new_file = fopen(new_filename, "r")))
                     {
                         fclose(new_file);
-                        sprintf(new_filename, "%s - Copia %d", args[1], i);
+                        sprintf(new_filename, "%s-Copia %d", args[1], i);
                         i++;
                     }
                     new_file = fopen(new_filename, "w");

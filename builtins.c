@@ -402,9 +402,10 @@ int dish_cp(char **args)
     };
     char help_flag = FALSE;
     char dir_flag = FALSE;
+    int i;
 
     // Opciones
-    for (int i = 1; args[i] != NULL; i++)
+    for (i = 1; args[i] != NULL; i++)
     {
         if (args[i][0] != '-')
         {
@@ -439,10 +440,96 @@ int dish_cp(char **args)
         } else if (dir_flag)
         {
             // Se especifica un directorio
-            // args[1] = nombre del archivo
-            // args[2] = nombre del nuevo archivo o nombre del directorio
-            // args[3] = si args[2] es el nombre del nuevo archivo, nombre del directorio
+            // args[n] = nombre del archivo
+            // args[n+1] = nombre del nuevo archivo o nombre del directorio
+            // args[n+2] = si args[2] es el nombre del nuevo archivo, nombre del directorio; si no, NULL
             // el argumento que esta antes del args[n] = NULL es el directorio
+
+            // args[i] debe ser el nombre del archivo ya que es el primer argumento que no es opcion
+            char *filename = args[i];
+            char *new_filename;
+            char new_filename_given;
+            char *dir;
+            char *curr_dir = getcwd();
+
+            // Encuentra el indice del argumento NULL
+            while (args[i] != NULL) i++;
+
+            // El elemento antes del argumento NULL debe ser el directorio, ya que se especifica la opcion -d
+            dir = args[i - 1];
+
+            // Revisa si el nombre del nuevo archivo se da
+            if (args[i - 2] == filename)
+            {
+                // No se da
+                new_filename = malloc(sizeof(char) * FILENAME_LENGTH);
+                sprintf(new_filename, "%s", filename);
+                new_filename_given = FALSE;
+            } else
+            {
+                // Si se da
+                new_filename = args[i - 2];
+                new_filename_given = TRUE;
+            }
+            
+            // Copia
+            FILE *file;
+            FILE *new_file;
+
+            // Se abre al archivo origen
+            if (!(file = fopen(filename, "r")))
+            {
+                // si no existe
+                fprintf(stderr, "dish: archivo de origen no existe o no se pudo abrir\n");
+            } else
+            {
+                // si existe
+                int c;
+
+                if (chdir(dir) != 0)
+                {
+                    perror("dish");
+                }
+
+                // Se verifica si el archivo de destino ya existe
+                if (new_filename_given)
+                {
+                    // Si se dio el nombre nuevo, se alerta al usuario y se interrumpe la copia
+                    if ((new_file = fopen(new_filename, "r")))
+                    {
+                        fclose(new_file);
+                        fprintf(stderr, "dish: archivo de destino ya existe\n");
+                        return 1;
+                    } else
+                    {
+                        new_file = fopen(new_filename, "w");
+                    }
+                } else
+                {
+                    // Si el nombre es autogenerado, se modifica el nombre
+                    i = 0;
+                    while ((new_file = fopen(new_filename, "r")))
+                    {
+                        fclose(new_file);
+                        if (i) sprintf(new_filename, "%s - Copia %d", args[filename], i);
+                        else sprintf(new_filename, "%s - Copia", args[filename]);
+                        i++;
+                    }
+                    new_file = fopen(new_filename, "w");
+                }
+
+                do
+                {
+                    c = fgetc(file);
+                    fputc(c, new_file);
+                } while (c != EOF);
+                
+                fclose(file);
+                fclose(new_file);
+            }
+
+            free(curr_dir);
+            if (!new_filename_given) free(new_filename);
 
         } else
         {
@@ -490,7 +577,7 @@ int dish_cp(char **args)
                 } else
                 {
                     // Si el nombre es autogenerado, se modifica el nombre
-                    int i = 2;
+                    i = 2;
                     while ((new_file = fopen(new_filename, "r")))
                     {
                         fclose(new_file);

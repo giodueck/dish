@@ -427,14 +427,66 @@ int dish_cp(char **args)
         }
     }
 
+    // Ejecucion
     if (help_flag)
     {
         dish_print_help(builtin_str[7]);
-        return 1;
     } else
     {
-        return 1;
+        if (dir_flag)
+        {
+            // Se especifica un directorio
+            // args[1] = nombre del archivo
+            // args[2] = nombre del nuevo archivo o nombre del directorio
+            // args[3] = si args[2] es el nombre del nuevo archivo, nombre del directorio
+            // el argumento que esta antes del args[n] = NULL es el directorio
+
+        } else
+        {
+            // No se especifica un directorio
+            // args[1] = nombre del archivo
+            // args[2] = nombre del nuevo archivo (opcional)
+
+            // Nombres de archivos
+            char *filename = args[1];
+            char *new_filename = args[2];
+            char new_filename_given = (new_filename) ? TRUE : FALSE;
+            if (!new_filename_given)
+            {
+                new_filename = malloc(sizeof(char) * FILENAME_LENGTH);
+                sprintf(new_filename, "%s - Copia", args[1]);
+            }
+
+            // Copia
+            FILE *file;
+            FILE *new_file;
+
+            // Se abre al archivo origen
+            if (!(file = fopen(filename, "r")))
+            {
+                // si no existe
+                fprintf(stderr, "dish: archivo de origen no existe o no se pudo abrir\n");
+            } else
+            {
+                // si existe
+                int c;
+                new_file = fopen(new_filename, "w");
+
+                do
+                {
+                    c = fgetc(file);
+                    fputc(c, new_file);
+                } while (c != EOF);
+                
+                fclose(file);
+                fclose(new_file);
+            }
+
+            if (!new_filename_given) free(new_filename);
+        }
     }
+
+    return 1;
 }
 
 // Mueve un archivo a otro directorio

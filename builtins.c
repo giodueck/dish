@@ -478,8 +478,12 @@ int dish_cp(char **args)
                 if (new_filename_given)
                 {
                     // Si se dio el nombre nuevo, se alerta al usuario y se interrumpe la copia
-                    fprintf(stderr, "dish: archivo de destino ya existe\n");
-                    return 1;
+                    if ((new_file = fopen(new_filename, "r")))
+                    {
+                        fclose(new_file);
+                        fprintf(stderr, "dish: archivo de destino ya existe\n");
+                        return 1;
+                    }
                 } else
                 {
                     // Si el nombre es autogenerado, se modifica el nombre
@@ -489,7 +493,7 @@ int dish_cp(char **args)
                         fclose(new_file);
                         sprintf(new_filename, "%s - Copia %d", args[1], i);
                         i++;
-		    }
+                    }
                     new_file = fopen(new_filename, "w");
                 }
 

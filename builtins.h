@@ -13,9 +13,15 @@ int dish_sys(char **args);
 int dish_history(char **args);
 int dish_useradd(char **args);
 int dish_passwd(char **args);
+int dish_cp(char **args);
+int dish_mv(char **args);
+int dish_rn(char **args);
+int dish_mkdir(char **args);
+int dish_rm(char **args);
+int dish_rmdir(char **args);
 
 // Arrays de nombres de builtins con sus respectivas funciones
-#define NUM_BUILTINS 7
+#define NUM_BUILTINS 13
 
 char *builtin_str[NUM_BUILTINS];
 

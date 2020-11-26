@@ -20,7 +20,13 @@ char *builtin_str[] =
     "sys",
     "historial",
     "usuario",
-    "contrasena"
+    "contrasena",
+    "copiar",
+    "mover",
+    "renombrar",
+    "creardir",
+    "remover",
+    "removerdir"
 };
 
 int (*builtin_func[]) (char**) =
@@ -31,7 +37,13 @@ int (*builtin_func[]) (char**) =
     &dish_sys,
     &dish_history,
     &dish_useradd,
-    &dish_passwd
+    &dish_passwd,
+    &dish_cp,
+    &dish_mv,
+    &dish_rn,
+    &dish_mkdir,
+    &dish_rm,
+    &dish_rmdir
 };
 
 extern char *username;
@@ -370,5 +382,41 @@ int dish_useradd(char **args)
 int dish_passwd(char **args)
 {
     printf("placeholder\n");
+    return 1;
+}
+
+// Copia un archivo
+int dish_cp(char **args)
+{
+    return 1;
+}
+
+// Mueve un archivo a otro directorio
+int dish_mv(char **args)
+{
+    return 1;
+}
+
+// Renombra un archivo
+int dish_rn(char **args)
+{
+    return 1;
+}
+
+// Crea un nuevo directorio
+int dish_mkdir(char **args)
+{
+    return 1;
+}
+
+// Elimina un archivo
+int dish_rm(char **args)
+{
+    return 1;
+}
+
+// Elimina un directorio
+int dish_rmdir(char **args)
+{
     return 1;
 }

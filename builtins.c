@@ -433,7 +433,10 @@ int dish_cp(char **args)
         dish_print_help(builtin_str[7]);
     } else
     {
-        if (dir_flag)
+        if (args[1] == NULL)
+        {
+            fprintf(stderr, "dish: archivo de origen no especificado\n");
+        } else if (dir_flag)
         {
             // Se especifica un directorio
             // args[1] = nombre del archivo
@@ -470,7 +473,24 @@ int dish_cp(char **args)
             {
                 // si existe
                 int c;
-                new_file = fopen(new_filename, "w");
+
+                // Se verifica si el archivo de destino ya existe
+                if (new_filename_given)
+                {
+                    // Si se dio el nombre nuevo, se alerta al usuario y se interrumpe la copia
+                    fprintf(stderr, "dish: archivo de destino ya existe\n");
+                    return 1;
+                } else
+                {
+                    // Si el nombre es autogenerado, se modifica el nombre
+                    int i = 2;
+                    while ((new_file = fopen(new_filename, "r")))
+                    {
+                        fclose(new_file);
+                        sprintf(new_filename, "%s - Copia %d", args[1], i);
+                    }
+                    new_file = fopen(new_filename, "w");
+                }
 
                 do
                 {

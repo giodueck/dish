@@ -92,7 +92,8 @@ int dish_cd(char **args)
     {
         args[1] = home;
         args[2] = NULL;
-    }
+    } else
+    {
         // Opciones
         for (int i = 1; args[i] != NULL; i++)
         {

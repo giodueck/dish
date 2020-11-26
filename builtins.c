@@ -450,7 +450,7 @@ int dish_cp(char **args)
             char *new_filename;
             char new_filename_given;
             char *dir;
-            char *curr_dir = getcwd();
+            char *curr_dir = malloc(sizeof(char) * DIR_BUFSIZE);
 
             // Encuentra el indice del argumento NULL
             while (args[i] != NULL) i++;
@@ -486,46 +486,52 @@ int dish_cp(char **args)
                 // si existe
                 int c;
 
+                // Cambia el directorio al directorio dado
+                curr_dir = gtcwd(curr_dir, DIR_BUFSIZE);
                 if (chdir(dir) != 0)
                 {
                     perror("dish");
-                }
-
-                // Se verifica si el archivo de destino ya existe
-                if (new_filename_given)
-                {
-                    // Si se dio el nombre nuevo, se alerta al usuario y se interrumpe la copia
-                    if ((new_file = fopen(new_filename, "r")))
-                    {
-                        fclose(new_file);
-                        fprintf(stderr, "dish: archivo de destino ya existe\n");
-                        return 1;
-                    } else
-                    {
-                        new_file = fopen(new_filename, "w");
-                    }
                 } else
                 {
-                    // Si el nombre es autogenerado, se modifica el nombre
-                    i = 0;
-                    while ((new_file = fopen(new_filename, "r")))
-                    {
-                        fclose(new_file);
-                        if (i) sprintf(new_filename, "%s - Copia %d", args[filename], i);
-                        else sprintf(new_filename, "%s - Copia", args[filename]);
-                        i++;
-                    }
-                    new_file = fopen(new_filename, "w");
-                }
 
-                do
-                {
-                    c = fgetc(file);
-                    fputc(c, new_file);
-                } while (c != EOF);
-                
-                fclose(file);
-                fclose(new_file);
+                    // Se verifica si el archivo de destino ya existe
+                    if (new_filename_given)
+                    {
+                        // Si se dio el nombre nuevo, se alerta al usuario y se interrumpe la copia
+                        if ((new_file = fopen(new_filename, "r")))
+                        {
+                            fclose(new_file);
+                            fprintf(stderr, "dish: archivo de destino ya existe\n");
+                            return 1;
+                        } else
+                        {
+                            new_file = fopen(new_filename, "w");
+                        }
+                    } else
+                    {
+                        // Si el nombre es autogenerado, se modifica el nombre
+                        i = 0;
+                        while ((new_file = fopen(new_filename, "r")))
+                        {
+                            fclose(new_file);
+                            if (i) sprintf(new_filename, "%s - Copia %d", filename, i);
+                            else sprintf(new_filename, "%s - Copia", filename);
+                            i++;
+                        }
+                        new_file = fopen(new_filename, "w");
+                    }
+
+                    do
+                    {
+                        c = fgetc(file);
+                        fputc(c, new_file);
+                    } while (c != EOF);
+                    
+                    fclose(file);
+                    fclose(new_file);
+                    // Vuelve al directorio original
+                    chdir(curr_dir);
+                }
             }
 
             free(curr_dir);

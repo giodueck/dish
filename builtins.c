@@ -692,8 +692,21 @@ int dish_rm(char **args)
     } else
     {
         FILE *file = NULL;
+        char *curr_dir = malloc(sizeof(char) * DIR_BUFSIZE);
 
         // Check para ver si args[i] es directorio
+        if (!recursive_flag)
+        {
+            curr_dir = getcwd(curr_dir, DIR_BUFSIZE);
+            if (chdir(args[i]) != 0)
+            {
+                fprintf(stderr, "remover: no se pudo remover, %s es directorio\n", args[i]);
+                chdir(curr_dir);
+                free(curr_dir);
+                return 1;
+            }
+        }
+        free(curr_dir);
 
         // Check para ver si existe el archivo
         file = fopen(args[i], "r");
@@ -702,7 +715,7 @@ int dish_rm(char **args)
             fclose(file);
         } else
         {
-            if (!quiet_flag) fprintf(stderr, "dish: el archivo no existe\n");
+            fprintf(stderr, "dish: el archivo no existe\n");
             return 1;
         }
 

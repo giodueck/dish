@@ -928,10 +928,12 @@ int dish_ls(char **args)
     {
         "-h",
         "--ayuda",
-        "-l"
+        "-l",
+        "-a"
     };
     char help_flag = FALSE;
     char list_flag = FALSE;
+    char all_flag = FALSE;
     int i;
 
     // Opciones
@@ -951,6 +953,10 @@ int dish_ls(char **args)
         {
             list_flag = TRUE;
             continue;
+        } else if (strcmp(args[i], options[4]) == 0)
+        {
+            all_flag = TRUE;
+            continue;
         } else
         {
             printf("dish: Opcion invalida.\n      Ingresa \"sys --ayuda\" para ver las opciones disponibles.\n");
@@ -967,6 +973,8 @@ int dish_ls(char **args)
     {
         DIR *d;
         struct dirent *dir;
+        int i = 0;
+
         d = opendir(".");
         if (d)
         {
@@ -974,8 +982,27 @@ int dish_ls(char **args)
             {
                 if (!list_flag)
                 {
+                    if (i == 4)
+                    {
+                        putc('\n', stdout);
+                        i = 0;
+                    }
+
+                    // evita listar archivos ocultos sin la opcion -a
+                    if (dir->d_name[0] == '.' && !all_flag)
+                        continue;
+                    
                     printf("%s\t", dir->d_name);
+                    i++;
+                } else
+                {
+                    // evita listar archivos ocultos sin la opcion -a
+                    if (dir->d_name[0] == '.' && !all_flag)
+                        continue;
+                    
+                    printf("%s\n", dir->d_name);
                 }
+                
             }
             closedir(d);
         }

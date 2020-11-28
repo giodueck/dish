@@ -704,7 +704,7 @@ int dish_rm(char **args)
         {
             int bufsize = 16;
             char buffer[bufsize];
-            char **args;
+            char **rm_args;
             int c;
 
             printf("remover: Desea eliminar el archivo %s? (s/n)", args[i]);
@@ -729,9 +729,9 @@ int dish_rm(char **args)
                 }
             }
 
-            args = dish_split_line(buffer);
+            rm_args = dish_split_line(buffer);
 
-            if (strcmp(args[0], "s") == 0 || strcmp(args[0], "S") == 0)
+            if (strcmp(rm_args[0], "s") == 0 || strcmp(rm_args[0], "S") == 0)
             {
                 rm = TRUE;
             } else
@@ -739,7 +739,7 @@ int dish_rm(char **args)
                 rm = FALSE;
             }    
 
-            free(args);
+            free(rm_args);
         } else
         {
             rm = TRUE;

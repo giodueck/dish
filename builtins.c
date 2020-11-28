@@ -949,11 +949,11 @@ int dish_ls(char **args)
         {
             help_flag = TRUE;
             break;
-        } else if (strcmp(args[i], options[3]) == 0)
+        } else if (strcmp(args[i], options[2]) == 0)
         {
             list_flag = TRUE;
             continue;
-        } else if (strcmp(args[i], options[4]) == 0)
+        } else if (strcmp(args[i], options[3]) == 0)
         {
             all_flag = TRUE;
             continue;
@@ -1006,6 +1006,8 @@ int dish_ls(char **args)
             }
             closedir(d);
         }
+
+        if (!list_flag) putc('\n', stdout);
     }
     return 1;
 }

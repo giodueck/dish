@@ -679,7 +679,7 @@ int dish_mv(char **args)
         // Copia
         char cp_arg0[] = "copiar";
         char cp_arg1[] = "-d";
-        char *cp_arg2 = args[i];
+        char *cp_arg2 = (rn_flag) ? args[i + 1] : args[i];
         char *cp_arg3 = (rn_flag) ? args[i + 2] : args[i + 1];
         char *cp_args[5] = { cp_arg0, cp_arg1, cp_arg2, cp_arg3, NULL };
         dish_cp(cp_args);
@@ -688,7 +688,7 @@ int dish_mv(char **args)
         char rm_arg0[] = "remover";
         char rm_arg1[] = "-f";
         char rm_arg2[] = "-s";
-        char *rm_arg3 = args[i];
+        char *rm_arg3 = (rn_flag) ? args[i + 1] : args[i];
         char *rm_args[5] = { rm_arg0, rm_arg1, rm_arg2, rm_arg3, NULL };
         dish_rm(rm_args);
     }

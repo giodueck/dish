@@ -707,11 +707,11 @@ int dish_rm(char **args)
             char **args;
             int c;
 
+            printf("remover: Desea eliminar el archivo %s? (s/n)", args[i]);
             while (1)
             {
                 c = getchar();
 
-                printf("remover: Desea eliminar el archivo %s? (s/n)", args[i]);
                 if (c == EOF || c == '\n')
                 {
                     buffer[i] = '\0';

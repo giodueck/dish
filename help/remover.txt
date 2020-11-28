@@ -1,4 +1,4 @@
-Elimina un archivo. Se pide confirmacion antess de cada
+Elimina un archivo. Se pide confirmacion antes de cada
 eliminacion.
 
 Uso:

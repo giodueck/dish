@@ -665,11 +665,11 @@ int dish_rm(char **args)
         } else if (strcmp(args[i], options[2]) == 0)
         {
             force_flag = TRUE;
-            break;
+            continue;
         } else if (strcmp(args[i], options[3]) == 0)
         {
             recursive_flag = TRUE;
-            break;
+            continue;
         } else
         {
             printf("dish: Opcion invalida.\n      Ingresa \"remover --ayuda\" para ver las opciones disponibles.\n");
@@ -707,7 +707,7 @@ int dish_rm(char **args)
             char **rm_args;
             int c;
 
-            printf("remover: Desea eliminar el archivo %s? (s/n)", args[i]);
+            printf("remover: Desea eliminar el archivo %s? (s/n) ", args[i]);
             while (1)
             {
                 c = getchar();
@@ -752,7 +752,10 @@ int dish_rm(char **args)
             if (res != 0)
             {
                 fprintf(stderr, "remover: no se pudo eliminar %s\n", args[i]);
-            }
+            } else
+            {
+                printf("remover: %s eliminado\n", args[i]);
+            }   
         }
     }
     return 1;

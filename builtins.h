@@ -14,7 +14,7 @@ int dish_history(char **args);
 int dish_useradd(char **args);  // missing help
 int dish_passwd(char **args);   // missing help
 int dish_cp(char **args);
-int dish_mv(char **args);       // missing help
+int dish_mv(char **args);
 int dish_rn(char **args);       // missing help
 int dish_mkdir(char **args);    // missing help
 int dish_rm(char **args);

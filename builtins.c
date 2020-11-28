@@ -686,6 +686,64 @@ int dish_mv(char **args)
 // Renombra un archivo
 int dish_rn(char **args)
 {
+    char *options[] = 
+    {
+        "-h",
+        "--ayuda",
+        "-s",
+        "--silencio"
+    };
+    char help_flag = FALSE;
+    char quiet_flag = FALSE;
+    int i;
+
+    // Opciones
+    for (i = 1; args[i] != NULL; i++)
+    {
+        if (args[i][0] != '-')
+        {
+            // Opciones siempre van antes del resto de los argumentos para ser validas
+            break;
+        }
+
+        if (strcmp(args[i], options[0]) == 0 || strcmp(args[i], options[1]) == 0)
+        {
+            help_flag = TRUE;
+            break;
+        } else if (strcmp(args[i], options[2]) == 0 || strcmp(args[i], options[3]) == 0)
+        {
+            quiet_flag = TRUE;
+            continue;
+        } else
+        {
+            printf("dish: Opcion invalida.\n      Ingresa \"renombrar --ayuda\" para ver las opciones disponibles.\n");
+            // en caso de opcion invalida se termina la ejecucion del comando
+            return 1;
+        }
+    }
+
+    // Ejecucion
+    if (help_flag)
+    {
+        dish_print_help(builtin_str[9]);
+    } else
+    {
+        // args[i] = archivo
+        // args[i+1] = nombre nuevo
+        
+        FILE *file;
+
+        file = fopen(args[i], "r");
+        if (file)
+        {
+            fclose(file);
+            rename(args[i], args[i + 1]);
+            if (!quiet_flag) printf("renombrar: %s renombrado a %s\n", args[i], args[i + 1]);
+        } else
+        {
+            fprintf(stderr, "dish: el archivo no existe\n");
+        }
+    }
     return 1;
 }
 

@@ -5,6 +5,6 @@ Uso:
     mover <OPCIONES> [ORIGEN] [DESTINO] [DIRECTORIO]
 
     OPCIONES
-     -r,    --renombrar Renombra el archivo ORIGEN a DESTINO. (TODO)
+     -r,    --renombrar Renombra el archivo ORIGEN a DESTINO.
      -h,    --ayuda     Muestra esta ayuda y termina.
 

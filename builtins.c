@@ -663,12 +663,24 @@ int dish_mv(char **args)
         // Se usa remover para eliminar el archivo de origen
         // args[i] = archivo a mover
         // args[i+1] = directorio de destino
+        //   o
+        // args[i] = archivo a mover
+        // args[i+1] = nombre nuevo
+        // args[i+2] = directorio de destino
+
+        // Renombramiento
+        char rn_arg0[] = "renombrar";
+        char rn_arg1[] = "-s";
+        char *rn_arg2 = args[i];
+        char *rn_arg3 = args[i + 1];
+        char *rn_args[5] = { rn_arg0, rn_arg1, rn_arg2, rn_arg3, NULL };
+        dish_rn(rn_args);
 
         // Copia
         char cp_arg0[] = "copiar";
         char cp_arg1[] = "-d";
         char *cp_arg2 = args[i];
-        char *cp_arg3 = args[i + 1];
+        char *cp_arg3 = (rn_flag) ? args[i + 2] : args[i + 1];
         char *cp_args[5] = { cp_arg0, cp_arg1, cp_arg2, cp_arg3, NULL };
         dish_cp(cp_args);
 

@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <dirent.h>
 
 #include "builtins.h"
 #include "defines.h"
@@ -27,7 +28,8 @@ char *builtin_str[] =
     "renombrar",
     "creardir",
     "remover",
-    "removerdir"
+    "removerdir",
+    "listar"
 };
 
 int (*builtin_func[]) (char**) =
@@ -44,7 +46,8 @@ int (*builtin_func[]) (char**) =
     &dish_rn,
     &dish_mkdir,
     &dish_rm,
-    &dish_rmdir
+    &dish_rmdir,
+    &dish_ls
 };
 
 extern char *username;
@@ -915,5 +918,67 @@ int dish_rm(char **args)
 // Elimina un directorio
 int dish_rmdir(char **args)
 {
+    return 1;
+}
+
+// Lista archivos y directorios
+int dish_ls(char **args)
+{
+    char *options[] = 
+    {
+        "-h",
+        "--ayuda",
+        "-l"
+    };
+    char help_flag = FALSE;
+    char list_flag = FALSE;
+    int i;
+
+    // Opciones
+    for (i = 1; args[i] != NULL; i++)
+    {
+        if (args[i][0] != '-')
+        {
+            // Opciones siempre van antes del resto de los argumentos para ser validas
+            break;
+        }
+
+        if (strcmp(args[i], options[0]) == 0 || strcmp(args[i], options[1]) == 0)
+        {
+            help_flag = TRUE;
+            break;
+        } else if (strcmp(args[i], options[3]) == 0)
+        {
+            list_flag = TRUE;
+            continue;
+        } else
+        {
+            printf("dish: Opcion invalida.\n      Ingresa \"sys --ayuda\" para ver las opciones disponibles.\n");
+            // en caso de opcion invalida se termina la ejecucion del comando
+            return 1;
+        }
+    }
+
+    // Ejecucion
+    if (help_flag)
+    {
+        dish_print_help(builtin_str[13]);
+    } else
+    {
+        DIR *d;
+        struct dirent *dir;
+        d = opendir(".");
+        if (d)
+        {
+            while ((dir = readdir(d)) != NULL)
+            {
+                if (!list_flag)
+                {
+                    printf("%s\t", dir->d_name);
+                }
+            }
+            closedir(d);
+        }
+    }
     return 1;
 }

@@ -1,0 +1,9 @@
+Lista archivos y directorios en el directorio dado o el 
+actual si no se especifica.
+
+Uso:
+    listar <OPCIONES> <DIRECTORIO>
+
+    OPCIONES
+     -l                 Imprime en forma de lista.
+     -h,    --ayuda     Muestra esta ayuda y termina.

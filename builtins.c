@@ -618,6 +618,68 @@ int dish_cp(char **args)
 // Mueve un archivo a otro directorio
 int dish_mv(char **args)
 {
+    char *options[] = 
+    {
+        "-h",
+        "--ayuda",
+        "-r",
+        "--renombrar"
+    };
+    char help_flag = FALSE;
+    char rn_flag = FALSE;
+    int i;
+
+    // Opciones
+    for (i = 1; args[i] != NULL; i++)
+    {
+        if (args[i][0] != '-')
+        {
+            // Opciones siempre van antes del resto de los argumentos para ser validas
+            break;
+        }
+
+        if (strcmp(args[i], options[0]) == 0 || strcmp(args[i], options[1]) == 0)
+        {
+            help_flag = TRUE;
+            break;
+        } else if (strcmp(args[i], options[2]) == 0 || strcmp(args[i], options[3]) == 0)
+        {
+            rn_flag = TRUE;
+        } else
+        {
+            printf("dish: Opcion invalida.\n      Ingresa \"mover --ayuda\" para ver las opciones disponibles.\n");
+            // en caso de opcion invalida se termina la ejecucion del comando
+            return 1;
+        }
+    }
+
+    // Ejecucion
+    if (help_flag)
+    {
+        dish_print_help(builtin_str[8]);
+    } else
+    {
+        // Se usa copiar para copiar el archivo
+        // Se usa remover para eliminar el archivo de origen
+        // args[i] = archivo a mover
+        // args[i+1] = directorio de destino
+
+        // Copia
+        char cp_arg0[] = "copiar";
+        char cp_arg1[] = "-d";
+        char cp_arg2[] = args[i];
+        char cp_arg3[] = args[i + 1];
+        char *cp_args[5] = { cp_arg0, cp_arg1, cp_arg2, cp_arg3, NULL };
+        dish_cp(cp_args);
+
+        // Eliminacion
+        char rm_arg0[] = "remover";
+        char rm_arg1[] = "-f";
+        char rm_arg2[] = "-s";
+        char rm_arg3[] = args[i];
+        char *rm_args[5] = { rm_arg0, rm_arg1, rm_arg2, rm_arg3, NULL };
+        dish_rm(rm_args);
+    }
     return 1;
 }
 

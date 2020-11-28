@@ -17,7 +17,7 @@ int dish_cp(char **args);
 int dish_mv(char **args);       // missing help
 int dish_rn(char **args);       // missing help
 int dish_mkdir(char **args);    // missing help
-int dish_rm(char **args);       // missing help
+int dish_rm(char **args);
 int dish_rmdir(char **args);    // missing help
 
 // Arrays de nombres de builtins con sus respectivas funciones

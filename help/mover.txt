@@ -1,0 +1,10 @@
+Mueve el archivo al directorio dado.
+
+Uso:
+    mover <OPCIONES> [ARCHIVO] [DIRECTORIO]
+    mover <OPCIONES> [ORIGEN] [DESTINO] [DIRECTORIO]
+
+    OPCIONES
+     -r,    --renombrar Renombra el archivo ORIGEN a DESTINO. (TODO)
+     -h,    --ayuda     Muestra esta ayuda y termina.
+

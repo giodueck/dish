@@ -13,4 +13,6 @@ Changelog:\
         Cambia de nombre a un archivo.\
     - comando "remover" agregado:\
         Elimina un archivo. Pide confirmacion del usuario antes de eliminar.\
-        Tiene opciones para forzar eliminacion y (TODO) eliminar recursivamente.
+        Tiene opciones para forzar eliminacion y (TODO) eliminar recursivamente.\
+    - comando "listar" agregado:\
+        Lista archivos en un directorio.

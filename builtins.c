@@ -641,11 +641,14 @@ int dish_rm(char **args)
         "-h",
         "--ayuda",
         "-f",
-        "-r"
+        "-r",
+        "-s",
+        "--silencio"
     };
     char help_flag = FALSE;
     char force_flag = FALSE;
     char recursive_flag = FALSE;
+    char quiet_flag = FALSE;
     char rm = FALSE;
     int i;
 
@@ -670,7 +673,11 @@ int dish_rm(char **args)
         {
             recursive_flag = TRUE;
             continue;
-        } else
+        } else if (strcmp(args[i], options[4]) == 0 || strcmp(args[i], options[5]) == 0)
+        {
+            quiet_flag = TRUE;
+            continue;
+        } else 
         {
             printf("dish: Opcion invalida.\n      Ingresa \"remover --ayuda\" para ver las opciones disponibles.\n");
             // en caso de opcion invalida se termina la ejecucion del comando
@@ -695,7 +702,7 @@ int dish_rm(char **args)
             fclose(file);
         } else
         {
-            fprintf(stderr, "dish: el archivo no existe\n");
+            if (!quiet_flag) fprintf(stderr, "dish: el archivo no existe\n");
             return 1;
         }
 
@@ -730,9 +737,6 @@ int dish_rm(char **args)
             }
 
             rm_args = dish_split_line(buffer);
-	    printf("\nbuffer = %s\n", buffer);
-	    printf("\nrm_args[0] = %s\n", rm_args[0]);
-
             if (strcmp(rm_args[0], "s") == 0 || strcmp(rm_args[0], "S") == 0)
             {
                 rm = TRUE;
@@ -753,10 +757,10 @@ int dish_rm(char **args)
             int res = remove(args[i]);
             if (res != 0)
             {
-                fprintf(stderr, "remover: no se pudo eliminar %s\n", args[i]);
+                if (!quiet_flag) fprintf(stderr, "remover: no se pudo eliminar %s\n", args[i]);
             } else
             {
-                printf("remover: %s eliminado\n", args[i]);
+                if (!quiet_flag) printf("remover: %s eliminado\n", args[i]);
             }   
         }
     }

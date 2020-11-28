@@ -719,7 +719,8 @@ int dish_rm(char **args)
                 } else if (i >= bufsize)
                 {
                     buffer[i] = '\0';
-                    fpurge(stdin);
+                    // flush buffer
+                    while ((c = getchar()) != '\n' && c != EOF);
                     break;
                 } else
                 {

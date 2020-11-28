@@ -760,7 +760,7 @@ int dish_rm(char **args)
         if (!recursive_flag)
         {
             curr_dir = getcwd(curr_dir, DIR_BUFSIZE);
-            if (chdir(args[i]) != 0)
+            if (chdir(args[i]) == 0)
             {
                 fprintf(stderr, "remover: no se pudo remover, %s es directorio\n", args[i]);
                 chdir(curr_dir);

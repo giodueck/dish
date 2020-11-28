@@ -10,6 +10,7 @@
 
 #include "builtins.h"
 #include "defines.h"
+#include "dish.h"
 
 // Arrays de nombres de builtins con sus respectivas funciones
 char *builtin_str[] = 
@@ -635,6 +636,124 @@ int dish_mkdir(char **args)
 // Elimina un archivo
 int dish_rm(char **args)
 {
+    char *options[] = 
+    {
+        "-h",
+        "--ayuda",
+        "-f",
+        "-r"
+    };
+    char help_flag = FALSE;
+    char force_flag = FALSE;
+    char recursive_flag = FALSE;
+    char rm = FALSE;
+    int i;
+
+    // Opciones
+    for (i = 1; args[i] != NULL; i++)
+    {
+        if (args[i][0] != '-')
+        {
+            // Opciones siempre van antes del resto de los argumentos para ser validas
+            break;
+        }
+
+        if (strcmp(args[i], options[0]) == 0 || strcmp(args[i], options[1]) == 0)
+        {
+            help_flag = TRUE;
+            break;
+        } else if (strcmp(args[i], options[2]) == 0)
+        {
+            force_flag = TRUE;
+            break;
+        } else if (strcmp(args[i], options[3]) == 0)
+        {
+            recursive_flag = TRUE;
+            break;
+        } else
+        {
+            printf("dish: Opcion invalida.\n      Ingresa \"remover --ayuda\" para ver las opciones disponibles.\n");
+            // en caso de opcion invalida se termina la ejecucion del comando
+            return 1;
+        }
+    }
+
+    // Ejecucion
+    if (help_flag)
+    {
+        dish_print_help(builtin_str[11]);
+    } else
+    {
+        FILE *file = NULL;
+
+        // Check para ver si args[i] es directorio
+
+        // Check para ver si existe el archivo
+        file = fopen(args[i], "r");
+        if (file)
+        {
+            fclose(file);
+        } else
+        {
+            fprintf(stderr, "dish: el archivo no existe\n");
+            return 1;
+        }
+
+        // Confirmacion
+        if (!force_flag)
+        {
+            int bufsize = 16;
+            char buffer[bufsize];
+            char **args;
+            int c;
+
+            while (1)
+            {
+                c = getchar();
+
+                printf("remover: Desea eliminar el archivo %s? (s/n)", args[i]);
+                if (c == EOF || c == '\n')
+                {
+                    buffer[i] = '\0';
+                    break;
+                } else if (i >= bufsize)
+                {
+                    buffer[i] = '\0';
+                    fpurge(stdin);
+                    break;
+                } else
+                {
+                    buffer[i] = c;
+                    i++;
+                }
+            }
+
+            args = dish_split_line(buffer);
+
+            if (strcmp(args[0], "s") == 0 || strcmp(args[0], "S") == 0)
+            {
+                rm = TRUE;
+            } else
+            {
+                rm = FALSE;
+            }    
+
+            free(args);
+        } else
+        {
+            rm = TRUE;
+        }
+        
+        // Eliminacion
+        if (rm)
+        {
+            int res = remove(args[i]);
+            if (res != 0)
+            {
+                fprintf(stderr, "remover: no se pudo eliminar %s\n", args[i]);
+            }
+        }
+    }
     return 1;
 }
 

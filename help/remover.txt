@@ -1,0 +1,10 @@
+Elimina un archivo. Se pide confirmacion antess de cada
+eliminacion.
+
+Uso:
+    remover <OPCIONES> [ARCHIVO]
+
+    OPCIONES
+     -f                 Elimina sin confirmacion.
+     -r                 Elimina recursivamente. Recorre directorios.
+     -h,    --ayuda     Muestra esta ayuda y termina.

@@ -5,4 +5,5 @@ Desarrollo de shell - Sistemas Operativos 1
 Changelog:\
     - comando "copiar" agregado:\
         Copia un archivo. El nombre del nuevo archivo puede ser dado por el usuario\
-        o autogenerado.
+        o autogenerado. Si el directorio de destino no es el actual, una opcion\
+        permite especificarlo.

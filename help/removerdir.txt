@@ -1,0 +1,7 @@
+Elimina un directorio
+
+Uso:
+    removerdir <OPCION> [NOMBRE]
+
+    OPCIONES
+     -h,    --ayuda     Muestra esta ayuda y termina.

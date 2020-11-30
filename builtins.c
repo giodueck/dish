@@ -3,6 +3,9 @@
 */
 
 #include <sys/wait.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <errno.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -765,6 +768,63 @@ int dish_rn(char **args)
 // Crea un nuevo directorio
 int dish_mkdir(char **args)
 {
+    char *options[] = 
+    {
+        "-h",
+        "--ayuda"
+    };
+    char help_flag = FALSE;
+
+    // Opciones
+    for (int i = 1; args[i] != NULL; i++)
+    {
+        if (args[i][0] != '-')
+        {
+            // Opciones siempre van antes del resto de los argumentos para ser validas
+            break;
+        }
+
+        if (strcmp(args[i], options[0]) == 0 || strcmp(args[i], options[1]) == 0)
+        {
+            help_flag = TRUE;
+            break;
+        } else
+        {
+            printf("dish: Opcion invalida.\n      Ingresa \"creardir --ayuda\" para ver las opciones disponibles.\n");
+            // en caso de opcion invalida se termina la ejecucion del comando
+            return 1;
+        }
+    }
+
+    // Ejecucion
+    if (help_flag)
+    {
+        dish_print_help(builtin_str[10]);
+    } else
+    {
+        // args[1] = nombre del directorio
+        int err = mkdir(args[1], 0777);
+        if (err)
+        {
+            switch (errno)
+            {
+                case EACCES:
+                    fprintf(stderr, "mkdir: no tiene permisos de escritura para este directorio\n");
+                    break;
+                case EEXIST:
+                    fprintf(stderr, "mkdir: un archivo con el nombre %s ya existe\n", args[1]);
+                    break;
+                case ENOSPC:
+                    fprintf(stderr, "mkdir: no hay espacio suficiente\n");
+                    break;
+                case EROFS:
+                    fprintf(stderr, "mkdir: el directorio es de solo-lectura\n");
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
     return 1;
 }
 

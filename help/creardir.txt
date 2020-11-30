@@ -1,0 +1,7 @@
+Crea un nuevo directorio con el nombre dado
+
+Uso:
+    creardir <OPCION> [NOMBRE]
+
+    OPCIONES
+     -h,    --ayuda     Muestra esta ayuda y termina.

@@ -19,7 +19,7 @@ int dish_rn(char **args);
 int dish_mkdir(char **args);    // missing help
 int dish_rm(char **args);
 int dish_rmdir(char **args);    // missing help
-int dish_ls(char **args);       // missing help
+int dish_ls(char **args);
 
 // Arrays de nombres de builtins con sus respectivas funciones
 #define NUM_BUILTINS 14

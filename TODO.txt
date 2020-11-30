@@ -13,7 +13,7 @@
 //- renombrar
 //- listar: listar elementos en directorio (como ls)
     - color coding
-- creardir: crear un directorio
+//- creardir: crear un directorio
 - permisos: cambiar los permisos de un archivo o conjunto de archivos
 - propietario: cambiar los propietarios de un archivo o conjunto de archivos
 - usuario: agregar, modificar, y borrar usuarios
@@ -49,7 +49,7 @@
 - historial: agregar opciones para resetear historial
 - manual: imprimir el manual de uso
 //- remover: borrar archivos
-- removerdir: borrar directorio
+//- removerdir: borrar directorio
 
 # Instalacion
 - config: path de instalacion debe afectar cosas como el camino de los archivos de ayuda: [path]/help/cmd.txt

@@ -6,7 +6,6 @@ Uso:
 
     OPCIONES
      -f                 Elimina sin confirmacion.
-     -r                 Elimina recursivamente. Recorre directorios. (TODO)
      -s,    --silencio  Deja de mostrar mensajes que no sean de
                         confirmacion.
      -h,    --ayuda     Muestra esta ayuda y termina.

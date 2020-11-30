@@ -842,7 +842,6 @@ int dish_rm(char **args)
         "-h",
         "--ayuda",
         "-f",
-        "-r",
         "-s",
         "--silencio"
     };
@@ -870,11 +869,7 @@ int dish_rm(char **args)
         {
             force_flag = TRUE;
             continue;
-        } else if (strcmp(args[i], options[3]) == 0)
-        {
-            recursive_flag = TRUE;
-            continue;
-        } else if (strcmp(args[i], options[4]) == 0 || strcmp(args[i], options[5]) == 0)
+        } else if (strcmp(args[i], options[3]) == 0 || strcmp(args[i], options[4]) == 0)
         {
             quiet_flag = TRUE;
             continue;
@@ -894,7 +889,7 @@ int dish_rm(char **args)
     {
         FILE *file = NULL;
         char *curr_dir = malloc(sizeof(char) * DIR_BUFSIZE);
-
+        
         // Check para ver si args[i] es directorio
         if (!recursive_flag)
         {
@@ -916,7 +911,7 @@ int dish_rm(char **args)
             fclose(file);
         } else
         {
-            fprintf(stderr, "dish: el archivo no existe\n");
+            fprintf(stderr, "remover: el archivo no existe\n");
             return 1;
         }
 
@@ -972,10 +967,7 @@ int dish_rm(char **args)
             if (res != 0)
             {
                 if (!quiet_flag) fprintf(stderr, "remover: no se pudo eliminar %s\n", args[i]);
-            } else
-            {
-                if (!quiet_flag) printf("remover: %s eliminado\n", args[i]);
-            }   
+            }  
         }
     }
     return 1;

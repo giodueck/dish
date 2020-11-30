@@ -1027,10 +1027,12 @@ int dish_rmdir(char **args)
         {
             while ((dir = readdir(d)) != NULL)
             {
+                printf("%s\n", dir->d_name);
                 i++;
             }
         }
         printf("%d\n", i);
+        closedir(d);
     }
     return 1;
 }

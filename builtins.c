@@ -805,7 +805,7 @@ int dish_mkdir(char **args)
         // args[1] = nombre del directorio
         if (args[1] == NULL)
         {
-            fprintf(stderr, "mkdir: nombre no especificado\n");
+            fprintf(stderr, "creardir: nombre no especificado\n");
         } else
         {
             int err = mkdir(args[1], 0777);
@@ -813,20 +813,20 @@ int dish_mkdir(char **args)
             {
                 switch (errno)
                 {
-                    case EACCES:
-                        fprintf(stderr, "mkdir: no tiene permisos de escritura para este directorio\n");
-                        break;
-                    case EEXIST:
-                        fprintf(stderr, "mkdir: un archivo con el nombre %s ya existe\n", args[1]);
-                        break;
-                    case ENOSPC:
-                        fprintf(stderr, "mkdir: no hay espacio suficiente\n");
-                        break;
-                    case EROFS:
-                        fprintf(stderr, "mkdir: el directorio es de solo-lectura\n");
-                        break;
-                    default:
-                        break;
+                case EACCES:
+                    fprintf(stderr, "creardir: no tiene permisos de escritura para este directorio\n");
+                    break;
+                case EEXIST:
+                    fprintf(stderr, "creardir: un archivo con el nombre %s ya existe\n", args[1]);
+                    break;
+                case ENOSPC:
+                    fprintf(stderr, "creardir: no hay espacio suficiente\n");
+                    break;
+                case EROFS:
+                    fprintf(stderr, "creardir: el directorio es de solo-lectura\n");
+                    break;
+                default:
+                    break;
                 }
             }
         }
@@ -1018,21 +1018,22 @@ int dish_rmdir(char **args)
         dish_print_help(builtin_str[12]);
     } else
     {
-        DIR *d;
-        struct dirent *dir;
-        int i = 0;
-
-        d = opendir(".");
-        if (d)
+        int err = rmdir(args[1]);
+        if (err)
         {
-            while ((dir = readdir(d)) != NULL)
+            switch (errno)
             {
-                printf("%s\n", dir->d_name);
-                i++;
+            case EEXIST:
+            case ENOTEMPTY:
+                fprintf(stderr, "removerdir: %s no es un directorio vacio\n", args[1]);
+                break;
+            case EACCES:
+                fprintf(stderr, "removerdir: no tiene permisos de escritura para este directorio\n");
+                break;
+            default:
+                break;
             }
         }
-        printf("%d\n", i);
-        closedir(d);
     }
     return 1;
 }

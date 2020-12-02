@@ -6,7 +6,7 @@ Changelog:\
     - comando "creardir" agregado:\
         Crea un directorio con el nombre dado.\
     - comando "removerdir" agregado"\
-        Elimina un directorio, pero solo si es un directorio vacio.
+        Elimina un directorio, pero solo si es un directorio vacio.\
     - comando "remover":\
         Opcion -r removida, complejidad innecesaria.\
     - errores ahora son mayormente controlados por funciones dedicadas,\

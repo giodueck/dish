@@ -31,12 +31,12 @@
 - usuario_horarios.log: guardar inicios y cierres de sesion
     - comparar con horarios de trabajo
     - comparar con lugares de conexion habilitados
-- sistema_error.log: guardar errores
-    Ejemplos:
-        - Acceso a un directorio no permitido
-        - Error al copiar o renombrar archivos
-        - Cambio de contraseña exitoso o equivocado
-        - Servicio no inicializado
+//- sistema_error.log: guardar errores
+//    Ejemplos:
+//        - Acceso a un directorio no permitido
+//        - Error al copiar o renombrar archivos
+//        - Cambio de contraseña exitoso o equivocado
+//        - Servicio no inicializado
 
 # Documentacion
 - Todo el codigo debe estar bien comentado

@@ -13,7 +13,6 @@
 #include "err.h"
 
 extern char *err_filename;
-extern char *line;
 extern char **args;
 
 // Escribe en una cadena un mensaje para el valor de errno
@@ -68,16 +67,30 @@ void err_put_date(FILE *file)
     fprintf(file, "[%d-%02d-%02d %02d:%02d:%02d] ", tms.tm_year + 1900, tms.tm_mon + 1, tms.tm_mday, tms.tm_hour, tms.tm_min, tms.tm_sec);
 }
 
+// Ya que line fue tokenizado, esta funcion recompone la linea para escribir en el log de error
+char *compose_line(char *dest)
+{
+    for (int i = 0; args[i] != NULL; i++)
+    {
+        strcat(dest, args[i]);
+        strcat(dest, " ");
+    }
+
+    return dest;
+}
+
 void err_log_add_msg(char *msg)
 {
     char *tok = strtok(msg, " ");
+    char line[LINE_BUFSIZE] = "";
+
     tok = strtok(NULL, "\n");
     tok[0] = toupper(tok[0]);
 
     FILE *err_file = fopen(err_filename, "a");
 
     err_put_date(err_file);
-    fprintf(err_file, "%s: %s\n", line, tok);
+    fprintf(err_file, "%s: %s\n", compose_line(line), tok);
     
     fclose(err_file);
 }
@@ -87,6 +100,8 @@ void err_print(char *msg)
     // Lo primero que se hace es revisar errno, ya que cualquier funcion de libreria
     // puede modificar errno
     char err[MSG_LENGTH];
+    char line[LINE_BUFSIZE] = "";
+
     get_err_msg(err);
     if (msg != NULL && msg[0] != '\0')
     {
@@ -97,7 +112,7 @@ void err_print(char *msg)
     FILE *err_file = fopen(err_filename, "a");
     
     err_put_date(err_file);
-    fprintf(err_file, "%s: %s\n", line, err);
+    fprintf(err_file, "%s: %s\n", compose_line(line), err);
     
     fclose(err_file);
 }

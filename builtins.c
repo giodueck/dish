@@ -81,9 +81,9 @@ int dish_print_help(char *command_name)
     if (!file)  // error de fopen
     {
         char *msg = malloc(sizeof(char) * MSG_LENGTH);
-        sprintf(msg, "dish: no se pudo abrir el archivo %s\n", filename);
+        sprintf(msg, "ayuda: no se pudo abrir el archivo %s\n", filename);
         fprintf(stderr, msg);
-        err_log_add_msg(args, msg);
+        err_log_add_msg(msg);
         free(msg);
         return 2;
     }
@@ -148,7 +148,7 @@ int dish_cd(char **args)
         dish_print_help(builtin_str[0]);
     } else if (chdir(args[1]) != 0)
     {
-        err_print("dish");
+        err_print("ir");
     }
 
     return 1;
@@ -260,13 +260,13 @@ int dish_sys(char **args)
             //   comando dado
             if (execvp(args[1], &args[1]) == -1)
             {
-                perror("dish");
+                err_print("execvp");
             }
             exit(FAILURE);
         } else if (pid < 0)
         {
             // fork error
-            perror("dish");
+            err_print("fork");
         } else
         {
             do
@@ -295,7 +295,11 @@ int dish_history(char **args)
 
     if (!log)  // error de fopen
     {
-        fprintf(stderr, "dish: no se pudo abrir el historial\n");
+        char *msg = malloc(sizeof(char) * MSG_LENGTH);
+        sprintf(msg, "historial: no se pudo abrir el historial.\n");
+        fprintf(stderr, msg);
+        err_log_add_with_msg(args, msg);
+        free(msg);
         return 2;
     }
 
@@ -448,7 +452,11 @@ int dish_cp(char **args)
     {
         if (args[1] == NULL)
         {
-            fprintf(stderr, "dish: archivo de origen no especificado\n");
+            char *msg = malloc(sizeof(char) * MSG_LENGTH);
+            sprintf(msg, "copiar: archivo de origen no especificado.\n");
+            fprintf(stderr, msg);
+            err_log_add_with_msg(args, msg);
+            free(msg);
         } else if (dir_flag)
         {
             // Se especifica un directorio
@@ -492,7 +500,11 @@ int dish_cp(char **args)
             if (!(file = fopen(filename, "r")))
             {
                 // si no existe
-                fprintf(stderr, "dish: archivo de origen no existe o no se pudo abrir\n");
+                char *msg = malloc(sizeof(char) * MSG_LENGTH);
+                sprintf(msg, "copiar: archivo de origen no existe o no se pudo abrir.\n");
+                fprintf(stderr, msg);
+                err_log_add_with_msg(args, msg);
+                free(msg);
             } else
             {
                 // si existe
@@ -502,7 +514,7 @@ int dish_cp(char **args)
                 curr_dir = getcwd(curr_dir, DIR_BUFSIZE);
                 if (chdir(dir) != 0)
                 {
-                    perror("dish");
+                    err_print("dish");
                 } else
                 {
 
@@ -512,8 +524,12 @@ int dish_cp(char **args)
                         // Si se dio el nombre nuevo, se alerta al usuario y se interrumpe la copia
                         if ((new_file = fopen(new_filename, "r")))
                         {
+                            char *msg = malloc(sizeof(char) * MSG_LENGTH);
+                            sprintf(msg, "copiar: archivo de destino ya existe.\n");
+                            fprintf(stderr, msg);
+                            err_log_add_with_msg(args, msg);
+                            free(msg);
                             fclose(new_file);
-                            fprintf(stderr, "dish: archivo de destino ya existe\n");
                             return 1;
                         } else
                         {
@@ -587,8 +603,12 @@ int dish_cp(char **args)
                     // Si se dio el nombre nuevo, se alerta al usuario y se interrumpe la copia
                     if ((new_file = fopen(new_filename, "r")))
                     {
+                        char *msg = malloc(sizeof(char) * MSG_LENGTH);
+                        sprintf(msg, "copiar: archivo de destino ya existe.\n");
+                        fprintf(stderr, msg);
+                        err_log_add_with_msg(args, msg);
+                        free(msg);
                         fclose(new_file);
-                        fprintf(stderr, "dish: archivo de destino ya existe\n");
                         return 1;
                     } else
                     {
@@ -764,7 +784,11 @@ int dish_rn(char **args)
             if (!quiet_flag) printf("renombrar: %s renombrado a %s\n", args[i], args[i + 1]);
         } else
         {
-            fprintf(stderr, "dish: el archivo no existe\n");
+            char *msg = malloc(sizeof(char) * MSG_LENGTH);
+            sprintf(msg, "renombrar: el archivo no existe.\n");
+            fprintf(stderr, msg);
+            err_log_add_with_msg(args, msg);
+            free(msg);
         }
     }
     return 1;
@@ -810,29 +834,17 @@ int dish_mkdir(char **args)
         // args[1] = nombre del directorio
         if (args[1] == NULL)
         {
-            fprintf(stderr, "creardir: nombre no especificado\n");
+            char *msg = malloc(sizeof(char) * MSG_LENGTH);
+            sprintf(msg, "creardir: nombre no especificado.\n");
+            fprintf(stderr, msg);
+            err_log_add_with_msg(args, msg);
+            free(msg);
         } else
         {
             int err = mkdir(args[1], 0777);
             if (err)
             {
-                switch (errno)
-                {
-                case EACCES:
-                    fprintf(stderr, "creardir: no tiene permisos de escritura para este directorio\n");
-                    break;
-                case EEXIST:
-                    fprintf(stderr, "creardir: un archivo con el nombre %s ya existe\n", args[1]);
-                    break;
-                case ENOSPC:
-                    fprintf(stderr, "creardir: no hay espacio suficiente\n");
-                    break;
-                case EROFS:
-                    fprintf(stderr, "creardir: el directorio es de solo-lectura\n");
-                    break;
-                default:
-                    break;
-                }
+                err_print("creardir");
             }
         }
     }
@@ -901,7 +913,12 @@ int dish_rm(char **args)
             curr_dir = getcwd(curr_dir, DIR_BUFSIZE);
             if (chdir(args[i]) == 0)
             {
-                fprintf(stderr, "remover: no se pudo remover, %s es directorio\n", args[i]);
+                char *msg = malloc(sizeof(char) * MSG_LENGTH);
+                sprintf(msg, "remover: no se pudo remover, %s es directorio.\n", args[i]);
+                fprintf(stderr, msg);
+                err_log_add_with_msg(args, msg);
+                free(msg);
+
                 chdir(curr_dir);
                 free(curr_dir);
                 return 1;
@@ -916,7 +933,11 @@ int dish_rm(char **args)
             fclose(file);
         } else
         {
-            fprintf(stderr, "remover: el archivo no existe\n");
+            char *msg = malloc(sizeof(char) * MSG_LENGTH);
+            sprintf(msg, "remover: el archivo no existe.\n");
+            fprintf(stderr, msg);
+            err_log_add_with_msg(args, msg);
+            free(msg);
             return 1;
         }
 
@@ -971,7 +992,7 @@ int dish_rm(char **args)
             int res = remove(args[i]);
             if (res != 0)
             {
-                if (!quiet_flag) fprintf(stderr, "remover: no se pudo eliminar %s\n", args[i]);
+                err_print("remover");
             }  
         }
     }
@@ -1018,18 +1039,7 @@ int dish_rmdir(char **args)
         int err = rmdir(args[1]);
         if (err)
         {
-            switch (errno)
-            {
-            case EEXIST:
-            case ENOTEMPTY:
-                fprintf(stderr, "removerdir: %s no es un directorio vacio\n", args[1]);
-                break;
-            case EACCES:
-                fprintf(stderr, "removerdir: no tiene permisos de escritura para este directorio\n");
-                break;
-            default:
-                break;
-            }
+            err_print("removerdir");
         }
     }
     return 1;

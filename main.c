@@ -26,6 +26,10 @@ char *log_filename;
 char *err_filename;
 char *home;
 
+// para que otros archivos tengan acceso a traves de extern
+char *line;
+char **args;
+
 // Setea username y hostname
 void check_user()
 {
@@ -107,8 +111,6 @@ void log_add(char *line)
 // Loop central del shell
 void dish_loop()
 {
-    char *line;
-    char **args;
     char *current_dir = malloc (sizeof(char) * DIR_BUFSIZE);
     int status = 0;
 

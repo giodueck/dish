@@ -5,11 +5,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <time.h>
+#include <string.h>
+#include <ctype.h>
 
 #include "defines.h"
 #include "err.h"
 
 extern char *err_filename;
+extern char *line;
+extern char **args;
 
 // Escribe en una cadena un mensaje para el valor de errno
 // Retorna la cadena con el mensaje de error
@@ -22,7 +27,7 @@ char *get_err_msg(char *str)
         sprintf(str, "Acceso denegado.");
         return str;
     case ENOENT:
-        sprintf(str, "Directorio no existe.");
+        sprintf(str, "Archivo o directorio no existe.");
         return str;
     case ENOTDIR:
         sprintf(str, "No es directorio.");
@@ -37,7 +42,7 @@ char *get_err_msg(char *str)
         sprintf(str, "Funcion no soprtada por el sistema.");
         return str;
     case EEXIST:
-        sprintf(str, "Archivo ya existe.");
+        sprintf(str, "Archivo o directorio ya existe.");
         return str;
     case EROFS:
         sprintf(str, "Directorio de solo-lectura.");
@@ -45,25 +50,36 @@ char *get_err_msg(char *str)
     case ENOTEMPTY:
         sprintf(str, "Directorio no vacio.");
         return str;
+    case EBUSY:
+        sprintf(str, "Archivo o directorio en uso.");
+        return str;
 
     default:
         return NULL;
     }
 }
 
-void err_log_add_errno(char **args)
+// Escribe la fecha y hora en el log de error
+void err_put_date(FILE *file)
 {
-    return;
-}
-
-void err_log_add_with_msg(char **args, char *msg)
-{
-    return;
+    time_t t = time(NULL);
+    struct tm tms = *localtime(&t);
+    
+    fprintf(file, "[%d-%02d-%02d %02d:%02d:%02d] ", tms.tm_year + 1900, tms.tm_mon + 1, tms.tm_mday, tms.tm_hour, tms.tm_min, tms.tm_sec);
 }
 
 void err_log_add_msg(char *msg)
 {
-    return;
+    char *tok = strtok(msg, " ");
+    tok = strtok(NULL, "\n");
+    tok[0] = toupper(tok[0]);
+
+    FILE *err_file = fopen(err_filename, "a");
+
+    err_put_date(err_file);
+    fprintf(err_file, "%s: %s\n", line, tok);
+    
+    fclose(err_file);
 }
 
 void err_print(char *msg)
@@ -72,11 +88,16 @@ void err_print(char *msg)
     // puede modificar errno
     char err[MSG_LENGTH];
     get_err_msg(err);
-
     if (msg != NULL && msg[0] != '\0')
     {
         printf("%s: ", msg);
     }
-
     printf("%s\n", err);
+
+    FILE *err_file = fopen(err_filename, "a");
+    
+    err_put_date(err_file);
+    fprintf(err_file, "%s: %s\n", line, err);
+    
+    fclose(err_file);
 }

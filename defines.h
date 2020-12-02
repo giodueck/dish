@@ -16,6 +16,7 @@
 #define LINE_BUFSIZE 1024
 #define ARGS_BUFSIZE 64
 #define FILENAME_LENGTH 256
+#define MSG_LENGTH 128
 
 #define HOST_NAME_MAX 64
 

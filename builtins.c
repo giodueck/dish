@@ -15,6 +15,7 @@
 #include "builtins.h"
 #include "defines.h"
 #include "dish.h"
+#include "err.h"
 
 // Arrays de nombres de builtins con sus respectivas funciones
 char *builtin_str[] = 
@@ -79,7 +80,11 @@ int dish_print_help(char *command_name)
 
     if (!file)  // error de fopen
     {
-        fprintf(stderr, "dish: no se pudo abrir el archivo %s\n", filename);
+        char *msg = malloc(sizeof(char) * MSG_LENGTH);
+        sprintf(msg, "dish: no se pudo abrir el archivo %s\n", filename);
+        fprintf(stderr, msg);
+        err_log_add_msg(args, msg);
+        free(msg);
         return 2;
     }
 
@@ -143,7 +148,7 @@ int dish_cd(char **args)
         dish_print_help(builtin_str[0]);
     } else if (chdir(args[1]) != 0)
     {
-        perror("dish");
+        err_print("dish");
     }
 
     return 1;

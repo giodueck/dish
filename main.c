@@ -23,6 +23,7 @@ char *username;
 char hostname[HOST_NAME_MAX];
 char *hostname_short;
 char *log_filename;
+char *err_filename;
 char *home;
 
 // Setea username y hostname
@@ -44,51 +45,45 @@ void check_user()
 // Revisa si los archivos log necesarios existen, y si no, los crea
 void check_logs()
 {
-    char dirname[DIR_BUFSIZE];
-    if (strcmp(username, "root") == 0)
-    {
-        sprintf(dirname, "/var/log/dish");
-    } else
-    {
-        sprintf(dirname, "/home/%s/log", username);
-    }
-
-    DIR *dir = opendir(dirname);
-
-    // Se revisa si existe el directorio
-    if (dir)
-    {
-        // Existe el directorio
-        closedir(dir);
-    } else if (ENOENT == errno)
-    {
-        // No existe el directorio y se crea
-        mkdir(dirname, 0777);
-    } else
-    {
-        // Error de opendir()
-        fprintf(stderr, "dish: opendir() error\n");
-        exit(FAILURE);
-    }
-    
     // Se revisa si existen los archivos
-    FILE *log;
+    FILE *file;
+
+    // Historial
     log_filename = malloc(sizeof(char) * FILENAME_LENGTH);
     sprintf(log_filename, "%s/.dish_log", home);
 
-    if ((log = fopen(log_filename, "r")))
+    if ((file = fopen(log_filename, "r")))
     {
         // Existe el archivo
-        fclose(log);
+        fclose(file);
     } else
     {
         // No existe el archivo y se crea
         time_t t = time(NULL);
         struct tm tms = *localtime(&t);
 
-        log = fopen(log_filename, "w");
-        fprintf(log, "LOG creado %d-%02d-%02d %02d:%02d:%02d\n\n", tms.tm_year + 1900, tms.tm_mon + 1, tms.tm_mday, tms.tm_hour, tms.tm_min, tms.tm_sec);
-        fclose(log);
+        file = fopen(log_filename, "w");
+        fprintf(file, "LOG creado %d-%02d-%02d %02d:%02d:%02d\n\n", tms.tm_year + 1900, tms.tm_mon + 1, tms.tm_mday, tms.tm_hour, tms.tm_min, tms.tm_sec);
+        fclose(file);
+    }
+
+    // Errores
+    err_filename = malloc(sizeof(char) * FILENAME_LENGTH);
+    sprintf(err_filename, "%s/.dish_err", home);
+
+    if ((file = fopen(err_filename, "r")))
+    {
+        // Existe el archivo
+        fclose(file);
+    } else
+    {
+        // No existe el archivo y se crea
+        time_t t = time(NULL);
+        struct tm tms = *localtime(&t);
+
+        file = fopen(err_filename, "w");
+        fprintf(file, "ERROR LOG creado %d-%02d-%02d %02d:%02d:%02d\n\n", tms.tm_year + 1900, tms.tm_mon + 1, tms.tm_mday, tms.tm_hour, tms.tm_min, tms.tm_sec);
+        fclose(file);
     }
 }
 

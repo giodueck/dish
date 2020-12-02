@@ -38,12 +38,17 @@ char *get_err_msg()
 
 void err_log_add_errno(char **args)
 {
-
+    return;
 }
 
-void err_log_add_msg(char **args, char *msg)
+void err_log_add_with_msg(char **args, char *msg)
 {
+    return;
+}
 
+void err_log_add_msg(char *msg)
+{
+    return;
 }
 
 void err_print(char *msg)

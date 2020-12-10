@@ -458,8 +458,7 @@ int dish_useradd(char **args)
         char *tok;
         int gid;
         char *home = malloc(sizeof(char) * FILENAME_LENGTH);
-        int n = 64;
-        char *line = malloc(sizeof(char) * n);
+        char *line;
         char group_exists = FALSE;
         i++;
 
@@ -476,7 +475,7 @@ int dish_useradd(char **args)
         group = fopen("/etc/group", "r+");
         
             // Se revisa si el grupo existe
-        while (getline(&line, &n, group) != -1)
+        while (getline(&line, 0, group) != -1)
         {
             tok = strtok(line, ":");
             if (strcmp(tok, grupo) == 0)

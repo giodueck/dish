@@ -38,7 +38,7 @@ char *get_err_msg(char *str)
         sprintf(str, "Memoria insuficiente.");
         return str;
     case ENOSYS:
-        sprintf(str, "Funcion no soprtada por el sistema.");
+        sprintf(str, "Funcion no soportada por el sistema.");
         return str;
     case EEXIST:
         sprintf(str, "Archivo o directorio ya existe.");

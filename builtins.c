@@ -396,7 +396,118 @@ int dish_history(char **args)
 // Agrega un usuario
 int dish_useradd(char **args)
 {
-    printf("placeholder\n");
+    char *options[] = 
+    {
+        "-h",
+        "--ayuda",
+        "-g"
+    };
+    char help_flag = FALSE;
+    char group_flag = FALSE;
+    int i;
+
+    // Opciones
+    for (int i = 1; args[i] != NULL; i++)
+    {
+        if (args[i][0] != '-')
+        {
+            // Opciones siempre van antes del resto de los argumentos para ser validas
+            break;
+        }
+
+        if (strcmp(args[i], options[0]) == 0 || strcmp(args[i], options[1]) == 0)
+        {
+            help_flag = TRUE;
+            break;
+        } else if (strcmp(args[i], options[2]) == 0)
+        {
+            group_flag = TRUE;
+            continue;
+        } else
+        {
+            printf("dish: Opcion invalida.\n      Ingresa \"usuario --ayuda\" para ver las opciones disponibles.\n");
+            // en caso de opcion invalida se termina la ejecucion del comando
+            return 1;
+        }
+    }
+
+    // Ejecucion
+    if (help_flag)
+    {
+        dish_print_help(builtin_str[5]);
+    } else
+    {
+        // usuario NOMBRE
+        // usuario -g NOMBRE GRUPO
+
+        // se revisa si el nombre es valido
+        for (int c = 0; args[i][c] != '\0'; c++)
+        {
+            if (args[i][c] == '/')
+            {
+                char *msg = "Caracter invalido.";
+                err_print(msg);
+                return 2;
+            }
+        }
+
+        FILE *group, *passwd;
+
+        char *nombre = args[i];
+        char *grupo;
+        char *tok;
+        int gid;
+        char *home = malloc(sizeof(char) * FILENAME_LENGTH);
+        int n = 64;
+        char *line = malloc(sizeof(char) * n);
+        char group_exists = FALSE;
+        i++;
+
+        // Grupo
+            // nombre
+        if (group_flag)
+        {
+            grupo = args[i];
+        } else
+        {
+            grupo = nombre;
+        }
+
+        group = fopen("/etc/group", "r+");
+        
+            // Se revisa si el grupo existe
+        while (getline(&line, &n, group) != -1)
+        {
+            tok = strtok(line, ":");
+            if (strcmp(tok, grupo) == 0)
+            {
+                strtok(NULL, ":");
+                tok = strtok(NULL, ":");
+                gid = atoi(tok);
+                group_exists = TRUE;
+                break;
+            }
+        }
+
+            // si no existe se escribe
+        if (!group_exists)
+        {
+            strtok(NULL, ":");
+            tok = strtok(NULL, ":");
+            gid = atoi(tok) + 1;
+            fclose(group);
+            group = fopen("/etc/group", "a");
+            fprintf(group, "\n%s:x:%d:", grupo, gid);
+        }
+
+        fclose(group);
+
+        // Usuario
+        passwd = fopen("/etc/passwd", "a");
+        sprintf(home, "/home/%s", nombre);
+        fprintf(passwd, "%s:x:%d:%d::%s:/bin/bash", nombre, gid, gid, home);
+        fclose(passwd);
+    }
     return 1;
 }
 

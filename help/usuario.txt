@@ -1,0 +1,15 @@
+Agrega un usuario. Fija la contrasenha con el comando 'contrasena'
+
+Uso:
+    usuario [NOMBRE]
+    usuario -g [NOMBRE] [NOMBRE_GRUPO]
+    usuario [OPCION]
+
+    NOMBRE          Nombre del usuario
+    NOMBRE_GRUPO    Nombre del grupo, no su ID
+
+    OPCIONES
+     -g                 Permite agregar al usuario a un
+                        grupo distinto del nombre de 
+                        usuario.
+     -h,    --ayuda     Muestra esta ayuda y termina.

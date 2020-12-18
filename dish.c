@@ -123,3 +123,23 @@ int dish_command_not_found(char **args)
 
     return 1;
 }
+
+// Selection sort para arrays de cadenas
+void dish_sort(char **array, int size)
+{
+    char *aux;
+
+    for (int i = 1; i < size; i++) // iterate through list
+    {
+        aux = array[i]; // store curr value
+        for (int j = i - 1; j >= 0; j--) // iterate thru sorted sublist
+        {
+            if (strcmp(aux, array[j]) < 0) // smaller than item before it?
+            {
+                // swap
+                array[j + 1] = array[j];
+                array[j] = aux;
+            }
+        }
+    }
+}

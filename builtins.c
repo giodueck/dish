@@ -1196,14 +1196,28 @@ int dish_ls(char **args)
         d = opendir(".");
         if (d)
         {
+            int n = 0;
             while ((dir = readdir(d)) != NULL)
             {
                 // evita listar archivos ocultos sin la opcion -a
                 if (dir->d_name[0] == '.' && !all_flag)
                     continue;
-                
-                printf("%s\n", dir->d_name);
+                else n++;
             }
+            char **dirs = malloc(sizeof(char*) * n);
+            for (int i = 0; i < n; i++)
+            {
+                dir = readdir(d);
+                dirs[i] = dir->d_name;
+            }
+
+            // ordena la lista de directorios
+            dish_sort(dirs, n);
+
+            // imprime lista ordenada
+            for (int i = 0; i < n; i++)
+                printf("%s\n", dir->d_name);
+
             closedir(d);
         }
     }

@@ -16,4 +16,7 @@ int dish_execute(char **args);
 
 // Imprime un mensaje de error en caso de que el comando dado no existe
 int dish_command_not_found(char **args);
+
+// Selection sort para arrays de cadenas
+void dish_sort(char **array, int size);
 #endif // DISH_H

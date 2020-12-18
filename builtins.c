@@ -382,6 +382,7 @@ int dish_history(char **args)
     {
         printf("Este comando borra el historial, seguro que quiere seguir? (s/n) ");
         reset_flag != FALSE;
+        char c;
         while (c = getchar() != '\n')
         {
             if (c == 'S' || c == 's')

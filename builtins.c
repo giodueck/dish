@@ -1152,11 +1152,9 @@ int dish_ls(char **args)
     {
         "-h",
         "--ayuda",
-        "-l",
         "-a"
     };
     char help_flag = FALSE;
-    char list_flag = FALSE;
     char all_flag = FALSE;
     int i;
 
@@ -1174,10 +1172,6 @@ int dish_ls(char **args)
             help_flag = TRUE;
             break;
         } else if (strcmp(args[i], options[2]) == 0)
-        {
-            list_flag = TRUE;
-            continue;
-        } else if (strcmp(args[i], options[3]) == 0)
         {
             all_flag = TRUE;
             continue;
@@ -1204,34 +1198,14 @@ int dish_ls(char **args)
         {
             while ((dir = readdir(d)) != NULL)
             {
-                if (!list_flag)
-                {
-                    if (i == 4)
-                    {
-                        putc('\n', stdout);
-                        i = 0;
-                    }
-
-                    // evita listar archivos ocultos sin la opcion -a
-                    if (dir->d_name[0] == '.' && !all_flag)
-                        continue;
-                    
-                    printf("%s\t", dir->d_name);
-                    i++;
-                } else
-                {
-                    // evita listar archivos ocultos sin la opcion -a
-                    if (dir->d_name[0] == '.' && !all_flag)
-                        continue;
-                    
-                    printf("%s\n", dir->d_name);
-                }
+                // evita listar archivos ocultos sin la opcion -a
+                if (dir->d_name[0] == '.' && !all_flag)
+                    continue;
                 
+                printf("%s\n", dir->d_name);
             }
             closedir(d);
         }
-
-        if (!list_flag) putc('\n', stdout);
     }
     return 1;
 }

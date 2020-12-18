@@ -285,10 +285,12 @@ int dish_history(char **args)
     {
         "-h",
         "--ayuda",
-        "-v"
+        "-v",
+        "-r"
     };
     char help_flag = FALSE;
     char verbose_flag = FALSE;
+    char reset_flag = FALSE;
     extern char *log_filename;
 
     FILE *log = fopen(log_filename, "r");
@@ -316,7 +318,7 @@ int dish_history(char **args)
         // -h || --ayuda
         if (strcmp(args[i], options[0]) == 0 || strcmp(args[i], options[1]) == 0)
         {
-            if (verbose_flag)
+            if (verbose_flag || reset_flag)
             {
                 printf("dish: Opcion invalida.\n      La opcion ayuda no toma parametros adicionales.\n");
                 return 1;
@@ -324,9 +326,19 @@ int dish_history(char **args)
 
             help_flag = TRUE;
             break;
+        } else if (strcmp(args[i], options[3]) == 0)
+        {
+            if (verbose_flag || help_flag)
+            {
+                printf("dish: Opcion invalida.\n      La opcion -r no toma parametros adicionales.\n");
+                return 1;
+            }
+
+            reset_flag = TRUE;
+            break;
         } else if (strcmp(args[i], options[2]) == 0)
         {
-            if (help_flag)
+            if (help_flag || reset_flag)
             {
                 printf("dish: Opcion invalida.\n      La opcion -v no toma parametros adicionales.\n");
                 return 1;
@@ -366,9 +378,19 @@ int dish_history(char **args)
                 putc('\n', stdout);
             }
         }
+    } else if (reset_flag)
+    {
+        printf("Este comando borra el historial, seguro que quiere seguir? (s/n) ");
+        reset_flag != FALSE;
+        while (c = getchar() != '\n')
+        {
+            if (c == 'S' || c == 's')
+                reset_flag = TRUE;
+        }
+        if (reset_flag) return 'r';
     } else
     {
-        int c, i = 0;
+        int c = 0, i = 0;
 
         // Recorre el archivo de historial e imprime los comandos guardados
         while (c != EOF)
@@ -1223,6 +1245,7 @@ int dish_ls(char **args)
             for (i = 0; i < n; i++)
                 printf("%s\n", dirs[i]);
 
+            free(dirs);
             closedir(d);
         }
     }

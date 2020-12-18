@@ -122,6 +122,12 @@ void dish_loop()
 
     do
     {
+        // se resetea el historial
+        if (status == 'r')
+        {
+            remove(log_filename);
+            check_logs();
+        }
         // Se imprime el directotio actual y se lee el comando a ejecutarse
         current_dir = getcwd(current_dir, DIR_BUFSIZE);
         printf("[%s@%s %s]\n", username, hostname, current_dir);

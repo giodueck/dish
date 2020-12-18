@@ -494,6 +494,7 @@ int dish_useradd(char **args)
         while (getline(&line, &n, group) != -1)
         {
             tok = strtok(line, ":");
+            printf("%s\n", tok);    // test
             if (strcmp(tok, grupo) == 0)
             {
                 strtok(NULL, ":");
@@ -509,6 +510,7 @@ int dish_useradd(char **args)
         {
             strtok(NULL, ":");
             tok = strtok(NULL, ":");
+            printf("%s\n", tok);    // test
             gid = atoi(tok) + 1;
             fclose(group);
             group = fopen("/etc/group", "a");

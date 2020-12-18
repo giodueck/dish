@@ -471,12 +471,34 @@ int dish_useradd(char **args)
         char *nombre = args[i];
         char *grupo;
         char *tok;
-        int gid;
+        int gid, uid;
         char *home = malloc(sizeof(char) * FILENAME_LENGTH);
         long unsigned int n = 64;
         char *line = malloc(sizeof(char) * n);
         char group_exists = FALSE;
         i++;
+
+        // Setup del usuario
+        passwd = fopen("/etc/passwd", "r");
+
+            // uid y check de nombre
+        while (getline(&line, &n, passwd) != -1)
+        {
+            tok = strtok(line, ":");
+            if (strcmp(tok, nombre) == 0)
+            {
+                printf("usuario: nombre de usuario ya existe.\n");
+                err_log_add_msg("nombre de usuario ya existe.");
+                fclose(passwd);
+                return 2;
+            }
+        }
+
+            // se crea el uid
+        strtok(NULL, ":");
+        tok = strtok(NULL, ":");
+        uid = atoi(tok) + 1;
+        fclose(passwd);
 
         // Grupo
             // nombre
@@ -494,7 +516,6 @@ int dish_useradd(char **args)
         while (getline(&line, &n, group) != -1)
         {
             tok = strtok(line, ":");
-            printf("%s\n", tok);    // test
             if (strcmp(tok, grupo) == 0)
             {
                 strtok(NULL, ":");
@@ -510,7 +531,6 @@ int dish_useradd(char **args)
         {
             strtok(NULL, ":");
             tok = strtok(NULL, ":");
-            printf("%s\n", tok);    // test
             gid = atoi(tok) + 1;
             fclose(group);
             group = fopen("/etc/group", "a");
@@ -522,10 +542,10 @@ int dish_useradd(char **args)
 
         fclose(group);
 
-        // Usuario
+        // Creacion del usuario
         passwd = fopen("/etc/passwd", "a");
         sprintf(home, "/home/%s", nombre);
-        fprintf(passwd, "%s:x:%d:%d::%s:/bin/bash\n", nombre, gid, gid, home);
+        fprintf(passwd, "%s:x:%d:%d::%s:/bin/bash\n", nombre, uid, gid, home);
         fclose(passwd);
         printf("Usuario %s creado.\n", nombre);
         // /etc/subgid

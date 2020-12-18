@@ -515,6 +515,7 @@ int dish_useradd(char **args)
             fclose(group);
             group = fopen("/etc/group", "a");
             fprintf(group, "%s:x:%d:\n", grupo, gid);
+            fclose(group);
             group = fopen("/etc/gshadow", "a");
             fprintf(group, "%s:!::\n", grupo);
         }

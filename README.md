@@ -14,4 +14,9 @@ Changelog:\
     - registro de errores ocurre en el archivo .dish_err ubicado en el\
       directorio home.\
     - registro de historial ahora ocurre en el archivo .dish_log ubicado\
-      en el directorio home.
+      en el directorio home.\
+    - comando "historial":\
+        Opcion -r recrea el archivo historial.\
+    - comando "listar":\
+        Opcion -l removida, listar ahora siempre imprime en forma de lista.\
+        Ademas, la impresion se hace en orden segun nombres de archivo.

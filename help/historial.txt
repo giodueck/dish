@@ -6,4 +6,5 @@ Uso:
 
     OPCIONES
      -v                 Muestra informacion adicional sobre la hora de ejecucion.
+     -r                 Elimina y recrea el historial.
      -h,    --ayuda     Muestra esta ayuda y termina.

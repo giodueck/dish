@@ -46,7 +46,7 @@
 # Adicionales
 // - Agregar la opcion --ayuda a todos los comandos
 // - historial: agregar -v que muestra los timestamp. Si no se especifica, solo mostrar numero de comando y comando
-- historial: agregar opciones para resetear historial
+// - historial: agregar opciones para resetear historial
 - manual: imprimir el manual de uso
 //- remover: borrar archivos
 //- removerdir: borrar directorio

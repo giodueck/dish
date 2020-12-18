@@ -6,5 +6,4 @@ Uso:
 
     OPCIONES
      -a                 Imprime todos los archivos, hasta los ocultos.
-     -l                 Imprime en forma de lista.
      -h,    --ayuda     Muestra esta ayuda y termina.

@@ -1211,7 +1211,7 @@ int dish_ls(char **args)
                     if (size <= n)
                     {
                         size += 10;
-                        dirs = realloc(sizeof(char*) * size);
+                        dirs = realloc(dirs, sizeof(char*) * size);
                     }
                 }
             }

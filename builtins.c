@@ -547,10 +547,8 @@ int dish_useradd(char **args)
         sprintf(home, "/home/%s", nombre);
         fprintf(passwd, "%s:x:%d:%d::%s:/bin/bash\n", nombre, uid, gid, home);
         fclose(passwd);
+        mkdir(home, 0777);
         printf("Usuario %s creado.\n", nombre);
-        // /etc/subgid
-        // /etc/subuid
-        // /etc/login.defs
     }
     return 1;
 }

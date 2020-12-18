@@ -19,4 +19,7 @@ Changelog:\
         Opcion -r recrea el archivo historial.\
     - comando "listar":\
         Opcion -l removida, listar ahora siempre imprime en forma de lista.\
-        Ademas, la impresion se hace en orden segun nombres de archivo.
+        Ademas, la impresion se hace en orden segun nombres de archivo.\
+    - comando "usuario" agregado:\
+        Crea un nuevo usuario con la opcion de crear un grupo de nombre\
+        diferente al del usuario.

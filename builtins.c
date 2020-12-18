@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <dirent.h>
+#include <pwd.h>
 
 #include "builtins.h"
 #include "defines.h"
@@ -466,7 +467,7 @@ int dish_useradd(char **args)
             }
         }
 
-        FILE *group, *passwd;
+        FILE *group, *passwd_f;
 
         char *nombre = args[i];
         char *grupo;
@@ -479,26 +480,23 @@ int dish_useradd(char **args)
         i++;
 
         // Setup del usuario
-        passwd = fopen("/etc/passwd", "r");
-
-            // uid y check de nombre
-        while (getline(&line, &n, passwd) != -1)
+        struct passwd *passwd_s = getpwnam(nombre);
+        if (passwd_s != NULL)
         {
-            tok = strtok(line, ":");
-            if (strcmp(tok, nombre) == 0)
-            {
-                printf("usuario: nombre de usuario ya existe.\n");
-                err_log_add_msg("nombre de usuario ya existe.");
-                fclose(passwd);
-                return 2;
-            }
+            printf("usuario: nombre de usuario ya existe.\n");
+            err_log_add_msg("nombre de usuario ya existe.");
+            return 2;
         }
 
             // se crea el uid
+        passwd_f = fopen("/etc/passwd", "r");
+        while (getline(&line, &n, passwd_f) != -1)
+        tok = strtok(line, ":");
+        passwd_f = fopen("/etc/passwd", "r");
         strtok(NULL, ":");
         tok = strtok(NULL, ":");
         uid = atoi(tok) + 1;
-        fclose(passwd);
+        fclose(passwd_f);
 
         // Grupo
             // nombre
@@ -543,10 +541,10 @@ int dish_useradd(char **args)
         fclose(group);
 
         // Creacion del usuario
-        passwd = fopen("/etc/passwd", "a");
+        passwd_f = fopen("/etc/passwd", "a");
         sprintf(home, "/home/%s", nombre);
-        fprintf(passwd, "%s:x:%d:%d::%s:/bin/bash\n", nombre, uid, gid, home);
-        fclose(passwd);
+        fprintf(passwd_f, "%s:x:%d:%d::%s:/bin/bash\n", nombre, uid, gid, home);
+        fclose(passwd_f);
         mkdir(home, 0777);
         printf("Usuario %s creado.\n", nombre);
     }
@@ -556,7 +554,62 @@ int dish_useradd(char **args)
 // Modifica la contrasenha del usuario dado
 int dish_passwd(char **args)
 {
-    printf("placeholder\n");
+    char *options[] = 
+    {
+        "-h",
+        "--ayuda"
+    };
+    char help_flag = FALSE;
+
+    // Opciones
+    for (int i = 1; args[i] != NULL; i++)
+    {
+        if (args[i][0] != '-')
+        {
+            // Opciones siempre van antes del resto de los argumentos para ser validas
+            break;
+        }
+
+        if (strcmp(args[i], options[0]) == 0 || strcmp(args[i], options[1]) == 0)
+        {
+            help_flag = TRUE;
+            break;
+        } else
+        {
+            printf("dish: Opcion invalida.\n      Ingresa \"contrasena --ayuda\" para ver las opciones disponibles.\n");
+            // en caso de opcion invalida se termina la ejecucion del comando
+            return 1;
+        }
+    }
+
+    // Ejecucion
+    if (help_flag)
+    {
+        dish_print_help(builtin_str[6]);
+    } else
+    {
+        // contrasena nombre
+        char *nombre = args[1];
+        if (nombre == NULL)
+            nombre = username;
+
+        // Usuario existe?
+        struct passwd *passwd_s = getpwnam(nombre);
+        if (passwd_s == NULL)
+        {
+            printf("contrasena: usuario %s no existe.\n", nombre);
+            err_log_add_msg("nombre de usuario no existe.");
+            return 2;
+        }
+
+        // Privilegios
+
+        // comparacion con pass viejo y reglas de seguridad
+
+        // hashing
+
+        // cambio
+    }
     return 1;
 }
 

@@ -512,9 +512,9 @@ int dish_useradd(char **args)
             gid = atoi(tok) + 1;
             fclose(group);
             group = fopen("/etc/group", "a");
-            fprintf(group, "\n%s:x:%d:", grupo, gid);
+            fprintf(group, "%s:x:%d:", grupo, gid);
             group = fopen("/etc/gshadow", "a");
-            fprintf(group, "\n%s:!::", grupo);
+            fprintf(group, "%s:!::", grupo);
         }
 
         fclose(group);
@@ -524,6 +524,10 @@ int dish_useradd(char **args)
         sprintf(home, "/home/%s", nombre);
         fprintf(passwd, "%s:x:%d:%d::%s:/bin/bash", nombre, gid, gid, home);
         fclose(passwd);
+        printf("Usuario %s creado.\n", nombre);
+        // /etc/subgid
+        // /etc/subuid
+        // /etc/login.defs
     }
     return 1;
 }

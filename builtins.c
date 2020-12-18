@@ -422,7 +422,7 @@ int dish_useradd(char **args)
     int i;
 
     // Opciones
-    for (int i = 1; args[i] != NULL; i++)
+    for (i = 1; args[i] != NULL; i++)
     {
         if (args[i][0] != '-')
         {
@@ -468,7 +468,7 @@ int dish_useradd(char **args)
 
         FILE *group, *passwd;
 
-        char *nombre = args[i + 1];
+        char *nombre = args[i];
         char *grupo;
         char *tok;
         int gid;
@@ -482,7 +482,7 @@ int dish_useradd(char **args)
             // nombre
         if (group_flag)
         {
-            grupo = args[i + 1];
+            grupo = args[i];
         } else
         {
             grupo = nombre;

@@ -81,15 +81,14 @@ char *compose_line(char *dest)
 
 void err_log_add_msg(char *msg)
 {
-    char *tok = strtok(msg, " ");
     char line[LINE_BUFSIZE] = "";
 
-    tok[0] = toupper(tok[0]);
+    msg[0] = toupper(msg[0]);
 
     FILE *err_file = fopen(err_filename, "a");
 
     err_put_date(err_file);
-    fprintf(err_file, "%s: %s\n", compose_line(line), tok);
+    fprintf(err_file, "%s: %s\n", compose_line(line), msg);
     
     fclose(err_file);
 }

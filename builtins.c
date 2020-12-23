@@ -577,7 +577,6 @@ int dish_useradd(char **args)
         
             // shadow
         setspent();
-        // lckpwdf();
 
         struct spwd shadow;
         shadow.sp_namp = nombre;
@@ -586,12 +585,13 @@ int dish_useradd(char **args)
         shadow.sp_min = 0;
         shadow.sp_max = 99999;
         shadow.sp_warn = 7;
+        shadow.sp_inact = -1;
+        shadow.sp_expire = -1;
 
         FILE *fp = fopen("/etc/shadow", "r");
         printf("putspent(&shadow, fp) returned %d\n", putspent(&shadow, fp));
         fclose(fp);
 
-        // ulckpwdf();
         endspent();
     }
     return 1;

@@ -84,7 +84,7 @@ int dish_print_help(char *command_name)
     if (!file)  // error de fopen
     {
         char *msg = malloc(sizeof(char) * MSG_LENGTH);
-        sprintf(msg, "ayuda: no se pudo abrir el archivo %s\n", filename);
+        sprintf(msg, "no se pudo abrir el archivo %s\n", filename);
         fprintf(stderr, msg);
         err_log_add_msg(msg);
         free(msg);
@@ -301,7 +301,7 @@ int dish_history(char **args)
     if (!log)  // error de fopen
     {
         char *msg = malloc(sizeof(char) * MSG_LENGTH);
-        sprintf(msg, "historial: no se pudo abrir el historial.\n");
+        sprintf(msg, "no se pudo abrir el historial.\n");
         fprintf(stderr, msg);
         err_log_add_msg(msg);
         free(msg);
@@ -713,7 +713,7 @@ int dish_cp(char **args)
         if (args[1] == NULL)
         {
             char *msg = malloc(sizeof(char) * MSG_LENGTH);
-            sprintf(msg, "copiar: archivo de origen no especificado.\n");
+            sprintf(msg, "archivo de origen no especificado.\n");
             fprintf(stderr, msg);
             err_log_add_msg(msg);
             free(msg);
@@ -761,7 +761,7 @@ int dish_cp(char **args)
             {
                 // si no existe
                 char *msg = malloc(sizeof(char) * MSG_LENGTH);
-                sprintf(msg, "copiar: archivo de origen no existe o no se pudo abrir.\n");
+                sprintf(msg, "archivo de origen no existe o no se pudo abrir.\n");
                 fprintf(stderr, msg);
                 err_log_add_msg(msg);
                 free(msg);
@@ -785,7 +785,7 @@ int dish_cp(char **args)
                         if ((new_file = fopen(new_filename, "r")))
                         {
                             char *msg = malloc(sizeof(char) * MSG_LENGTH);
-                            sprintf(msg, "copiar: archivo de destino ya existe.\n");
+                            sprintf(msg, "archivo de destino ya existe.\n");
                             fprintf(stderr, msg);
                             err_log_add_msg(msg);
                             free(msg);
@@ -864,7 +864,7 @@ int dish_cp(char **args)
                     if ((new_file = fopen(new_filename, "r")))
                     {
                         char *msg = malloc(sizeof(char) * MSG_LENGTH);
-                        sprintf(msg, "copiar: archivo de destino ya existe.\n");
+                        sprintf(msg, "archivo de destino ya existe.\n");
                         fprintf(stderr, msg);
                         err_log_add_msg(msg);
                         free(msg);
@@ -1084,7 +1084,7 @@ int dish_mkdir(char **args)
         if (args[1] == NULL)
         {
             char *msg = malloc(sizeof(char) * MSG_LENGTH);
-            sprintf(msg, "creardir: nombre no especificado.\n");
+            sprintf(msg, "nombre no especificado.\n");
             fprintf(stderr, msg);
             err_log_add_msg(msg);
             free(msg);
@@ -1163,7 +1163,7 @@ int dish_rm(char **args)
             if (chdir(args[i]) == 0)
             {
                 char *msg = malloc(sizeof(char) * MSG_LENGTH);
-                sprintf(msg, "remover: no se pudo remover, %s es directorio.\n", args[i]);
+                sprintf(msg, "no se pudo remover, %s es directorio.\n", args[i]);
                 fprintf(stderr, msg);
                 err_log_add_msg(msg);
                 free(msg);
@@ -1183,7 +1183,7 @@ int dish_rm(char **args)
         } else
         {
             char *msg = malloc(sizeof(char) * MSG_LENGTH);
-            sprintf(msg, "remover: el archivo no existe.\n");
+            sprintf(msg, "el archivo no existe.\n");
             fprintf(stderr, msg);
             err_log_add_msg(msg);
             free(msg);

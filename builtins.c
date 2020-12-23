@@ -646,6 +646,8 @@ int dish_passwd(char **args)
         int i;
         printf("Password:");
         fgets(pass, sizeof(pass), stdin);
+        for (i = 0; pass[i] != '\n'; i++);
+        if (pass[i] == '\n') pass[i] = '\0';     // se elimina el '\n'
 
         // comparacion con pass viejo y reglas de seguridad
 

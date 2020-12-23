@@ -645,7 +645,7 @@ int dish_passwd(char **args)
         char c;
         int i;
         printf("Password:");
-        for (i = 0; c = getchar() != '\n' && i < 99 ; i++)
+        for (i = 0; c = getc(stdin) != '\n' && i < 99 ; i++)
         {
             pass[i] = c;
         }
@@ -662,7 +662,7 @@ int dish_passwd(char **args)
         tcsetattr(fileno(stdin), 0, &term);
 
         // test
-        printf("Password given: %s\n", pass);
+        printf("\nPassword given: %s\n", pass);
     }
     return 1;
 }

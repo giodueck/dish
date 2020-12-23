@@ -14,6 +14,7 @@
 #include <dirent.h>
 #include <pwd.h>
 #include <shadow.h>
+#include <time.h>
 
 #include "builtins.h"
 #include "defines.h"
@@ -585,8 +586,6 @@ int dish_useradd(char **args)
         shadow.sp_min = 0;
         shadow.sp_max = 99999;
         shadow.sp_warn = 7;
-        shadow.sp_inact = NULL;
-        shadown.sp_expire = NULL;
 
         FILE *fp = fopen("/etc/shadow", "r");
         putspent(&shadow, fp);

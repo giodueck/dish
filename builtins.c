@@ -9,9 +9,11 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <termios.h>
 #include <string.h>
 #include <dirent.h>
 #include <pwd.h>
+#include <shadow.h>
 
 #include "builtins.h"
 #include "defines.h"
@@ -603,12 +605,60 @@ int dish_passwd(char **args)
         }
 
         // Privilegios
+        if (strcmp(username, "root") != 0)
+        {
+            printf("contrasena: acceso denegado.\n\tEste comando esta reservado para el usuario root.\n", nombre);
+            err_log_add_msg("acceso denegado.");
+            return 2;
+        }
+
+        // se recupera la entrada actual de /etc/shadow si existe
+        setspent();
+        lckpwdf();
+
+        struct spwd *entry;
+
+        // si no existe una entrada para el usuario actual, entry = NULL
+        while (entry = getspent() != NULL)
+        {
+            if (strcmp(entry->sp_namp, username) == 0)
+            {
+                break;  // se encontro la entrada correcta
+            }
+        }
+
+        ulckpwdf();
+        endspent();
+
+        // se deshabilita el ECHO de stdin
+        struct termios term;
+        tcgetattr(fileno(stdin), &term);
+
+        term.c_lflag &= ~ECHO;
+        tcsetattr(fileno(stdin), 0, &term);
+
+        // entrada del pass
+        char pass[100];
+        char c;
+        printf("Password:");
+        for (int i = 0; c = getchar() != '\n' && i < 99 ; i++)
+        {
+            pass[i] = c;
+        }
+        pass[i] = '\0';
 
         // comparacion con pass viejo y reglas de seguridad
 
         // hashing
 
         // cambio
+
+        // se rehabilita ECHO de stdin
+        term.c_lflag |= ECHO;
+        tcsetattr(fileno(stdin), 0, &term);
+
+        // test
+        printf("Password given: %s\n", pass);
     }
     return 1;
 }

@@ -619,7 +619,7 @@ int dish_passwd(char **args)
         struct spwd *entry;
 
         // si no existe una entrada para el usuario actual, entry = NULL
-        while (entry = getspent() != NULL)
+        while ((entry = getspent()) != NULL)
         {
             if (strcmp(entry->sp_namp, username) == 0)
             {
@@ -640,8 +640,9 @@ int dish_passwd(char **args)
         // entrada del pass
         char pass[100];
         char c;
+        int i;
         printf("Password:");
-        for (int i = 0; c = getchar() != '\n' && i < 99 ; i++)
+        for (i = 0; c = getchar() != '\n' && i < 99 ; i++)
         {
             pass[i] = c;
         }

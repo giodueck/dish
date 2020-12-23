@@ -463,7 +463,7 @@ int dish_useradd(char **args)
         {
             if (args[i][c] == '/')
             {
-                char *msg = "Caracter invalido.";
+                char msg[] = "Caracter invalido.";
                 err_print(msg);
                 return 2;
             }
@@ -486,7 +486,7 @@ int dish_useradd(char **args)
         if (passwd_s != NULL)
         {
             printf("usuario: nombre de usuario ya existe.\n");
-            char *msg = "nombre de usuario ya existe.";
+            char msg[] = "nombre de usuario ya existe.";
             err_log_add_msg(msg);
             return 2;
         }
@@ -601,7 +601,7 @@ int dish_passwd(char **args)
         if (passwd_s == NULL)
         {
             printf("contrasena: usuario %s no existe.\n", nombre);
-            char *msg = "nombre de usuario no existe.";
+            char msg[] = "nombre de usuario no existe.";
             err_log_add_msg(msg);
             return 2;
         }
@@ -610,7 +610,7 @@ int dish_passwd(char **args)
         if (strcmp(username, "root") != 0)
         {
             printf("contrasena: acceso denegado.\n\tEste comando esta reservado para el usuario root.\n", nombre);
-            char *msg = "acceso denegado.";
+            char msg[] = "acceso denegado.";
             err_log_add_msg(msg);
             return 2;
         }

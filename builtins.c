@@ -474,7 +474,7 @@ int dish_useradd(char **args)
             if (args[i][c] == '/')
             {
                 char msg[] = "Caracter invalido en el nombre de usuario.";
-                err_print(msg);
+                err_log_add_msg(msg);
                 return 2;
             }
         }
@@ -487,7 +487,7 @@ int dish_useradd(char **args)
                 if (args[i + 1][c] == '/')
                 {
                     char msg[] = "Caracter invalido en el nombre del grupo.";
-                    err_print(msg);
+                    err_log_add_msg(msg);
                     return 2;
                 }
             }

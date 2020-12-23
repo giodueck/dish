@@ -458,14 +458,37 @@ int dish_useradd(char **args)
         // usuario NOMBRE
         // usuario -g NOMBRE GRUPO
 
+        // Privilegios
+        if (strcmp(username, "root") != 0)
+        {
+            printf("usuario: acceso denegado.\n\tEste comando esta reservado para el usuario root.\n");
+            char msg[] = "acceso denegado.";
+            err_log_add_msg(msg);
+            return 2;
+        }
+
         // se revisa si el nombre es valido
         for (int c = 0; args[i][c] != '\0'; c++)
         {
             if (args[i][c] == '/')
             {
-                char msg[] = "Caracter invalido.";
+                char msg[] = "Caracter invalido en el nombre de usuario.";
                 err_print(msg);
                 return 2;
+            }
+        }
+
+        // se revisa si el grupo es valido
+        if (group_flag)
+        {
+            for (int c = 0; args[i + 1][c] != '\0'; c++)
+            {
+                if (args[i + 1][c] == '/')
+                {
+                    char msg[] = "Caracter invalido en el nombre del grupo.";
+                    err_print(msg);
+                    return 2;
+                }
             }
         }
 
@@ -550,6 +573,27 @@ int dish_useradd(char **args)
         fclose(passwd_f);
         mkdir(home, 0777);
         printf("Usuario %s creado.\n", nombre);
+        
+            // shadow
+        setspent();
+        lckpwdf();
+
+        struct spwd shadow;
+        shadow.sp_namp = nombre;
+        shadow.sp_pwdp = "!!";
+        shadow.sp_lstchg = (int)time(NULL) / 86400;
+        shadow.sp_min = 0;
+        shadow.sp_max = 99999;
+        shadow.sp_warn = 7;
+        shadow.sp_inact = NULL;
+        shadown.sp_expire = NULL;
+
+        FILE *fp = fopen("/etc/shadow");
+        putspent(&shadow, fp);
+        fclose(fp);
+
+        ulckpwdf();
+        endspent();
     }
     return 1;
 }
@@ -609,7 +653,7 @@ int dish_passwd(char **args)
         // Privilegios
         if (strcmp(username, "root") != 0)
         {
-            printf("contrasena: acceso denegado.\n\tEste comando esta reservado para el usuario root.\n", nombre);
+            printf("contrasena: acceso denegado.\n\tEste comando esta reservado para el usuario root.\n");
             char msg[] = "acceso denegado.";
             err_log_add_msg(msg);
             return 2;
@@ -650,6 +694,17 @@ int dish_passwd(char **args)
         if (pass[i] == '\n') pass[i] = '\0';     // se elimina el '\n'
 
         // comparacion con pass viejo y reglas de seguridad
+        if (entry != NULL)  // tiene pass
+        {
+            if (strlen(pass) == 0)
+            {
+                char hpass = "!!";
+                entry->sp_pwdp = hpass;
+            }
+        } else  // no tiene pass
+        {
+
+        }
 
         // hashing
 
@@ -658,9 +713,6 @@ int dish_passwd(char **args)
         // se rehabilita ECHO de stdin
         term.c_lflag |= ECHO;
         tcsetattr(fileno(stdin), 0, &term);
-
-        // test
-        printf("\nPassword given: %s\n", pass);
     }
     return 1;
 }

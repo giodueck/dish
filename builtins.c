@@ -580,7 +580,7 @@ int dish_useradd(char **args)
 
         struct spwd shadow;
         shadow.sp_namp = nombre;
-        shadow.sp_pwdp = "!!";
+        shadow.sp_pwdp = NULL;
         shadow.sp_lstchg = (int)time(NULL) / 86400;
         shadow.sp_min = 0;
         shadow.sp_max = 99999;

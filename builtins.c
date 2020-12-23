@@ -588,7 +588,7 @@ int dish_useradd(char **args)
         shadow.sp_inact = NULL;
         shadown.sp_expire = NULL;
 
-        FILE *fp = fopen("/etc/shadow");
+        FILE *fp = fopen("/etc/shadow", "r");
         putspent(&shadow, fp);
         fclose(fp);
 
@@ -698,7 +698,7 @@ int dish_passwd(char **args)
         {
             if (strlen(pass) == 0)
             {
-                char hpass = "!!";
+                char hpass[] = "!!";
                 entry->sp_pwdp = hpass;
             }
         } else  // no tiene pass

@@ -84,7 +84,6 @@ void err_log_add_msg(char *msg)
     char *tok = strtok(msg, " ");
     char line[LINE_BUFSIZE] = "";
 
-    tok = strtok(NULL, "\n");
     tok[0] = toupper(tok[0]);
 
     FILE *err_file = fopen(err_filename, "a");

@@ -576,23 +576,9 @@ int dish_useradd(char **args)
         printf("Usuario %s creado.\n", nombre);
         
             // shadow
-        setspent();
-
-        struct spwd shadow;
-        shadow.sp_namp = nombre;
-        shadow.sp_pwdp = NULL;
-        shadow.sp_lstchg = (int)time(NULL) / 86400;
-        shadow.sp_min = 0;
-        shadow.sp_max = 99999;
-        shadow.sp_warn = 7;
-        shadow.sp_inact = -1;
-        shadow.sp_expire = -1;
-
-        FILE *fp = fopen("/etc/shadow", "r");
-        printf("putspent(&shadow, fp) returned %d\n", putspent(&shadow, fp));
+        FILE *fp = fopen("/etc/shadow", "a");
+        fprintf(fp, "%s:!!:%d:%d:%d:%d:::\n", nombre, (int)time(NULL) / 86400, 0, 99999, 7);
         fclose(fp);
-
-        endspent();
     }
     return 1;
 }

@@ -588,7 +588,7 @@ int dish_useradd(char **args)
         shadow.sp_warn = 7;
 
         FILE *fp = fopen("/etc/shadow", "r");
-        putspent(&shadow, fp);
+        printf("putspent(^shadow, fp) returned %d\n", putspent(&shadow, fp);
         fclose(fp);
 
         ulckpwdf();

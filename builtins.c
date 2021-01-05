@@ -14,6 +14,7 @@
 #include <dirent.h>
 #include <pwd.h>
 #include <shadow.h>
+#include <crypt.h>
 #include <time.h>
 
 #include "builtins.h"
@@ -649,11 +650,14 @@ int dish_passwd(char **args)
         lckpwdf();
 
         struct spwd *entry;
+        struct rootpwd *rpwd;
+
+        rpwd = getspname(username);
 
         // si no existe una entrada para el usuario actual, entry = NULL
         while ((entry = getspent()) != NULL)
         {
-            if (strcmp(entry->sp_namp, username) == 0)
+            if (strcmp(entry->sp_namp, nombre) == 0)
             {
                 break;  // se encontro la entrada correcta
             }
@@ -676,24 +680,50 @@ int dish_passwd(char **args)
         printf("Password:");
         fgets(pass, sizeof(pass), stdin);
         for (i = 0; pass[i] != '\n'; i++);
-        if (pass[i] == '\n') pass[i] = '\0';     // se elimina el '\n'
+        if (pass[i] == '\n') pass[i] = '\0';     // se elimina el '\n' final
 
-        // comparacion con pass viejo y reglas de seguridad
-        if (entry != NULL)  // tiene pass
+        // verificaciones
+        if (strlen(pass) == 0)
         {
-            if (strlen(pass) == 0)
-            {
-                char hpass[] = "!!";
-                entry->sp_pwdp = hpass;
-            }
-        } else  // no tiene pass
+            char hpass[] = "!!";
+            entry->sp_pwdp = hpass;
+        } else
         {
-
+            // hashing
+            // crypt toma la frase y una frase encriptada valida como "setting" y retorna la frase encriptada
+            char *hpass = crypt(pass, rootpwd->sp_pwdp);
+            entry->sp_pwdp = hpass;
         }
 
-        // hashing
-
         // cambio
+            // ultimo cambio en dias desde el 1/1/1970
+        entry->sp_lstchg = (long int)time(NULL) / 86400;
+
+        FILE *newshadow = fopen("/etc/newshadow", "w");
+
+        setspent();
+        lckpwdf();
+
+        struct spwd *aux;
+
+        // si no existe una entrada para el usuario actual, aux = NULL
+        while ((aux = getspent()) != NULL)
+        {
+            if (strcmp(aux->sp_namp, nombre) == 0)
+            {
+                putspent(entry, newshadow);
+            } else
+            {
+                putspent(aux, newshadow);
+            }
+        }
+
+        ulckpwdf();
+        endspent();
+
+        fclose(newshadow);
+        remove("/etc/shadow");
+        rename("/etc/newshadow", "/etc/shadow");
 
         // se rehabilita ECHO de stdin
         term.c_lflag |= ECHO;

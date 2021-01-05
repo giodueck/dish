@@ -692,6 +692,7 @@ int dish_passwd(char **args)
             // hashing
             // crypt toma la frase y una frase encriptada valida como "setting" y retorna la frase encriptada
             char *hpass = crypt(pass, rpwd->sp_pwdp);
+            printf("\n%s", hpass);  //test
             entry->sp_pwdp = hpass;
         }
 
@@ -728,6 +729,7 @@ int dish_passwd(char **args)
         // se rehabilita ECHO de stdin
         term.c_lflag |= ECHO;
         tcsetattr(fileno(stdin), 0, &term);
+        printf("\n");
     }
     return 1;
 }

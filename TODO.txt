@@ -53,3 +53,4 @@
 
 # Instalacion
 - config: path de instalacion debe afectar cosas como el camino de los archivos de ayuda: [path]/help/cmd.txt
+- libgcrypt necesita ser instalado

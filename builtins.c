@@ -650,9 +650,9 @@ int dish_passwd(char **args)
         lckpwdf();
 
         struct spwd *entry;
-        struct rootpwd *rpwd;
+        struct spwd *rpwd;
 
-        rpwd = getspname(username);
+        rpwd = getspnam(username);
 
         // si no existe una entrada para el usuario actual, entry = NULL
         while ((entry = getspent()) != NULL)
@@ -691,7 +691,7 @@ int dish_passwd(char **args)
         {
             // hashing
             // crypt toma la frase y una frase encriptada valida como "setting" y retorna la frase encriptada
-            char *hpass = crypt(pass, rootpwd->sp_pwdp);
+            char *hpass = crypt(pass, rpwd->sp_pwdp);
             entry->sp_pwdp = hpass;
         }
 

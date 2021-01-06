@@ -1564,6 +1564,7 @@ int dish_chmod(char **args)
             }
 
             printf("mode = %d\n", mode);
+            printf("filetype = %d\n", _stat.st_mode & S_IFMT);
 
             printf("chmode return = %d\n" ,chmod(args[i], _stat.st_mode & S_IFMT + mode));
         }

@@ -695,6 +695,7 @@ int dish_passwd(char **args)
             char *auxstr = malloc(sizeof(char) * strlen(hpass));
             strcpy(auxstr, hpass);
             printf("\n%s", auxstr);  //test
+            printf("\n%s", auxstr);  //test
             entry->sp_pwdp = auxstr;
         }
 
@@ -715,7 +716,7 @@ int dish_passwd(char **args)
         {
             if (strcmp(aux->sp_namp, nombre) == 0)
             {
-                printf("%s:%s:%l:0:99999:7:::\n", entry->sp_namp, entry->sp_pwdp, entry->sp_lstchg);
+                printf("\n%s:%s:%ld:0:99999:7:::\n", entry->sp_namp, entry->sp_pwdp, entry->sp_lstchg);
                 putspent(entry, newshadow);
             } else
             {

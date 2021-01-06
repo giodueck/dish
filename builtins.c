@@ -692,8 +692,10 @@ int dish_passwd(char **args)
             // hashing
             // crypt toma la frase y una frase encriptada valida como "setting" y retorna la frase encriptada
             char *hpass = crypt(pass, rpwd->sp_pwdp);
-            printf("\n%s", hpass);  //test
-            entry->sp_pwdp = hpass;
+            char *auxstr = malloc(sizeof(char) * strlen(hpass));
+            strcpy(auxstr, hpass);
+            printf("\n%s", auxstr);  //test
+            entry->sp_pwdp = auxstr;
         }
 
         // cambio
@@ -726,6 +728,8 @@ int dish_passwd(char **args)
         fclose(newshadow);
         // remove("/etc/shadow");
         // rename("/etc/newshadow", "/etc/shadow");
+
+        if (strlen(pass) != 0) free(aux);
 
         // se rehabilita ECHO de stdin
         term.c_lflag |= ECHO;

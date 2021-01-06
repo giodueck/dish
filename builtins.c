@@ -587,6 +587,11 @@ int dish_useradd(char **args)
 // Modifica la contrasenha del usuario dado
 int dish_passwd(char **args)
 {
+
+    // Esta funcion no funciona de la forma que quiero, por lo que se queda sin terminar
+    // por ahora. Si esto llega a la version final que pena.
+    return 1;
+
     char *options[] = 
     {
         "-h",
@@ -682,6 +687,8 @@ int dish_passwd(char **args)
         for (i = 0; pass[i] != '\n'; i++);
         if (pass[i] == '\n') pass[i] = '\0';     // se elimina el '\n' final
 
+        char *auxstr = NULL;
+
         // verificaciones
         if (strlen(pass) == 0)
         {
@@ -694,8 +701,6 @@ int dish_passwd(char **args)
             char *hpass = crypt(pass, rpwd->sp_pwdp);
             char *auxstr = malloc(sizeof(char) * strlen(hpass));
             strcpy(auxstr, hpass);
-            printf("\n%s", auxstr);  //test
-            printf("\n%s", auxstr);  //test
             entry->sp_pwdp = auxstr;
         }
 
@@ -731,7 +736,7 @@ int dish_passwd(char **args)
         // remove("/etc/shadow");
         // rename("/etc/newshadow", "/etc/shadow");
 
-        if (strlen(pass) != 0) free(auxstr);
+        if (auxstr) free(auxstr);
 
         // se rehabilita ECHO de stdin
         term.c_lflag |= ECHO;

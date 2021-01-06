@@ -1511,6 +1511,16 @@ int dish_chmod(char **args)
         // args[i] = filename
         // args[i+1] = mode (777)
 
+        if (args[i] == NULL)
+        {
+            char *msg = malloc(sizeof(char) * MSG_LENGTH);
+            sprintf(msg, "modo no dado.\n");
+            fprintf(stderr, msg);
+            err_log_add_msg(msg);
+            free(msg);
+            return 1;
+        }
+
         struct stat _stat;
         stat(args[i], &_stat);
 
@@ -1566,7 +1576,7 @@ int dish_chmod(char **args)
             printf("mode = %d\n", mode);
             printf("filetype = %d\n", _stat.st_mode & S_IFMT);
 
-            printf("chmode return = %d\n" ,chmod(args[i], _stat.st_mode & S_IFMT + mode));
+            printf("chmod return = %d\n", chmod(args[i], _stat.st_mode & S_IFMT + mode));
         }
     }
     return 1;

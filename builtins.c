@@ -16,7 +16,6 @@
 #include <shadow.h>
 #include <crypt.h>
 #include <time.h>
-#include <math.h>
 
 #include "builtins.h"
 #include "defines.h"
@@ -1552,7 +1551,7 @@ int dish_chmod(char **args)
             {
                 if (args[i + 1][j] >= '0' && args[i + 1][j] <= '7')
                 {
-                    mode += (args[i + 1][j] - '0') * pow((double)8, (double)(2 - j));
+                    mode += (args[i + 1][j] - '0') * dish_pow((double)8, (double)(2 - j));
                 } else
                 {
                     char *msg = malloc(sizeof(char) * MSG_LENGTH);

@@ -143,3 +143,16 @@ void dish_sort(char **array, int size)
         }
     }
 }
+
+// Funcion potencia recursiva basica
+double dish_pow(double x, double y)
+{
+    if (y < 0)
+        return 1 / dish_pow(x, -y);
+    else if (y == 0)
+        return 1;
+    else if (y == 1)
+        return x;
+    else
+        return x * dish_pow(x, y - 1);
+}

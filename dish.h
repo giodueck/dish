@@ -19,4 +19,8 @@ int dish_command_not_found(char **args);
 
 // Selection sort para arrays de cadenas
 void dish_sort(char **array, int size);
+
+// Funcion potencia recursiva basica
+double dish_pow(double x, double y);
+
 #endif // DISH_H

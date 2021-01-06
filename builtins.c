@@ -1474,9 +1474,10 @@ int dish_chmod(char **args)
     };
     char help_flag = FALSE;
     char recursive_flag = FALSE;
+    int i;
 
     // Opciones
-    for (int i = 1; args[i] != NULL; i++)
+    for (i = 1; args[i] != NULL; i++)
     {
         if (args[i][0] != '-')
         {

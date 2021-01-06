@@ -1468,11 +1468,9 @@ int dish_chmod(char **args)
     char *options[] = 
     {
         "-h",
-        "--ayuda",
-        "-r"
+        "--ayuda"
     };
     char help_flag = FALSE;
-    char recursive_flag = FALSE;
     int i;
 
     // Opciones
@@ -1488,10 +1486,6 @@ int dish_chmod(char **args)
         {
             help_flag = TRUE;
             break;
-        } else if (strcmp(args[i], options[2]) == 0)
-        {
-            recursive_flag = TRUE;
-            continue;
         } else
         {
             printf("dish: Opcion invalida.\n      Ingresa \"permisos --ayuda\" para ver las opciones disponibles.\n");
@@ -1507,7 +1501,6 @@ int dish_chmod(char **args)
     } else
     {
         // args[0] = permisos
-        // args[..] = opciones
         // args[i] = filename
         // args[i+1] = mode (777)
 
@@ -1524,60 +1517,28 @@ int dish_chmod(char **args)
         struct stat _stat;
         stat(args[i], &_stat);
 
-        if (recursive_flag && (_stat.st_mode & S_IFMT) == S_IFDIR)  // si es directorio y se da la opcion -r
+        int mode = 0;
+        // se convierte el modo dado a un numero en octal igual
+        for (int j = 0; j < 3; j++)
         {
-            // Lo siguiente es similar a dish_ls o listar
-            DIR *d;
-            struct dirent *dir;
-            int i = 0;
-
-            d = opendir(".");
-            if (d)
+            if (args[i + 1][j] >= '0' && args[i + 1][j] <= '7')
             {
-                int n = 0;
-                int size = 10;
-                char **dirs = malloc(sizeof(char*) * size);
-                while ((dir = readdir(d)) != NULL)
-                {
-                    dirs[n] = dir->d_name;
-                    n++;
-                    if (size <= n)
-                    {
-                        size += 10;
-                        dirs = realloc(dirs, sizeof(char*) * size);
-                    }
-                }
-
-                // recursion
-
-                free(dirs);
-                closedir(d);
-            }
-        } else  // en otro caso
-        {
-            int mode = 0;
-            // se convierte el modo dado a un numero en octal igual
-            for (int j = 0; j < 3; j++)
+                mode += (args[i + 1][j] - '0') * dish_pow((double)8, (double)(2 - j));
+            } else
             {
-                if (args[i + 1][j] >= '0' && args[i + 1][j] <= '7')
-                {
-                    mode += (args[i + 1][j] - '0') * dish_pow((double)8, (double)(2 - j));
-                } else
-                {
-                    char *msg = malloc(sizeof(char) * MSG_LENGTH);
-                    sprintf(msg, "modo invalido.\n");
-                    fprintf(stderr, msg);
-                    err_log_add_msg(msg);
-                    free(msg);
-                    break;
-                }
+                char *msg = malloc(sizeof(char) * MSG_LENGTH);
+                sprintf(msg, "modo invalido.\n");
+                fprintf(stderr, msg);
+                err_log_add_msg(msg);
+                free(msg);
+                break;
             }
-
-            printf("mode = %d\n", mode);
-            printf("filetype = %d\n", _stat.st_mode & S_IFMT);
-
-            printf("chmod return = %d\n", chmod(args[i], _stat.st_mode & S_IFMT + mode));
         }
+
+        printf("mode = %d\n", mode);
+        printf("filetype = %d\n", _stat.st_mode & S_IFMT);
+
+        printf("chmod return = %d\n", chmod(args[i], _stat.st_mode & S_IFMT + mode));
     }
     return 1;
 }

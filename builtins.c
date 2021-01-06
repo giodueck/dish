@@ -16,6 +16,7 @@
 #include <shadow.h>
 #include <crypt.h>
 #include <time.h>
+#include <math.h>
 
 #include "builtins.h"
 #include "defines.h"
@@ -38,7 +39,9 @@ char *builtin_str[] =
     "creardir",
     "remover",
     "removerdir",
-    "listar"
+    "listar",
+    "permisos",
+    "propietario"
 };
 
 int (*builtin_func[]) (char**) =
@@ -56,7 +59,9 @@ int (*builtin_func[]) (char**) =
     &dish_mkdir,
     &dish_rm,
     &dish_rmdir,
-    &dish_ls
+    &dish_ls,
+    &dish_chmod,
+    &dish_chown
 };
 
 extern char *username;
@@ -1454,6 +1459,154 @@ int dish_ls(char **args)
             free(dirs);
             closedir(d);
         }
+    }
+    return 1;
+}
+
+// Cambia los permisos del archivo o directorio dado
+int dish_chmod(char **args)
+{
+    char *options[] = 
+    {
+        "-h",
+        "--ayuda",
+        "-r"
+    };
+    char help_flag = FALSE;
+    char recursive_flag = FALSE;
+
+    // Opciones
+    for (int i = 1; args[i] != NULL; i++)
+    {
+        if (args[i][0] != '-')
+        {
+            // Opciones siempre van antes del resto de los argumentos para ser validas
+            break;
+        }
+
+        if (strcmp(args[i], options[0]) == 0 || strcmp(args[i], options[1]) == 0)
+        {
+            help_flag = TRUE;
+            break;
+        } else if (strcmp(args[i], options[2]) == 0)
+        {
+            recursive_flag = TRUE;
+            continue;
+        } else
+        {
+            printf("dish: Opcion invalida.\n      Ingresa \"permisos --ayuda\" para ver las opciones disponibles.\n");
+            // en caso de opcion invalida se termina la ejecucion del comando
+            return 1;
+        }
+    }
+
+    // Ejecucion
+    if (help_flag)
+    {
+        dish_print_help(builtin_str[14]);
+    } else
+    {
+        // args[0] = permisos
+        // args[..] = opciones
+        // args[i] = filename
+        // args[i+1] = mode (777)
+
+        struct stat _stat;
+        stat(args[i], &_stat);
+
+        if (recursive_flag && (_stat.st_mode & S_IFMT) == S_IFDIR)  // si es directorio y se da la opcion -r
+        {
+            // Lo siguiente es similar a dish_ls o listar
+            DIR *d;
+            struct dirent *dir;
+            int i = 0;
+
+            d = opendir(".");
+            if (d)
+            {
+                int n = 0;
+                int size = 10;
+                char **dirs = malloc(sizeof(char*) * size);
+                while ((dir = readdir(d)) != NULL)
+                {
+                    dirs[n] = dir->d_name;
+                    n++;
+                    if (size <= n)
+                    {
+                        size += 10;
+                        dirs = realloc(dirs, sizeof(char*) * size);
+                    }
+                }
+
+                // recursion
+
+                free(dirs);
+                closedir(d);
+            }
+        } else  // en otro caso
+        {
+            int mode = 0;
+            // se convierte el modo dado a un numero en octal igual
+            for (int j = 0; j < 3; j++)
+            {
+                if (args[i + 1][j] >= '0' && args[i + 1][j] <= '7')
+                {
+                    mode += (args[i + 1][j] - '0') * pow(8, 2 - j);
+                } else
+                {
+                    char *msg = malloc(sizeof(char) * MSG_LENGTH);
+                    sprintf(msg, "modo invalido.\n");
+                    fprintf(stderr, msg);
+                    err_log_add_msg(msg);
+                    free(msg);
+                    break;
+                }
+            }
+
+            chmod(args[i], _stat.st_mode & S_IFMT + mode);
+        }
+    }
+    return 1;
+}
+
+// Cambia el propietario del archivo o directorio dado
+int dish_chown(char **args)
+{
+    char *options[] = 
+    {
+        "-h",
+        "--ayuda"
+    };
+    char help_flag = FALSE;
+
+    // Opciones
+    for (int i = 1; args[i] != NULL; i++)
+    {
+        if (args[i][0] != '-')
+        {
+            // Opciones siempre van antes del resto de los argumentos para ser validas
+            break;
+        }
+
+        if (strcmp(args[i], options[0]) == 0 || strcmp(args[i], options[1]) == 0)
+        {
+            help_flag = TRUE;
+            break;
+        } else
+        {
+            printf("dish: Opcion invalida.\n      Ingresa \"propietario --ayuda\" para ver las opciones disponibles.\n");
+            // en caso de opcion invalida se termina la ejecucion del comando
+            return 1;
+        }
+    }
+
+    // Ejecucion
+    if (help_flag)
+    {
+        dish_print_help(builtin_str[15]);
+    } else
+    {
+        
     }
     return 1;
 }

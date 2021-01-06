@@ -700,7 +700,8 @@ int dish_passwd(char **args)
             // ultimo cambio en dias desde el 1/1/1970
         entry->sp_lstchg = (long int)time(NULL) / 86400;
 
-        FILE *newshadow = fopen("/etc/newshadow", "w");
+        // testing to see if it even works
+        FILE *newshadow = fopen("newshadow", "w");
 
         setspent();
         lckpwdf();
@@ -723,8 +724,8 @@ int dish_passwd(char **args)
         endspent();
 
         fclose(newshadow);
-        remove("/etc/shadow");
-        rename("/etc/newshadow", "/etc/shadow");
+        // remove("/etc/shadow");
+        // rename("/etc/newshadow", "/etc/shadow");
 
         // se rehabilita ECHO de stdin
         term.c_lflag |= ECHO;

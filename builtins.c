@@ -716,7 +716,7 @@ int dish_passwd(char **args)
         {
             if (strcmp(aux->sp_namp, nombre) == 0)
             {
-                printf("\n%s:%s:%ld:0:99999:7:::\n", entry->sp_namp, entry->sp_pwdp, entry->sp_lstchg);
+                printf("\n%d\n%s:%s:%ld:0:99999:7:::\n", strlen(pass), entry->sp_namp, entry->sp_pwdp, entry->sp_lstchg);
                 putspent(entry, newshadow);
             } else
             {
@@ -731,7 +731,7 @@ int dish_passwd(char **args)
         // remove("/etc/shadow");
         // rename("/etc/newshadow", "/etc/shadow");
 
-        if (strlen(pass) != 0) free(aux);
+        if (strlen(pass) != 0) free(auxstr);
 
         // se rehabilita ECHO de stdin
         term.c_lflag |= ECHO;

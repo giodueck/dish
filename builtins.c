@@ -1563,7 +1563,9 @@ int dish_chmod(char **args)
                 }
             }
 
-            chmod(args[i], _stat.st_mode & S_IFMT + mode);
+            printf("mode = %d\n", mode);
+
+            printf("chmode return = %d\n" ,chmod(args[i], _stat.st_mode & S_IFMT + mode));
         }
     }
     return 1;

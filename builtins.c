@@ -1684,7 +1684,7 @@ puts("1\n");
 
         // Archivo de texto que almacena la informacion de usuario
         sprintf(uinfo_filename, "%s/.dish_%s", home, username);
-        if ((log = fopen(uinfo_filename, "r")) != NULL)
+        if ((log = fopen(uinfo_filename, "r")) == NULL)
         {
 puts("if 1\n");
             // No existe el archivo y se crea

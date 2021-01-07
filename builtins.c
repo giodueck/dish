@@ -1676,7 +1676,6 @@ int dish_userinfo(char **args)
     } else
     {
 
-puts("1\n");
         // args[i] = usuario
 
         char uinfo_filename[FILENAME_LENGTH];
@@ -1686,7 +1685,6 @@ puts("1\n");
         sprintf(uinfo_filename, "%s/.dish_%s", home, username);
         if ((log = fopen(uinfo_filename, "r")) == NULL)
         {
-puts("if 1\n");
             // No existe el archivo y se crea
             time_t t = time(NULL);
             struct tm tms = *localtime(&t);
@@ -1694,16 +1692,12 @@ puts("if 1\n");
             log = fopen(uinfo_filename, "w+");
 
             fprintf(log, "UINFO creado %d-%02d-%02d %02d:%02d:%02d\n\n", tms.tm_year + 1900, tms.tm_mon + 1, tms.tm_mday, tms.tm_hour, tms.tm_min, tms.tm_sec);
-puts("if 2\n");
         } else
         {
-puts("else 1\n");
             // Existe el archivo y se escribe al final
             fclose(log);
             log = fopen(uinfo_filename, "w+");
-puts("else 2\n");
         }
-puts("2\n");
 
         // Se pregunta por las informaciones adicionales
 
@@ -1744,13 +1738,13 @@ puts("2\n");
             fgets(buf, BUFSIZ, stdin);
             if (buf[0] == '\n')
             {
-                hh_i = 23;
-                mm_i = 59;
+                hh_f = 23;
+                mm_f = 59;
             } else
             {
-                hh_i = atoi(strtok(buf, ":"));
-                mm_i = atoi(strtok(NULL, ""));
-                if (hh_i < 0 || hh_i > 23 || mm_i < 0 || mm_i > 59)
+                hh_f = atoi(strtok(buf, ":"));
+                mm_f = atoi(strtok(NULL, ""));
+                if (hh_f < 0 || hh_f > 23 || mm_f < 0 || mm_f > 59)
                 {
                     printf("   Hora invalida, ingresa un numero entre 0 y 23 seguido de ':' y otro numero entre 0 y 59.\n");
                     done = FALSE;

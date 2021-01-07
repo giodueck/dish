@@ -1706,6 +1706,7 @@ int dish_userinfo(char **args)
         char *lugares[HOST_NAME_MAX];
         char buf[BUFSIZ];
         char done;
+        char *tok1, *tok2;
 
             // Horarios
         printf("# Horario de trabajo\n");
@@ -1720,8 +1721,14 @@ int dish_userinfo(char **args)
                 mm_i = 0;
             } else
             {
-                hh_i = atoi(strtok(buf, ":"));
-                mm_i = atoi(strtok(NULL, ""));
+                tok1 = strtok(buf, ":");
+                if (strlen(tok1) == 0) hh_i = -1;
+                else hh_i = atoi(tok1);
+
+                tok2 = strtok(NULL, "");
+                if (tok2 == NULL || strlen(tok2) == 0) mm_i = -1;
+                else mm_i = atoi(tok2);
+
                 if (hh_i < 0 || hh_i > 23 || mm_i < 0 || mm_i > 59)
                 {
                     printf("   Hora invalida, ingresa un numero entre 0 y 23 seguido de ':' y otro numero entre 0 y 59.\n");
@@ -1742,8 +1749,14 @@ int dish_userinfo(char **args)
                 mm_f = 59;
             } else
             {
-                hh_f = atoi(strtok(buf, ":"));
-                mm_f = atoi(strtok(NULL, ""));
+                tok1 = strtok(buf, ":");
+                if (strlen(tok1) == 0) hh_f = -1;
+                else hh_f = atoi(tok1);
+
+                tok2 = strtok(NULL, "");
+                if (tok2 == NULL || strlen(tok2) == 0) mm_f = -1;
+                else mm_f = atoi(tok2);
+
                 if (hh_f < 0 || hh_f > 23 || mm_f < 0 || mm_f > 59)
                 {
                     printf("   Hora invalida, ingresa un numero entre 0 y 23 seguido de ':' y otro numero entre 0 y 59.\n");

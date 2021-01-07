@@ -1731,7 +1731,7 @@ int dish_userinfo(char **args)
 
                 if (hh_i < 0 || hh_i > 23 || mm_i < 0 || mm_i > 59)
                 {
-                    printf("   Hora invalida, ingresa un numero entre 0 y 23 seguido de ':' y otro numero entre 0 y 59.\n");
+                    printf("   Hora invalida, formato debe ser hh:mm, h:mm o h:m\n");
                     done = FALSE;
                     continue;
                 }
@@ -1759,7 +1759,7 @@ int dish_userinfo(char **args)
 
                 if (hh_f < 0 || hh_f > 23 || mm_f < 0 || mm_f > 59)
                 {
-                    printf("   Hora invalida, ingresa un numero entre 0 y 23 seguido de ':' y otro numero entre 0 y 59.\n");
+                    printf("   Hora invalida, formato debe ser hh:mm, h:mm o h:m\n");
                     done = FALSE;
                     continue;
                 }

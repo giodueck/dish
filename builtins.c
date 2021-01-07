@@ -1680,7 +1680,8 @@ int dish_userinfo(char **args)
         char uinfo_filename[FILENAME_LENGTH];
         FILE *log;
 
-        sprintf(uinfo_filename, "%s/.dish_%s_horarios_log", home, username);
+        // Archivo de texto que almacena la informacion de usuario
+        sprintf(uinfo_filename, "%s/.dish_%s", home, username);
         if ((log = fopen(uinfo_filename, "r")) != NULL)
         {
             // No existe el archivo y se crea
@@ -1688,14 +1689,14 @@ int dish_userinfo(char **args)
             struct tm tms = *localtime(&t);
 
             fclose(log);
-            log = fopen(uinfo_filename, "a");
+            log = fopen(uinfo_filename, "w+");
 
-            fprintf(log, "LOG DE HORARIOS creado %d-%02d-%02d %02d:%02d:%02d\n\n", tms.tm_year + 1900, tms.tm_mon + 1, tms.tm_mday, tms.tm_hour, tms.tm_min, tms.tm_sec);
+            fprintf(log, "UINFO creado %d-%02d-%02d %02d:%02d:%02d\n\n", tms.tm_year + 1900, tms.tm_mon + 1, tms.tm_mday, tms.tm_hour, tms.tm_min, tms.tm_sec);
         } else
         {
             // Existe el archivo y se escribe al final
             fclose(log);
-            log = fopen(uinfo_filename, "a");
+            log = fopen(uinfo_filename, "w+");
         }
 
         // Se pregunta por las informaciones adicionales

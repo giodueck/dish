@@ -91,6 +91,21 @@ void check_logs()
 
     // Horarios
     sprintf(user_horarios_log_filename, "%s/.dish_%s_horarios_log", home, username);
+
+    if ((file = fopen(user_horarios_log_filename, "r")))
+    {
+        // Existe el archivo
+        fclose(file);
+    } else
+    {
+        // No existe el archivo y se crea
+        time_t t = time(NULL);
+        struct tm tms = *localtime(&t);
+
+        file = fopen(user_horarios_log_filename, "w");
+        fprintf(file, "LOG DE HORARIOS creado %d-%02d-%02d %02d:%02d:%02d\n\n", tms.tm_year + 1900, tms.tm_mon + 1, tms.tm_mday, tms.tm_hour, tms.tm_min, tms.tm_sec);
+        fclose(file);
+    }
 }
 
 // Agrega una entrada al log de historial

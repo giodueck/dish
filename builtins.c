@@ -1688,7 +1688,6 @@ int dish_userinfo(char **args)
             time_t t = time(NULL);
             struct tm tms = *localtime(&t);
 
-            fclose(log);
             log = fopen(uinfo_filename, "w+");
 
             fprintf(log, "UINFO creado %d-%02d-%02d %02d:%02d:%02d\n\n", tms.tm_year + 1900, tms.tm_mon + 1, tms.tm_mday, tms.tm_hour, tms.tm_min, tms.tm_sec);

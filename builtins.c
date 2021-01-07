@@ -1712,7 +1712,7 @@ int dish_userinfo(char **args)
         do {
             done = TRUE;
             printf(" Hora de inicio (por defecto 00:00): ");
-            gets(buf);
+            fgets(buf, BUFSIZ, stdin);
             if (buf[0] == '\n')
             {
                 hh_i = 0;
@@ -1734,7 +1734,7 @@ int dish_userinfo(char **args)
         do {
             done = TRUE;
             printf(" Hora de cierre (por defecto 23:59): ");
-            gets(buf);
+            fgets(buf, BUFSIZ, stdin);
             if (buf[0] == '\n')
             {
                 hh_i = 23;

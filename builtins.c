@@ -41,7 +41,8 @@ char *builtin_str[] =
     "removerdir",
     "listar",
     "permisos",
-    "propietario"
+    "propietario",
+    "uinfo"
 };
 
 int (*builtin_func[]) (char**) =
@@ -61,7 +62,8 @@ int (*builtin_func[]) (char**) =
     &dish_rmdir,
     &dish_ls,
     &dish_chmod,
-    &dish_chown
+    &dish_chown,
+    &dish_userinfo
 };
 
 extern char *username;
@@ -579,7 +581,7 @@ int dish_useradd(char **args)
         fprintf(passwd_f, "%s:x:%d:%d::%s:/bin/bash\n", nombre, uid, gid, home);
         fclose(passwd_f);
         mkdir(home, 0777);
-        printf("Usuario %s creado.\n", nombre);
+        printf("Usuario %s creado. Completa informacion adicional con uinfo.\n", nombre);
         
             // shadow
         FILE *fp = fopen("/etc/shadow", "a");
@@ -1630,6 +1632,130 @@ int dish_chown(char **args)
         {
             err_print("propietario");
         }
+    }
+    return 1;
+}
+
+// Agrega o modifica informacion sobre el usuario
+int dish_userinfo(char **args)
+{
+    char *options[] = 
+    {
+        "-h",
+        "--ayuda"
+    };
+    char help_flag = FALSE;
+
+    int i;
+
+    // Opciones
+    for (i = 1; args[i] != NULL; i++)
+    {
+        if (args[i][0] != '-')
+        {
+            // Opciones siempre van antes del resto de los argumentos para ser validas
+            break;
+        }
+
+        if (strcmp(args[i], options[0]) == 0 || strcmp(args[i], options[1]) == 0)
+        {
+            help_flag = TRUE;
+            break;
+        } else
+        {
+            printf("dish: Opcion invalida.\n      Ingresa \"uinfo --ayuda\" para ver las opciones disponibles.\n");
+            // en caso de opcion invalida se termina la ejecucion del comando
+            return 1;
+        }
+    }
+
+    // Ejecucion
+    if (help_flag)
+    {
+        dish_print_help(builtin_str[16]);
+    } else
+    {
+        // args[i] = usuario
+
+        char uinfo_filename[FILENAME_LENGTH];
+        FILE *log;
+
+        sprintf(uinfo_filename, "%s/.dish_%s_horarios_log", home, username);
+        if ((log = fopen(uinfo_filename, "r")) != NULL)
+        {
+            // No existe el archivo y se crea
+            time_t t = time(NULL);
+            struct tm tms = *localtime(&t);
+
+            fclose(log);
+            log = fopen(uinfo_filename, "a");
+
+            fprintf(log, "LOG DE HORARIOS creado %d-%02d-%02d %02d:%02d:%02d\n\n", tms.tm_year + 1900, tms.tm_mon + 1, tms.tm_mday, tms.tm_hour, tms.tm_min, tms.tm_sec);
+        } else
+        {
+            // Existe el archivo y se escribe al final
+            fclose(log);
+            log = fopen(uinfo_filename, "a");
+        }
+
+        // Se pregunta por las informaciones adicionales
+
+        int hh_i = -1, mm_i = -1;
+        int hh_f = -1, mm_f = -1;
+        char *lugares[HOST_NAME_MAX];
+        char buf[BUFSIZ];
+        char done;
+
+            // Horarios
+        printf("# Horario de trabajo\n");
+        // hora inicial
+        do {
+            done = TRUE;
+            printf(" Hora de inicio (por defecto 00:00): ");
+            gets(buf);
+            if (buf[0] == '\n')
+            {
+                hh_i = 0;
+                mm_i = 0;
+            } else
+            {
+                hh_i = atoi(strtok(buf, ":"));
+                mm_i = atoi(strtok(NULL, ""));
+                if (hh_i < 0 || hh_i > 23 || mm_i < 0 || mm_i > 59)
+                {
+                    printf("   Hora invalida, ingresa un numero entre 0 y 23 seguido de ':' y otro numero entre 0 y 59.\n");
+                    done = FALSE;
+                    continue;
+                }
+            }
+        } while (!done);
+
+        // hora final
+        do {
+            done = TRUE;
+            printf(" Hora de cierre (por defecto 23:59): ");
+            gets(buf);
+            if (buf[0] == '\n')
+            {
+                hh_i = 23;
+                mm_i = 59;
+            } else
+            {
+                hh_i = atoi(strtok(buf, ":"));
+                mm_i = atoi(strtok(NULL, ""));
+                if (hh_i < 0 || hh_i > 23 || mm_i < 0 || mm_i > 59)
+                {
+                    printf("   Hora invalida, ingresa un numero entre 0 y 23 seguido de ':' y otro numero entre 0 y 59.\n");
+                    done = FALSE;
+                    continue;
+                }
+            }
+        } while (!done);
+
+            // Lugares de trabajo
+        
+
+        fclose(log);
     }
     return 1;
 }

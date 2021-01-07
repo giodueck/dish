@@ -20,11 +20,12 @@ int dish_mkdir(char **args);
 int dish_rm(char **args);
 int dish_rmdir(char **args);
 int dish_ls(char **args);
-int dish_chmod(char **args);    // missing help
-int dish_chown(char **args);    // missing help
+int dish_chmod(char **args);
+int dish_chown(char **args);
+int dish_userinfo(char **args); // missing help
 
 // Arrays de nombres de builtins con sus respectivas funciones
-#define NUM_BUILTINS 16
+#define NUM_BUILTINS 17
 
 char *builtin_str[NUM_BUILTINS];
 

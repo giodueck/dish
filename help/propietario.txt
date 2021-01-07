@@ -1,0 +1,13 @@
+Cambia el propietario de un archivo.
+
+Uso:
+    propietario [ARCHIVO] [USUARIO] <GRUPO>
+    propietario [OPCION]
+
+    ARCHIVO     Path/Nombre del archivo
+    USUARIO     Nombre del usuario a ser propietario de ARCHIVO
+    GRUPO       Nombre del grupo. Si se omite se toma USUARIO
+                como nombre del grupo
+
+    OPCIONES
+     -h,    --ayuda     Muestra esta ayuda y termina.

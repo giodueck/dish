@@ -22,8 +22,9 @@
 char *username;
 char hostname[HOST_NAME_MAX];
 char *hostname_short;
-char *log_filename;
-char *err_filename;
+char log_filename[FILENAME_LENGTH];
+char err_filename[FILENAME_LENGTH];
+char user_horarios_log_filename[FILENAME_LENGTH];
 char *home;
 
 // para que otros archivos tengan acceso a traves de extern
@@ -53,7 +54,6 @@ void check_logs()
     FILE *file;
 
     // Historial
-    log_filename = malloc(sizeof(char) * FILENAME_LENGTH);
     sprintf(log_filename, "%s/.dish_log", home);
 
     if ((file = fopen(log_filename, "r")))
@@ -72,7 +72,6 @@ void check_logs()
     }
 
     // Errores
-    err_filename = malloc(sizeof(char) * FILENAME_LENGTH);
     sprintf(err_filename, "%s/.dish_err", home);
 
     if ((file = fopen(err_filename, "r")))
@@ -89,6 +88,9 @@ void check_logs()
         fprintf(file, "ERROR LOG creado %d-%02d-%02d %02d:%02d:%02d\n\n", tms.tm_year + 1900, tms.tm_mon + 1, tms.tm_mday, tms.tm_hour, tms.tm_min, tms.tm_sec);
         fclose(file);
     }
+
+    // Horarios
+    sprintf(user_horarios_log_filename, "%s/.dish_%s_horarios_log", home, username);
 }
 
 // Agrega una entrada al log de historial
@@ -145,7 +147,6 @@ void dish_loop()
     } while (status);
     
     free(current_dir);
-    free(log_filename);
 }
 
 int main (int argc, char **argv)

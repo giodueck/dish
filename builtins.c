@@ -1675,6 +1675,8 @@ int dish_userinfo(char **args)
         dish_print_help(builtin_str[16]);
     } else
     {
+
+puts("1\n");
         // args[i] = usuario
 
         char uinfo_filename[FILENAME_LENGTH];
@@ -1684,6 +1686,7 @@ int dish_userinfo(char **args)
         sprintf(uinfo_filename, "%s/.dish_%s", home, username);
         if ((log = fopen(uinfo_filename, "r")) != NULL)
         {
+puts("if 1\n");
             // No existe el archivo y se crea
             time_t t = time(NULL);
             struct tm tms = *localtime(&t);
@@ -1691,12 +1694,16 @@ int dish_userinfo(char **args)
             log = fopen(uinfo_filename, "w+");
 
             fprintf(log, "UINFO creado %d-%02d-%02d %02d:%02d:%02d\n\n", tms.tm_year + 1900, tms.tm_mon + 1, tms.tm_mday, tms.tm_hour, tms.tm_min, tms.tm_sec);
+puts("if 2\n");
         } else
         {
+puts("else 1\n");
             // Existe el archivo y se escribe al final
             fclose(log);
             log = fopen(uinfo_filename, "w+");
+puts("else 2\n");
         }
+puts("2\n");
 
         // Se pregunta por las informaciones adicionales
 

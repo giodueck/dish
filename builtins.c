@@ -13,6 +13,7 @@
 #include <string.h>
 #include <dirent.h>
 #include <pwd.h>
+#include <grp.h>
 #include <shadow.h>
 #include <crypt.h>
 #include <time.h>
@@ -1553,8 +1554,10 @@ int dish_chown(char **args)
     };
     char help_flag = FALSE;
 
+    int i;
+
     // Opciones
-    for (int i = 1; args[i] != NULL; i++)
+    for (i = 1; args[i] != NULL; i++)
     {
         if (args[i][0] != '-')
         {
@@ -1580,7 +1583,53 @@ int dish_chown(char **args)
         dish_print_help(builtin_str[15]);
     } else
     {
-        
+        // args[i] = path/name
+        // args[i+1] = usuario
+        // args[i+2] = grupo
+
+        uid_t uid;
+        gid_t gid;
+        struct passwd *pwd;
+        struct group *grp;
+        char *msg;
+        char *grupo;
+
+        // se busca el uid
+        pwd = getpwnam(args[i + 1]);
+        if (pwd == NULL)
+        {
+            msg = malloc(sizeof(char) * MSG_LENGTH);
+            sprintf(msg, "no se pudo encontrar el usuario.\n");
+            fprintf(stderr, msg);
+            err_log_add_msg(msg);
+            free(msg);
+            return 1;
+        }
+        uid = pwd->pw_uid;
+
+        // se busca el gid
+        if (args[i + 2] == NULL)    // si no se da grupo el comando asume que el grupo se llama como el usuario
+        {
+            grupo = args[i + 1];
+        } else grupo = args[i + 2];
+
+        grp = getgrnam(grupo);
+        if (grp == NULL)
+        {
+            msg = malloc(sizeof(char) * MSG_LENGTH);
+            sprintf(msg, "no se pudo encontrar el grupo.\n");
+            fprintf(stderr, msg);
+            err_log_add_msg(msg);
+            free(msg);
+            return 1;
+        }
+        gid = grp->gr_gid;
+
+        // se ejecuta chown
+        if (chown(args[i], uid, gid) == -1)
+        {
+            err_print("propietario");
+        }
     }
     return 1;
 }

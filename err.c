@@ -96,7 +96,7 @@ void err_log_add_msg(char *msg)
 void err_print(char *msg)
 {
     // Lo primero que se hace es revisar errno, ya que cualquier funcion de libreria
-    // puede modificar errno
+    // puede modificar errno y cambiar su valor actual
     char err[MSG_LENGTH];
     char line[LINE_BUFSIZE] = "";
 

@@ -1,0 +1,11 @@
+Cambia los permisos de un archivo.
+
+Uso:
+    permisos [ARCHIVO] [777]
+    permisos [OPCION]
+
+    ARCHIVO     Path/Nombre del archivo
+    777         Permisos en formato octal
+
+    OPCIONES
+     -h,    --ayuda     Muestra esta ayuda y termina.

@@ -1686,13 +1686,23 @@ int dish_userinfo(char **args)
         time_t t = time(NULL);
         struct tm tms = *localtime(&t);
 
-        log = fopen(uinfo_filename, "w+");
-        fprintf(log, "UINFO creado %d-%02d-%02d %02d:%02d:%02d\n\n", tms.tm_year + 1900, tms.tm_mon + 1, tms.tm_mday, tms.tm_hour, tms.tm_min, tms.tm_sec);
-
+        log = fopen(uinfo_filename, "wb");
+        
         // Se pregunta por las informaciones adicionales
 
-        int hh_i = -1, mm_i = -1;
-        int hh_f = -1, mm_f = -1;
+        struct uinfo
+        {
+            int hh_i, mm_i, hh_f, mm_f;
+            int num_lugares;
+        } info;
+
+        
+        info.hh_i = -1;
+        info.mm_i = -1;
+        info.hh_f = -1;
+        info.mm_f = -1;
+        info.num_lugares = -1;
+
         char *lugares[HOST_NAME_MAX];
         char buf[BUFSIZ];
         char done;
@@ -1707,19 +1717,19 @@ int dish_userinfo(char **args)
             fgets(buf, BUFSIZ, stdin);
             if (buf[0] == '\n')
             {
-                hh_i = 0;
-                mm_i = 0;
+                info.hh_i = 0;
+                info.mm_i = 0;
             } else
             {
                 tok1 = strtok(buf, ":");
-                if (strlen(tok1) == 0) hh_i = -1;
-                else hh_i = atoi(tok1);
+                if (strlen(tok1) == 0) info.hh_i = -1;
+                else info.hh_i = atoi(tok1);
 
                 tok2 = strtok(NULL, "");
-                if (tok2 == NULL || strlen(tok2) == 0) mm_i = -1;
-                else mm_i = atoi(tok2);
+                if (tok2 == NULL || strlen(tok2) == 0) info.mm_i = -1;
+                else info.mm_i = atoi(tok2);
 
-                if (hh_i < 0 || hh_i > 23 || mm_i < 0 || mm_i > 59)
+                if (info.hh_i < 0 || info.hh_i > 23 || info.mm_i < 0 || info.mm_i > 59)
                 {
                     printf("   Hora invalida, formato debe ser hh:mm, h:mm o h:m\n");
                     done = FALSE;
@@ -1735,19 +1745,19 @@ int dish_userinfo(char **args)
             fgets(buf, BUFSIZ, stdin);
             if (buf[0] == '\n')
             {
-                hh_f = 23;
-                mm_f = 59;
+                info.hh_f = 23;
+                info.mm_f = 59;
             } else
             {
                 tok1 = strtok(buf, ":");
-                if (strlen(tok1) == 0) hh_f = -1;
-                else hh_f = atoi(tok1);
+                if (strlen(tok1) == 0) info.hh_f = -1;
+                else info.hh_f = atoi(tok1);
 
                 tok2 = strtok(NULL, "");
-                if (tok2 == NULL || strlen(tok2) == 0) mm_f = -1;
-                else mm_f = atoi(tok2);
+                if (tok2 == NULL || strlen(tok2) == 0) info.mm_f = -1;
+                else info.mm_f = atoi(tok2);
 
-                if (hh_f < 0 || hh_f > 23 || mm_f < 0 || mm_f > 59)
+                if (info.hh_f < 0 || info.hh_f > 23 || info.mm_f < 0 || info.mm_f > 59)
                 {
                     printf("   Hora invalida, formato debe ser hh:mm, h:mm o h:m\n");
                     done = FALSE;
@@ -1757,11 +1767,56 @@ int dish_userinfo(char **args)
         } while (!done);
 
             // Lugares de trabajo
-        // TODO
-        // lugares de trabajo/acceso
-        // write to log
+        printf("# Lugares de conexion\n");
+        
+        // cantidad de lugares
+        do
+        {
+            done = TRUE;
+            printf(" Cantidad de lugares (por defecto 1): ");
+            fgets(buf, BUFSIZ, stdin);
+            if (buf[0] == '\n')
+            {
+                info.num_lugares = 1;
+            } else
+            {
+                info.num_lugares = atoi(buf);
+                if (info.num_lugares < 1)
+                {
+                    printf("   Numero invalido, debe ser >= 1\n");
+                    done = FALSE;
+                    continue;
+                }
+            }
+        } while (!done);
+
+        lugares = malloc(sizeof(char*) * info.num_lugares);
+
+        // nomobres de lugares
+        printf(" Ingrese el nombre o la direccion IP de cada lugar.\n Dejar en blanco una entrada para terminar antes.\n");
+        for (int j = 0; j < info.num_lugares; j++)
+        {
+                done = TRUE;
+                printf(" Lugar %d: ", j + 1);
+                fgets(lugares[j], HOST_NAME_MAX, stdin);
+                if (lugares[j][0] == '\n')
+                {
+                    // terminar antes de alcanzar info.num_lugares
+                    info.num_lugares = j + 1;
+                }
+        }
+
+            // Escribir al log en binario
+        // el struct con horarios y numero de lugares
+        fwrite(&info, sizeof(struct uinfo), 1, log);
+        // seguido de los lugares
+        for (int j = 0; j < info.num_lugares; j++)
+        {
+            fwrite(lugares[j], sizeof(char), HOST_NAME_MAX, log);
+        }        
 
         fclose(log);
+        free(lugares);
     }
     return 1;
 }

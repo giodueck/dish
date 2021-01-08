@@ -164,7 +164,7 @@ void dish_loop()
     free(current_dir);
 }
 
-void log(const char *in_or_out)
+void dish_log(const char *in_or_out)
 {
     FILE *uinfof, *user_log;
     char uinfo_filename[FILENAME_MAX];
@@ -238,13 +238,13 @@ int main (int argc, char **argv)
     // Inicializacion
     check_user();
     check_logs();
-    log("in");
+    dish_log("in");
 
     // Main command loop
     dish_loop();
 
     // Shutdown
-    log("out");
+    dish_log("out");
 
     return SUCCESS;
 }

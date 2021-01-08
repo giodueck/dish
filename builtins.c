@@ -1800,7 +1800,10 @@ int dish_userinfo(char **args)
                 printf(" Lugar %d: ", j + 1);
                 lugares[j] = malloc(sizeof(char) * HOST_NAME_MAX);
                 fgets(lugares[j], HOST_NAME_MAX, stdin);
-                if (lugares[j][0] == '\n')
+                for (int x = 0; x < HOST_NAME_MAX; x++)
+                    if (lugares[j][x] == '\n')
+                        lugares[j][x] = '\0';
+                if (lugares[j][0] == '\0')
                 {
                     // terminar antes de alcanzar info.num_lugares
                     info.num_lugares = j;

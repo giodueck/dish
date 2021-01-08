@@ -218,7 +218,7 @@ void log(const char *in_or_out)
             fprintf(user_log, "; INUSUAL");
         }
         fprintf(user_log, "\n");
-    } else (strcmp(in_or_out, "out") == 0)  // logout
+    } else if (strcmp(in_or_out, "out") == 0)  // logout
     {
         fprintf(user_log, "LOGOUT: %02d:%02d\n", tms.tm_hour, tms.tm_min);
         fprintf(user_log, " HORARIO: %02d:%02d; ", info.hh_f, info.mm_f);

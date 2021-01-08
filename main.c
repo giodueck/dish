@@ -179,10 +179,10 @@ void dish_log(char mode)
     struct tm tms = *localtime(&t);
 
     // lectura de datos del usuario
+    sprintf(uinfo_filename, "%s/.dish_%s", home, username);
     uinfof = fopen(uinfo_filename, "rb");
     user_log = fopen(user_horarios_log_filename, "a");
 
-    sprintf(uinfo_filename, "%s/.dish_%s", home, username);
     fread(&info, sizeof(struct uinfo), 1, uinfof);
 
     gethostname(host, HOST_NAME_MAX);

@@ -169,7 +169,7 @@ void dish_log(char mode)
     FILE *uinfof, *user_log;
     char uinfo_filename[FILENAME_MAX];
     struct uinfo info;
-    char **lugares;
+    char lugar[HOST_NAME_MAX];
     char host[HOST_NAME_MAX];
     int dif;
     char done;
@@ -185,12 +185,6 @@ void dish_log(char mode)
     sprintf(uinfo_filename, "%s/.dish_%s", home, username);
     fread(&info, sizeof(struct uinfo), 1, uinfof);
 
-    lugares = lugares = malloc(sizeof(char*) * info.num_lugares);
-    for (int i = 0; i < info.num_lugares; i++)
-    {
-        lugares[i] = malloc(sizeof(char) * HOST_NAME_MAX);
-        fread(lugares[i], sizeof(char) * HOST_NAME_MAX, 1, uinfof);
-    }
     gethostname(host, HOST_NAME_MAX);
 
     // login
@@ -207,7 +201,8 @@ void dish_log(char mode)
         done = FALSE;
         for (int i = 0; i < info.num_lugares; i++)
         {
-            if (strcmp(host, lugares[i]) == 0)
+            fread(lugar, sizeof(char) * HOST_NAME_MAX, 1, uinfof);
+            if (strcmp(host, lugar) == 0)
             {
                 done = TRUE;
                 break;
@@ -218,7 +213,7 @@ void dish_log(char mode)
             fprintf(user_log, "; INUSUAL");
         }
         fprintf(user_log, "\n");
-    } else if (mode == 'i')  // logout
+    } else if (mode == 'o')  // logout
     {
         fprintf(user_log, "LOGOUT: %02d:%02d\n", tms.tm_hour, tms.tm_min);
         fprintf(user_log, " HORARIO: %02d:%02d; ", info.hh_f, info.mm_f);

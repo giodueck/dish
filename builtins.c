@@ -1690,12 +1690,7 @@ int dish_userinfo(char **args)
         
         // Se pregunta por las informaciones adicionales
 
-        struct uinfo
-        {
-            int hh_i, mm_i, hh_f, mm_f;
-            int num_lugares;
-        } info;
-
+        struct uinfo info;
         
         info.hh_i = -1;
         info.mm_i = -1;

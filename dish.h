@@ -5,6 +5,13 @@
 #ifndef DISH_H
 #define DISH_H
 
+// informacion de usuario
+struct uinfo
+{
+    int hh_i, mm_i, hh_f, mm_f;
+    int num_lugares;
+};
+
 // Lee una linea de stdin hasta encontrar EOF o '\n'
 char *dish_read_line();
 

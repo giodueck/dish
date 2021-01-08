@@ -164,16 +164,87 @@ void dish_loop()
     free(current_dir);
 }
 
+void log(const char in_or_out)
+{
+    FILE *uinfof, *user_log;
+    char uinfo_filename[FILENAME_MAX];
+    struct uinfo info;
+    char **lugares;
+    char host[HOST_NAME_MAX];
+    int dif;
+    char done;
+
+    // hora actual
+    time_t t = time(NULL);
+    struct tm tms = *localtime(&t);
+
+    // lectura de datos del usuario
+    uinfof = fopen(uinfo_filename, "rb");
+    user_log = fopen(user_horarios_log_filename, "a");
+
+    sprintf(uinfo_filename, "%s/.dish_%s", home, username);
+    fread(&info, sizeof(struct uinfo), 1, uinfof);
+
+    lugares = lugares = malloc(sizeof(char*) * info.num_lugares);
+    for (int i = 0; i < info.num_lugares; i++)
+    {
+        lugares[i] = malloc(sizeof(char) * HOST_NAME_MAX);
+        fread(lugares[i], sizeof(char) * HOST_NAME_MAX, 1, uinfof);
+    }
+    gethostname(host, HOST_NAME_MAX);
+
+    // login
+    if (strcmp(in_or_out, "in") == 0)
+    {
+        fprintf(user_log, "LOGIN: %02d:%02d\n", tms.tm_hour, tms.tm_min);
+        fprintf(user_log, " HORARIO: %02d:%02d; ", info.hh_i, info.mm_i);
+        dif = tms.tm_hour * 60 + tms.tm_min - info.hh_i * 60 - info.mm_i;
+        if (dif < 0) fprintf(user_log, "TEMPRANO: %02d:%02d\n", -dif / 60, -dif % 60);
+        else if (dif > 0) fprintf(user_log, "TARDE: %02d:%02d\n", dif / 60, dif % 60);
+        else fprintf(user_log, "A TIEMPO\n");
+
+        fprintf(user_log, " LUGAR DE CONEXION: %s", host);
+        done = FALSE;
+        for (int i = 0; i < info.num_lugares; i++)
+        {
+            if (strcmp(host, lugares[i]) == 0)
+            {
+                done = TRUE;
+                break;
+            }
+        }
+        if (!done)
+        {
+            fprintf(user_log, "; INUSUAL");
+        }
+        fprintf(user_log, "\n");
+    } else (strcmp(in_or_out, "out") == 0)  // logout
+    {
+        fprintf(user_log, "LOGOUT: %02d:%02d\n", tms.tm_hour, tms.tm_min);
+        fprintf(user_log, " HORARIO: %02d:%02d; ", info.hh_f, info.mm_f);
+        dif = tms.tm_hour * 60 + tms.tm_min - info.hh_f * 60 - info.mm_f;
+        if (dif < 0) fprintf(user_log, "TEMPRANO: %02d:%02d\n", -dif / 60, -dif % 60);
+        else if (dif > 0) fprintf(user_log, "TARDE: %02d:%02d\n", dif / 60, dif % 60);
+        else fprintf(user_log, "A TIEMPO\n");
+        fprintf(user_log, "\n");
+    }
+
+    fclose(uinfof);
+    fclose(user_log);
+}
+
 int main (int argc, char **argv)
 {
     // Inicializacion
     check_user();
     check_logs();
+    log("in");
 
     // Main command loop
     dish_loop();
 
     // Shutdown
+    log("out");
 
     return SUCCESS;
 }

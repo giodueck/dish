@@ -1703,7 +1703,7 @@ int dish_userinfo(char **args)
         info.mm_f = -1;
         info.num_lugares = -1;
 
-        char *lugares[HOST_NAME_MAX];
+        char **lugares;
         char buf[BUFSIZ];
         char done;
         char *tok1, *tok2;
@@ -1798,11 +1798,13 @@ int dish_userinfo(char **args)
         {
                 done = TRUE;
                 printf(" Lugar %d: ", j + 1);
+                lugares[j] = malloc(sizeof(char) * HOST_NAME_MAX);
                 fgets(lugares[j], HOST_NAME_MAX, stdin);
                 if (lugares[j][0] == '\n')
                 {
                     // terminar antes de alcanzar info.num_lugares
-                    info.num_lugares = j + 1;
+                    info.num_lugares = j;
+                    free(lugares[j]);
                 }
         }
 
@@ -1816,6 +1818,7 @@ int dish_userinfo(char **args)
         }        
 
         fclose(log);
+        for (int j = 0; j < info.num_lugares; j++) free(lugares[j]);
         free(lugares);
     }
     return 1;

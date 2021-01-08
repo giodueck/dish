@@ -190,7 +190,7 @@ void dish_log(char mode)
     // login
     if (mode == 'i')
     {
-        fprintf(user_log, "LOGIN: %02d:%02d\n", tms.tm_hour, tms.tm_min);
+        fprintf(user_log, "LOGIN: %d-%02d-%02d %02d:%02d\n", tms.tm_year + 1900, tms.tm_mon + 1, tms.tm_mday, tms.tm_hour, tms.tm_min);
         fprintf(user_log, " HORARIO: %02d:%02d; ", info.hh_i, info.mm_i);
         dif = tms.tm_hour * 60 + tms.tm_min - info.hh_i * 60 - info.mm_i;
         if (dif < 0) fprintf(user_log, "TEMPRANO: %02d:%02d\n", -dif / 60, -dif % 60);
@@ -215,7 +215,7 @@ void dish_log(char mode)
         fprintf(user_log, "\n");
     } else if (mode == 'o')  // logout
     {
-        fprintf(user_log, "LOGOUT: %02d:%02d\n", tms.tm_hour, tms.tm_min);
+        fprintf(user_log, "LOGOUT: %d-%02d-%02d %02d:%02d\n", tms.tm_year + 1900, tms.tm_mon + 1, tms.tm_mday, tms.tm_hour, tms.tm_min);
         fprintf(user_log, " HORARIO: %02d:%02d; ", info.hh_f, info.mm_f);
         dif = tms.tm_hour * 60 + tms.tm_min - info.hh_f * 60 - info.mm_f;
         if (dif < 0) fprintf(user_log, "TEMPRANO: %02d:%02d\n", -dif / 60, -dif % 60);

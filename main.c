@@ -164,7 +164,7 @@ void dish_loop()
     free(current_dir);
 }
 
-void log(const char in_or_out)
+void log(const char *in_or_out)
 {
     FILE *uinfof, *user_log;
     char uinfo_filename[FILENAME_MAX];

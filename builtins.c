@@ -1814,7 +1814,7 @@ int dish_userinfo(char **args)
         // seguido de los lugares
         for (int j = 0; j < info.num_lugares; j++)
         {
-            fwrite(lugares[j], sizeof(char), HOST_NAME_MAX, log);
+            fwrite(lugares[j], sizeof(char) * HOST_NAME_MAX, 1, log);
         }        
 
         fclose(log);

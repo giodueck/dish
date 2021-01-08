@@ -164,7 +164,7 @@ void dish_loop()
     free(current_dir);
 }
 
-void dish_log(const char *in_or_out)
+void dish_log(char mode)
 {
     FILE *uinfof, *user_log;
     char uinfo_filename[FILENAME_MAX];
@@ -194,7 +194,7 @@ void dish_log(const char *in_or_out)
     gethostname(host, HOST_NAME_MAX);
 
     // login
-    if (strcmp(in_or_out, "in") == 0)
+    if (mode == 'i')
     {
         fprintf(user_log, "LOGIN: %02d:%02d\n", tms.tm_hour, tms.tm_min);
         fprintf(user_log, " HORARIO: %02d:%02d; ", info.hh_i, info.mm_i);
@@ -218,7 +218,7 @@ void dish_log(const char *in_or_out)
             fprintf(user_log, "; INUSUAL");
         }
         fprintf(user_log, "\n");
-    } else if (strcmp(in_or_out, "out") == 0)  // logout
+    } else if (mode == 'i')  // logout
     {
         fprintf(user_log, "LOGOUT: %02d:%02d\n", tms.tm_hour, tms.tm_min);
         fprintf(user_log, " HORARIO: %02d:%02d; ", info.hh_f, info.mm_f);
@@ -238,13 +238,13 @@ int main (int argc, char **argv)
     // Inicializacion
     check_user();
     check_logs();
-    dish_log("in");
+    dish_log('i');
 
     // Main command loop
     dish_loop();
 
     // Shutdown
-    dish_log("out");
+    dish_log('o');
 
     return SUCCESS;
 }

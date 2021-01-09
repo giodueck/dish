@@ -1642,9 +1642,11 @@ int dish_userinfo(char **args)
     char *options[] = 
     {
         "-h",
-        "--ayuda"
+        "--ayuda",
+        "-s"
     };
     char help_flag = FALSE;
+    char show_flag = FALSE;
 
     int i;
 
@@ -1661,6 +1663,10 @@ int dish_userinfo(char **args)
         {
             help_flag = TRUE;
             break;
+        } else if (strcmp(args[i], options[2]) == 0)
+        {
+            show_flag = TRUE;
+            continue;
         } else
         {
             printf("dish: Opcion invalida.\n      Ingresa \"uinfo --ayuda\" para ver las opciones disponibles.\n");
@@ -1673,16 +1679,20 @@ int dish_userinfo(char **args)
     if (help_flag)
     {
         dish_print_help(builtin_str[16]);
-    } else
+    } else if (show_flag)
     {
-
         // args[i] = usuario
         struct passwd *pwd;
+        struct uinfo info;
         char *name, *homedir;
         char *msg;
+        char uinfo_filename[FILENAME_LENGTH];
+        char aux[HOST_NAME_MAX];
+        FILE *log;
 
         if (args[i] != NULL)
         {
+            // solo root puede modificar uinfo de otros usuarios
             if (strcmp(username, "root") != 0)
             {
                 msg = malloc(sizeof(char) * MSG_LENGTH);
@@ -1714,19 +1724,76 @@ int dish_userinfo(char **args)
             name = pwd->pw_name;
         }
 
+        // Archivo binario que almacena la informacion de usuario
+        sprintf(uinfo_filename, "%s/.dish_%s", homedir, name);
+        if (log = fopen(uinfo_filename, "rb") == NULL)
+        {
+            printf("No existe informacion adicional sobre el usuario %s.\n", name);
+            return 1;
+        }
+
+        // se lee el struct uinfo y los lugares de conexion y se imprimen los datos
+        fread(&info, sizeof(struct uinfo), 1, log);
+
+        printf("Hora de inicio: %02d:%02d\n", info.hh_i, info.mm_i);
+        printf("Hora de cierre: %02d:%02d\n", info.hh_f, info.mm_f);
+        printf("Lugares de conexion: %d\n", info.num_lugares);
+        for (int i = 0; i < info.num_lugares; i++)
+        {
+            fread(aux, sizeof(char) * HOST_NAME_MAX, 1, log);
+            printf("  %d: %s\n", i + 1, aux);
+        }
+        fclose(log);
+    } else
+    {
+
+        // args[i] = usuario
+        struct passwd *pwd;
+        struct uinfo info;
+        char *name, *homedir;
+        char *msg;
         char uinfo_filename[FILENAME_LENGTH];
         FILE *log;
 
-        // Archivo de texto que almacena la informacion de usuario
-        sprintf(uinfo_filename, "%s/.dish_%s", homedir, name);
-        time_t t = time(NULL);
-        struct tm tms = *localtime(&t);
+        if (args[i] != NULL)
+        {
+            // solo root puede modificar uinfo de otros usuarios
+            if (strcmp(username, "root") != 0)
+            {
+                msg = malloc(sizeof(char) * MSG_LENGTH);
+                sprintf(msg, "acceso denegado.\n");
+                fprintf(stderr, msg);
+                err_log_add_msg(msg);
+                free(msg);
+                return 1;
+            }
+            // se busca al usuario dado
+            if ((pwd = getpwnam(args[i])) == 0)
+            {
+                msg = malloc(sizeof(char) * MSG_LENGTH);
+                sprintf(msg, "no se pudo encontrar el usuario.\n");
+                fprintf(stderr, msg);
+                err_log_add_msg(msg);
+                free(msg);
+                return 1;
+            } else
+            {
+                homedir = pwd->pw_dir;
+                name = pwd->pw_name;
+            }
+        } else
+        {
+            // se busca el passwd del usuario actual
+            pwd = getpwnam(username);
+            homedir = pwd->pw_dir;
+            name = pwd->pw_name;
+        }
 
+        // Archivo binario que almacena la informacion de usuario
+        sprintf(uinfo_filename, "%s/.dish_%s", homedir, name);
         log = fopen(uinfo_filename, "wb");
         
         // Se pregunta por las informaciones adicionales
-
-        struct uinfo info;
         
         info.hh_i = -1;
         info.mm_i = -1;

@@ -42,8 +42,7 @@ char *builtin_str[] =
     "listar",
     "permisos",
     "propietario",
-    "uinfo",
-    "daemon"
+    "uinfo"
 };
 
 int (*builtin_func[]) (char**) =
@@ -64,8 +63,7 @@ int (*builtin_func[]) (char**) =
     &dish_ls,
     &dish_chmod,
     &dish_chown,
-    &dish_userinfo,
-    &dish_daemon
+    &dish_userinfo
 };
 
 extern char *username;
@@ -1923,54 +1921,6 @@ int dish_userinfo(char **args)
         fclose(log);
         for (int j = 0; j < info.num_lugares; j++) free(lugares[j]);
         free(lugares);
-    }
-    return 1;
-}
-
-// Permite levantar y apagar demonios
-int dish_daemon(char **args)
-{
-    // Esta funcion no funciona de la forma que quiero, por lo que se queda sin terminar
-    // por ahora. Si esto llega a la version final que pena.
-    return 1;
-
-    char *options[] = 
-    {
-        "-h",
-        "--ayuda"
-    };
-    char help_flag = FALSE;
-
-    int i;
-
-    // Opciones
-    for (i = 1; args[i] != NULL; i++)
-    {
-        if (args[i][0] != '-')
-        {
-            // Opciones siempre van antes del resto de los argumentos para ser validas
-            break;
-        }
-
-        if (strcmp(args[i], options[0]) == 0 || strcmp(args[i], options[1]) == 0)
-        {
-            help_flag = TRUE;
-            break;
-        } else
-        {
-            printf("dish: Opcion invalida.\n      Ingresa \"%s --ayuda\" para ver las opciones disponibles.\n", args[0]);
-            // en caso de opcion invalida se termina la ejecucion del comando
-            return 1;
-        }
-    }
-
-    // Ejecucion
-    if (help_flag)
-    {
-        dish_print_help(builtin_str[17]);
-    } else
-    {
-        // code
     }
     return 1;
 }

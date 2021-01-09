@@ -14,23 +14,23 @@
 //- listar: listar elementos en directorio (como ls)
     - color coding
 //- creardir: crear un directorio
-- permisos: cambiar los permisos de un archivo o conjunto de archivos
-- propietario: cambiar los propietarios de un archivo o conjunto de archivos
+//- permisos: cambiar los permisos de un archivo o conjunto de archivos
+//- propietario: cambiar los propietarios de un archivo o conjunto de archivos
 //- usuario: agregar, modificar usuarios
-    deben registrarse sus datos:
-        - horario de trabajo
-        - lugares de conexion (IPs o localhost)
-        - otros
-- contraseña: cambiar la contraseña del usuario
+//    deben registrarse sus datos:
+//        - horario de trabajo
+//        - lugares de conexion (IPs o localhost)
+//        - otros
+/- contraseña: cambiar la contraseña del usuario
 - : levantar y apagar demonios del sistema, utilizando una herramienta como service de CentOS
 - : ejecutar transferencia por ftp o scp
 
 # Logs
     Deben guardarse en /var/log/shell
 // - guardar todos los comandos dados, junto con un timestamp (YYYY-MM-DD hh:min:seg) al comienzo de la linea
-- usuario_horarios.log: guardar inicios y cierres de sesion
-    - comparar con horarios de trabajo
-    - comparar con lugares de conexion habilitados
+//- usuario_horarios.log: guardar inicios y cierres de sesion
+//    - comparar con horarios de trabajo
+//    - comparar con lugares de conexion habilitados
 //- sistema_error.log: guardar errores
 //    Ejemplos:
 //        - Acceso a un directorio no permitido
@@ -47,9 +47,8 @@
 // - Agregar la opcion --ayuda a todos los comandos
 // - historial: agregar -v que muestra los timestamp. Si no se especifica, solo mostrar numero de comando y comando
 // - historial: agregar opciones para resetear historial
-- manual: imprimir el manual de uso
-//- remover: borrar archivos
-//- removerdir: borrar directorio
+// - remover: borrar archivos
+// - removerdir: borrar directorio
 
 # Instalacion
 - config: path de instalacion debe afectar cosas como el camino de los archivos de ayuda: [path]/help/cmd.txt

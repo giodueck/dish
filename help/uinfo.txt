@@ -1,0 +1,13 @@
+Ingresa la informacion del usuario dado. Estas son 
+horarios de inicio y cierre de sesion y lugares de
+conexion usuales.
+
+Uso:
+    uinfo <USUARIO>
+    uinfo [OPCION]
+
+    USUARIO     Nombre del usuario cuya informacion se
+                quiere ingresar/modificar. Omitir para
+                informacion del usuario actual.
+    OPCIONES
+     -h,    --ayuda     Muestra esta ayuda y termina.

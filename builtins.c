@@ -1677,12 +1677,47 @@ int dish_userinfo(char **args)
     {
 
         // args[i] = usuario
+        struct passwd *pwd;
+        char *name, *homedir;
+
+        if (args[i] != NULL)
+        {
+            if (strcmp(username, "root") != 0)
+            {
+                msg = malloc(sizeof(char) * MSG_LENGTH);
+                sprintf(msg, "acceso denegado.\n");
+                fprintf(stderr, msg);
+                err_log_add_msg(msg);
+                free(msg);
+                return 1;
+            }
+            // se busca al usuario dado
+            if (pwd = getpwnam(args[i]) == 0)
+            {
+                msg = malloc(sizeof(char) * MSG_LENGTH);
+                sprintf(msg, "no se pudo encontrar el usuario.\n");
+                fprintf(stderr, msg);
+                err_log_add_msg(msg);
+                free(msg);
+                return 1;
+            } else
+            {
+                homedir = pwd->pw_dir;
+                name = pwd->pw_name;
+            }
+        } else
+        {
+            // se busca el passwd del usuario actual
+            pwd = getpwnam(username);
+            homedir = pwd->pw_dir;
+            name = pwd->pw_name;
+        }
 
         char uinfo_filename[FILENAME_LENGTH];
         FILE *log;
 
         // Archivo de texto que almacena la informacion de usuario
-        sprintf(uinfo_filename, "%s/.dish_%s", home, username);
+        sprintf(uinfo_filename, "%s/.dish_%s", homedir, name);
         time_t t = time(NULL);
         struct tm tms = *localtime(&t);
 

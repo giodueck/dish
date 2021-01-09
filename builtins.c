@@ -1726,7 +1726,7 @@ int dish_userinfo(char **args)
 
         // Archivo binario que almacena la informacion de usuario
         sprintf(uinfo_filename, "%s/.dish_%s", homedir, name);
-        if (log = fopen(uinfo_filename, "rb") == NULL)
+        if ((log = fopen(uinfo_filename, "rb")) == NULL)
         {
             printf("No existe informacion adicional sobre el usuario %s.\n", name);
             return 1;

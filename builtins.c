@@ -1679,6 +1679,7 @@ int dish_userinfo(char **args)
         // args[i] = usuario
         struct passwd *pwd;
         char *name, *homedir;
+        char *msg;
 
         if (args[i] != NULL)
         {
@@ -1692,7 +1693,7 @@ int dish_userinfo(char **args)
                 return 1;
             }
             // se busca al usuario dado
-            if (pwd = getpwnam(args[i]) == 0)
+            if ((pwd = getpwnam(args[i])) == 0)
             {
                 msg = malloc(sizeof(char) * MSG_LENGTH);
                 sprintf(msg, "no se pudo encontrar el usuario.\n");

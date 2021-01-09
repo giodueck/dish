@@ -42,7 +42,8 @@ char *builtin_str[] =
     "listar",
     "permisos",
     "propietario",
-    "uinfo"
+    "uinfo",
+    "daemon"
 };
 
 int (*builtin_func[]) (char**) =
@@ -63,7 +64,8 @@ int (*builtin_func[]) (char**) =
     &dish_ls,
     &dish_chmod,
     &dish_chown,
-    &dish_userinfo
+    &dish_userinfo,
+    &dish_daemon
 };
 
 extern char *username;
@@ -147,7 +149,7 @@ int dish_cd(char **args)
                 break;
             } else
             {
-                printf("dish: Opcion invalida.\n      Ingresa \"ir --ayuda\" para ver las opciones disponibles.\n");
+                printf("dish: Opcion invalida.\n      Ingresa \"%s --ayuda\" para ver las opciones disponibles.\n", args[0]);
                 // en caso de opcion invalida se termina la ejecucion del comando
                 return 1;
             }
@@ -206,7 +208,7 @@ int dish_exit(char **args)
             break;
         } else
         {
-            printf("dish: Opcion invalida.\n      Ingresa \"salir --ayuda\" para ver las opciones disponibles.\n");
+            printf("dish: Opcion invalida.\n      Ingresa \"%s --ayuda\" para ver las opciones disponibles.\n", args[0]);
             // en caso de opcion invalida se termina la ejecucion del comando
             return 1;
         }
@@ -252,7 +254,7 @@ int dish_sys(char **args)
             break;
         } else
         {
-            printf("dish: Opcion invalida.\n      Ingresa \"sys --ayuda\" para ver las opciones disponibles.\n");
+            printf("dish: Opcion invalida.\n      Ingresa \"%s --ayuda\" para ver las opciones disponibles.\n", args[0]);
             // en caso de opcion invalida se termina la ejecucion del comando
             return 1;
         }
@@ -360,7 +362,7 @@ int dish_history(char **args)
             continue;
         } else
         {
-            printf("dish: Opcion invalida.\n      Ingresa \"historial --ayuda\" para ver las opciones disponibles.\n");
+            printf("dish: Opcion invalida.\n      Ingresa \"%s --ayuda\" para ver las opciones disponibles.\n", args[0]);
             // en caso de opcion invalida se termina la ejecucion del comando
             return 1;
         }
@@ -452,7 +454,7 @@ int dish_useradd(char **args)
             continue;
         } else
         {
-            printf("dish: Opcion invalida.\n      Ingresa \"usuario --ayuda\" para ver las opciones disponibles.\n");
+            printf("dish: Opcion invalida.\n      Ingresa \"%s --ayuda\" para ver las opciones disponibles.\n", args[0]);
             // en caso de opcion invalida se termina la ejecucion del comando
             return 1;
         }
@@ -621,7 +623,7 @@ int dish_passwd(char **args)
             break;
         } else
         {
-            printf("dish: Opcion invalida.\n      Ingresa \"contrasena --ayuda\" para ver las opciones disponibles.\n");
+            printf("dish: Opcion invalida.\n      Ingresa \"%s --ayuda\" para ver las opciones disponibles.\n", args[0]);
             // en caso de opcion invalida se termina la ejecucion del comando
             return 1;
         }
@@ -784,7 +786,7 @@ int dish_cp(char **args)
             dir_flag = TRUE;
         } else
         {
-            printf("dish: Opcion invalida.\n      Ingresa \"copiar --ayuda\" para ver las opciones disponibles.\n");
+            printf("dish: Opcion invalida.\n      Ingresa \"%s --ayuda\" para ver las opciones disponibles.\n", args[0]);
             // en caso de opcion invalida se termina la ejecucion del comando
             return 1;
         }
@@ -1024,7 +1026,7 @@ int dish_mv(char **args)
             rn_flag = TRUE;
         } else
         {
-            printf("dish: Opcion invalida.\n      Ingresa \"mover --ayuda\" para ver las opciones disponibles.\n");
+            printf("dish: Opcion invalida.\n      Ingresa \"%s --ayuda\" para ver las opciones disponibles.\n", args[0]);
             // en caso de opcion invalida se termina la ejecucion del comando
             return 1;
         }
@@ -1105,7 +1107,7 @@ int dish_rn(char **args)
             continue;
         } else
         {
-            printf("dish: Opcion invalida.\n      Ingresa \"renombrar --ayuda\" para ver las opciones disponibles.\n");
+            printf("dish: Opcion invalida.\n      Ingresa \"%s --ayuda\" para ver las opciones disponibles.\n", args[0]);
             // en caso de opcion invalida se termina la ejecucion del comando
             return 1;
         }
@@ -1154,7 +1156,7 @@ int dish_mkdir(char **args)
             break;
         } else
         {
-            printf("dish: Opcion invalida.\n      Ingresa \"creardir --ayuda\" para ver las opciones disponibles.\n");
+            printf("dish: Opcion invalida.\n      Ingresa \"%s --ayuda\" para ver las opciones disponibles.\n", args[0]);
             // en caso de opcion invalida se termina la ejecucion del comando
             return 1;
         }
@@ -1227,7 +1229,7 @@ int dish_rm(char **args)
             continue;
         } else 
         {
-            printf("dish: Opcion invalida.\n      Ingresa \"remover --ayuda\" para ver las opciones disponibles.\n");
+            printf("dish: Opcion invalida.\n      Ingresa \"%s --ayuda\" para ver las opciones disponibles.\n", args[0]);
             // en caso de opcion invalida se termina la ejecucion del comando
             return 1;
         }
@@ -1359,7 +1361,7 @@ int dish_rmdir(char **args)
             break;
         } else
         {
-            printf("dish: Opcion invalida.\n      Ingresa \"removerdir --ayuda\" para ver las opciones disponibles.\n");
+            printf("dish: Opcion invalida.\n      Ingresa \"%s --ayuda\" para ver las opciones disponibles.\n", args[0]);
             // en caso de opcion invalida se termina la ejecucion del comando
             return 1;
         }
@@ -1412,7 +1414,7 @@ int dish_ls(char **args)
             continue;
         } else
         {
-            printf("dish: Opcion invalida.\n      Ingresa \"sys --ayuda\" para ver las opciones disponibles.\n");
+            printf("dish: Opcion invalida.\n      Ingresa \"%s --ayuda\" para ver las opciones disponibles.\n", args[0]);
             // en caso de opcion invalida se termina la ejecucion del comando
             return 1;
         }
@@ -1491,7 +1493,7 @@ int dish_chmod(char **args)
             break;
         } else
         {
-            printf("dish: Opcion invalida.\n      Ingresa \"permisos --ayuda\" para ver las opciones disponibles.\n");
+            printf("dish: Opcion invalida.\n      Ingresa \"%s --ayuda\" para ver las opciones disponibles.\n", args[0]);
             // en caso de opcion invalida se termina la ejecucion del comando
             return 1;
         }
@@ -1573,7 +1575,7 @@ int dish_chown(char **args)
             break;
         } else
         {
-            printf("dish: Opcion invalida.\n      Ingresa \"propietario --ayuda\" para ver las opciones disponibles.\n");
+            printf("dish: Opcion invalida.\n      Ingresa \"%s --ayuda\" para ver las opciones disponibles.\n", args[0]);
             // en caso de opcion invalida se termina la ejecucion del comando
             return 1;
         }
@@ -1669,7 +1671,7 @@ int dish_userinfo(char **args)
             continue;
         } else
         {
-            printf("dish: Opcion invalida.\n      Ingresa \"uinfo --ayuda\" para ver las opciones disponibles.\n");
+            printf("dish: Opcion invalida.\n      Ingresa \"%s --ayuda\" para ver las opciones disponibles.\n", args[0]);
             // en caso de opcion invalida se termina la ejecucion del comando
             return 1;
         }
@@ -1921,6 +1923,50 @@ int dish_userinfo(char **args)
         fclose(log);
         for (int j = 0; j < info.num_lugares; j++) free(lugares[j]);
         free(lugares);
+    }
+    return 1;
+}
+
+// Permite levantar y apagar demonios
+int dish_daemon(char **args)
+{
+    char *options[] = 
+    {
+        "-h",
+        "--ayuda"
+    };
+    char help_flag = FALSE;
+
+    int i;
+
+    // Opciones
+    for (i = 1; args[i] != NULL; i++)
+    {
+        if (args[i][0] != '-')
+        {
+            // Opciones siempre van antes del resto de los argumentos para ser validas
+            break;
+        }
+
+        if (strcmp(args[i], options[0]) == 0 || strcmp(args[i], options[1]) == 0)
+        {
+            help_flag = TRUE;
+            break;
+        } else
+        {
+            printf("dish: Opcion invalida.\n      Ingresa \"%s --ayuda\" para ver las opciones disponibles.\n", args[0]);
+            // en caso de opcion invalida se termina la ejecucion del comando
+            return 1;
+        }
+    }
+
+    // Ejecucion
+    if (help_flag)
+    {
+        dish_print_help(builtin_str[17]);
+    } else
+    {
+        // code
     }
     return 1;
 }

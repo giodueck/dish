@@ -95,7 +95,7 @@ int dish_print_help(char *command_name)
     if (!file)  // error de fopen
     {
         char *msg = malloc(sizeof(char) * MSG_LENGTH);
-        sprintf(msg, "no se pudo abrir el archivo %s\n", filename);
+        sprintf(msg, "no se pudo abrir el archivo %s o no existe ayuda para el comando.\n", filename);
         fprintf(stderr, msg);
         err_log_add_msg(msg);
         free(msg);
@@ -1930,6 +1930,10 @@ int dish_userinfo(char **args)
 // Permite levantar y apagar demonios
 int dish_daemon(char **args)
 {
+    // Esta funcion no funciona de la forma que quiero, por lo que se queda sin terminar
+    // por ahora. Si esto llega a la version final que pena.
+    return 1;
+
     char *options[] = 
     {
         "-h",

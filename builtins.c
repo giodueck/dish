@@ -73,6 +73,7 @@ extern char *home;
 int dish_print_help(char *command_name)
 {
     char *filename;
+    char *install_dir = "/programs";
     int c;
     FILE *file;
     
@@ -85,7 +86,8 @@ int dish_print_help(char *command_name)
 
     // Se construye el camino absoluto del archivo
     filename[0] = '\0';
-    filename = strcat(filename, "/root/shell/dish/help/");
+    filename = strcat(filename, install_dir);
+    filename = strcat(filename, "/dish-help/");
     filename = strcat(filename, command_name);
     filename = strcat(filename, ".txt");
     file = fopen(filename, "r");

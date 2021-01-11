@@ -24,7 +24,7 @@
 #include "err.h"
 
 // Arrays de nombres de builtins con sus respectivas funciones
-char *builtin_str[] = 
+static char *builtin_str[] = 
 {
     "ir",
     "ayuda",
@@ -45,7 +45,7 @@ char *builtin_str[] =
     "uinfo"
 };
 
-int (*builtin_func[]) (char**) =
+static int (*builtin_func[]) (char**) =
 {
     &dish_cd,
     &dish_help,

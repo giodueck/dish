@@ -27,8 +27,8 @@ int dish_userinfo(char **args);
 // Arrays de nombres de builtins con sus respectivas funciones
 #define NUM_BUILTINS 17
 
-char *builtin_str[NUM_BUILTINS];
+static char *builtin_str[NUM_BUILTINS];
 
-int (*builtin_func[NUM_BUILTINS]) (char**);
+static int (*builtin_func[NUM_BUILTINS]) (char**);
 
 #endif // BUILTIN_H

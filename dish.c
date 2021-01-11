@@ -12,6 +12,49 @@
 #include "defines.h"
 #include "builtins.h"
 
+// Arrays de nombres de builtins con sus respectivas funciones
+static char *builtin_str[] = 
+{
+    "ir",
+    "ayuda",
+    "salir",
+    "sys",
+    "historial",
+    "usuario",
+    "contrasena",
+    "copiar",
+    "mover",
+    "renombrar",
+    "creardir",
+    "remover",
+    "removerdir",
+    "listar",
+    "permisos",
+    "propietario",
+    "uinfo"
+};
+
+static int (*builtin_func[]) (char**) =
+{
+    &dish_cd,
+    &dish_help,
+    &dish_exit,
+    &dish_sys,
+    &dish_history,
+    &dish_useradd,
+    &dish_passwd,
+    &dish_cp,
+    &dish_mv,
+    &dish_rn,
+    &dish_mkdir,
+    &dish_rm,
+    &dish_rmdir,
+    &dish_ls,
+    &dish_chmod,
+    &dish_chown,
+    &dish_userinfo
+};
+
 // Lee una linea de stdin hasta encontrar EOF o '\n'
 char *dish_read_line()
 {

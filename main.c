@@ -34,7 +34,8 @@ char **args;
 // Setea username y hostname
 void check_user()
 {
-    username = getlogin();
+    // username = getlogin();
+    username = getenv("USER");
     gethostname(hostname, sizeof(hostname));
     hostname_short = strtok(hostname, ".");
     home = malloc(sizeof(char) * DIR_BUFSIZE);
@@ -183,7 +184,16 @@ void dish_log(char mode)
     uinfof = fopen(uinfo_filename, "rb");
     user_log = fopen(user_horarios_log_filename, "a");
 
-    fread(&info, sizeof(struct uinfo), 1, uinfof);
+    if (uinfof)
+        fread(&info, sizeof(struct uinfo), 1, uinfof);
+    else
+    {   // por si no hay un archivo con uinfo
+        info.hh_i = 0;
+        info.hh_f = 23;
+        info.mm_i = 0;
+        info.mm_f = 59;
+        info.num_lugares = 0;
+    }
 
     gethostname(host, HOST_NAME_MAX);
 
@@ -193,10 +203,12 @@ void dish_log(char mode)
         fprintf(user_log, "LOGIN: %d-%02d-%02d %02d:%02d\n", tms.tm_year + 1900, tms.tm_mon + 1, tms.tm_mday, tms.tm_hour, tms.tm_min);
         fprintf(user_log, " HORARIO: %02d:%02d; ", info.hh_i, info.mm_i);
         dif = tms.tm_hour * 60 + tms.tm_min - info.hh_i * 60 - info.mm_i;
-        if (dif < 0) fprintf(user_log, "TEMPRANO: %02d:%02d\n", -dif / 60, -dif % 60);
-        else if (dif > 0) fprintf(user_log, "TARDE: %02d:%02d\n", dif / 60, dif % 60);
-        else fprintf(user_log, "A TIEMPO\n");
-
+        if (uinfof)
+        {
+            if (dif < 0) fprintf(user_log, "TEMPRANO: %02d:%02d\n", -dif / 60, -dif % 60);
+            else if (dif > 0) fprintf(user_log, "TARDE: %02d:%02d\n", dif / 60, dif % 60);
+            else fprintf(user_log, "A TIEMPO\n");
+        }
         fprintf(user_log, " LUGAR DE CONEXION: %s", host);
         done = FALSE;
         for (int i = 0; i < info.num_lugares; i++)
@@ -208,7 +220,7 @@ void dish_log(char mode)
                 break;
             }
         }
-        if (!done)
+        if (!done && uinfof)
         {
             fprintf(user_log, "; INUSUAL");
         }
@@ -218,9 +230,12 @@ void dish_log(char mode)
         fprintf(user_log, "LOGOUT: %d-%02d-%02d %02d:%02d\n", tms.tm_year + 1900, tms.tm_mon + 1, tms.tm_mday, tms.tm_hour, tms.tm_min);
         fprintf(user_log, " HORARIO: %02d:%02d; ", info.hh_f, info.mm_f);
         dif = tms.tm_hour * 60 + tms.tm_min - info.hh_f * 60 - info.mm_f;
-        if (dif < 0) fprintf(user_log, "TEMPRANO: %02d:%02d\n", -dif / 60, -dif % 60);
-        else if (dif > 0) fprintf(user_log, "TARDE: %02d:%02d\n", dif / 60, dif % 60);
-        else fprintf(user_log, "A TIEMPO\n");
+        if (uinfof)
+        {
+            if (dif < 0) fprintf(user_log, "TEMPRANO: %02d:%02d\n", -dif / 60, -dif % 60);
+            else if (dif > 0) fprintf(user_log, "TARDE: %02d:%02d\n", dif / 60, dif % 60);
+            else fprintf(user_log, "A TIEMPO\n");
+        }
         fprintf(user_log, "\n");
     }
 

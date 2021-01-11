@@ -239,7 +239,7 @@ void dish_log(char mode)
         fprintf(user_log, "\n");
     }
 
-    fclose(uinfof);
+    if (uinfof) fclose(uinfof);
     fclose(user_log);
 }
 

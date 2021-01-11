@@ -112,7 +112,7 @@ int dish_print_help(char *command_name)
 
     // se cierra el archivo y termina la funcion
     free(filename);
-    fclose(file);
+    if (file) fclose(file);
     return 1;
 }
 

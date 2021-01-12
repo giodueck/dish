@@ -591,7 +591,7 @@ int dish_useradd(char **args)
         mkdir(home, 0777);
         sprintf(command, "chown -hR %s:%s %s", nombre, grupo, home);
         args_ = dish_split_line(command);
-        if (execvp(args_[1], &args_[1]) == -1)
+        if (execvp(args_[0], args_) == -1)
         {
             err_print("execvp");
         }

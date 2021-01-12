@@ -599,6 +599,12 @@ int dish_useradd(char **args)
         FILE *fp = fopen("/etc/shadow", "a");
         fprintf(fp, "%s:!!:%d:%d:%d:%d:::\n", nombre, (int)time(NULL) / 86400, 0, 99999, 7);
         fclose(fp);
+
+        // Password
+        char comando[100], **args_;
+        sprintf(comando, "contrasena");
+        args_ = dish_split_line(comando);
+        dish_passwd(args_);
     }
     return 1;
 }

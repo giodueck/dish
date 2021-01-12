@@ -55,7 +55,7 @@ void check_logs()
     FILE *file;
 
     // Historial
-    sprintf(log_filename, "%s/.dish_history", home);
+    sprintf(log_filename, "/var/log/shell/.dish_history_%s", username);
 
     if ((file = fopen(log_filename, "r")))
     {

@@ -307,7 +307,7 @@ int dish_history(char **args)
     char reset_flag = FALSE;
     char log_filename[FILENAME_MAX];
 
-    sprintf(log_filename, "%s/.dish_history", getpwnam(username)->pw_dir);
+    sprintf(log_filename, "/var/log/shell/.dish_history_%s", getenv("USER"));
     FILE *log = fopen(log_filename, "r");
 
     if (!log)  // error de fopen

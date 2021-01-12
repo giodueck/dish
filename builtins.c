@@ -594,15 +594,18 @@ int dish_useradd(char **args)
             // Se modifica el proceso para que ejecute el
             //   comando dado
             char command[100];
+            char **args;
 
             sprintf(command, "mkdir %s", home);
-            if (execvp(command) == -1)
+            args = dish_split_line(command);
+            if (execvp(args[1], &args[1]) == -1)
             {
                 err_print("execvp");
             }
 
             sprintf(command, "chown -hR %s:%s %s", nombre, grupo, home);
-            if (execvp(command) == -1)
+            args = dish_split_line(command);
+            if (execvp(args[1], &args[1]) == -1)
             {
                 err_print("execvp");
             }

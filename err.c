@@ -85,8 +85,7 @@ void err_log_add_msg(char *msg)
 
     msg[0] = toupper(msg[0]);
 
-    char *filename = "/var/log/shell/sistema_error.log";
-    FILE *err_file = fopen(filename, "a");
+    FILE *err_file = fopen(err_filename, "a");
 
     if (!err_file)
     {

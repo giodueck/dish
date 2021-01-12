@@ -71,6 +71,7 @@ void check_logs()
         if (!file)
         {
             printf("Error al crear el archivo de historial.\n");
+            printf("errno = %d\n", errno);
             exit(EXIT_FAILURE);
         }
         fprintf(file, "LOG creado %d-%02d-%02d %02d:%02d:%02d\n\n", tms.tm_year + 1900, tms.tm_mon + 1, tms.tm_mday, tms.tm_hour, tms.tm_min, tms.tm_sec);

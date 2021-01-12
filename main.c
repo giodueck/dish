@@ -23,7 +23,7 @@ char *username;
 char hostname[HOST_NAME_MAX];
 char *hostname_short;
 char log_filename[FILENAME_LENGTH];
-char err_filename[FILENAME_LENGTH];
+char *err_filename = "/var/log/shell/sistema_error.log";
 char user_horarios_log_filename[FILENAME_LENGTH];
 char *home;
 
@@ -55,7 +55,7 @@ void check_logs()
     FILE *file;
 
     // Historial
-    sprintf(log_filename, "%s/.dish_log", home);
+    sprintf(log_filename, "/.dish_log", home);
 
     if ((file = fopen(log_filename, "r")))
     {
@@ -73,8 +73,6 @@ void check_logs()
     }
 
     // Errores
-    sprintf(err_filename, "%s/.dish_err", home);
-
     if ((file = fopen(err_filename, "r")))
     {
         // Existe el archivo

@@ -646,11 +646,15 @@ int dish_passwd(char **args)
     } else
     {
         char command[100], **args_;
-        sprintf(command, "sys passwd ");
-        if (args[1]) strcat(command, args[1]);
+        sprintf(command, "sys passwd");
+        if (args[i])
+        {
+            strcat(command, " ");
+            strcat(command, args[i]);
+        }
         args_ = dish_split_line(command);
         dish_sys(args_);
-
+        
         /*
         // contrasena nombre
         char *nombre = args[1];

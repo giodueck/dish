@@ -616,9 +616,10 @@ int dish_passwd(char **args)
         "--ayuda"
     };
     char help_flag = FALSE;
+    int i;
 
     // Opciones
-    for (int i = 1; args[i] != NULL; i++)
+    for (i = 1; args[i] != NULL; i++)
     {
         if (args[i][0] != '-')
         {

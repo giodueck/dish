@@ -609,7 +609,6 @@ int dish_passwd(char **args)
     // Esta funcion no funciona de la forma que quiero, por lo que se queda sin terminar
     // Para que el programa en si funcione hice que use el comando sys para llamar al comando
     // passwd
-    return 1;
 
     char *options[] = 
     {
@@ -645,7 +644,16 @@ int dish_passwd(char **args)
         dish_print_help(builtin_str[6]);
     } else
     {
-        printf("Use sys passwd <username> para cambiar contrasenas.\n");
+        char command[100], **args_;
+        sprintf(command, "sys passwd");
+        if (args[i])
+        {
+            strcat(command, " ");
+            strcat(command, args[i]);
+        }
+        args_ = dish_split_line(command);
+        dish_sys(args_);
+        
         /*
         // contrasena nombre
         char *nombre = args[1];

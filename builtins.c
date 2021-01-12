@@ -589,13 +589,9 @@ int dish_useradd(char **args)
         char **args_;
 
         mkdir(home, 0777);
-        sprintf(command, "chown -hR %s:%s %s", nombre, grupo, home);
+        sprintf(command, "sys chown -hR %s:%s %s", nombre, grupo, home);
         args_ = dish_split_line(command);
-        if (execvp(args_[0], args_) == -1)
-        {
-            err_print("execvp");
-        }
-
+        dish_sys(args_);    // se usa sys para que el comando se ejecute en un subproceso
         
         printf("Usuario %s creado. Completa informacion adicional con uinfo.\n", nombre);
         

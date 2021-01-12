@@ -645,16 +645,7 @@ int dish_passwd(char **args)
         dish_print_help(builtin_str[6]);
     } else
     {
-        char command[100], **args_;
-        sprintf(command, "sys passwd");
-        if (args[i])
-        {
-            strcat(command, " ");
-            strcat(command, args[i]);
-        }
-        args_ = dish_split_line(command);
-        dish_sys(args_);
-        
+        printf("Use sys passwd <username> para cambiar contrasenas.\n");
         /*
         // contrasena nombre
         char *nombre = args[1];

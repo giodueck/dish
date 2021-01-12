@@ -3,10 +3,6 @@
 
 # Issues:
 
-- Muchos (todos) de los comandos son comandos ya existentes en sistemas Linux,
-    asi que basar su funcionamiento en el funcionamiento de sus contrapartes en
-    Linux es una buena idea.
-
 # Comandos
 //- copiar
 //- mover
@@ -39,9 +35,9 @@
 //        - Servicio no inicializado
 
 # Documentacion
-- Todo el codigo debe estar bien comentado
-- Manual de documentacion
-- Manual de uso e instalacion del shell
+// - Todo el codigo debe estar bien comentado
+// - Manual de documentacion
+// - Manual de uso e instalacion del shell
 
 # Adicionales
 // - Agregar la opcion --ayuda a todos los comandos

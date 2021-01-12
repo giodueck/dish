@@ -1,0 +1,11 @@
+Modifica la contrasena de un usuario.
+
+Uso:
+    contrasena <USUSARIO>
+    contrasena [OPCION]
+
+    USUARIO     Nombre de usuario a cambiar de contrasena.
+                Si se omite, se cambia la contrasena propia.
+
+    OPCIONES
+     -h,    --ayuda     Muestra esta ayuda y termina.

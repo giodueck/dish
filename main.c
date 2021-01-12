@@ -55,7 +55,7 @@ void check_logs()
     FILE *file;
 
     // Historial
-    sprintf(log_filename, "/.dish_log", home);
+    sprintf(log_filename, "%s/.dish_history", home);
 
     if ((file = fopen(log_filename, "r")))
     {

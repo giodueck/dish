@@ -1931,7 +1931,7 @@ int dish_userinfo(char **args)
         }        
 
         fclose(log);
-        if (args[i] && strcmp(getenv(USER), "root") == 0)
+        if (args[i] && strcmp(getenv("USER"), "root") == 0)
         {
             // se cambia el propietario al usuario en cuestion para que pueda modificar y leer su propia uinfo
             char comando[100], **args_;

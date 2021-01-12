@@ -583,6 +583,44 @@ int dish_useradd(char **args)
         sprintf(home, "/home/%s", nombre);
         fprintf(passwd_f, "%s:x:%d:%d::%s:/bin/bash\n", nombre, uid, gid, home);
         fclose(passwd_f);
+
+        // se crea el directorio home con el usuario nuevo en un subproceso
+        pid_t pid, wpid;
+        int status;
+        pid = fork();
+        if (pid == 0)
+        {
+            // Child process
+            // Se modifica el proceso para que ejecute el
+            //   comando dado
+            char command[100];
+
+            sprintf(command, "mkdir %s", home);
+            if (execvp(command) == -1)
+            {
+                err_print("execvp");
+            }
+
+            sprintf(command, "chown -hR %s:%s %s", nombre, grupo, home);
+            if (execvp(command) == -1)
+            {
+                err_print("execvp");
+            }
+
+            exit(FAILURE);
+        } else if (pid < 0)
+        {
+            // fork error
+            err_print("fork");
+        } else
+        {
+            // Parent process
+            do
+            {
+                wpid = waitpid(pid, &status, WUNTRACED);
+            } while (!WIFEXITED(status) && !WIFSIGNALED(status));
+        }
+
         mkdir(home, 0777);
         printf("Usuario %s creado. Completa informacion adicional con uinfo.\n", nombre);
         

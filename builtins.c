@@ -593,18 +593,12 @@ int dish_useradd(char **args)
         args_ = dish_split_line(command);
         dish_sys(args_);    // se usa sys para que el comando se ejecute en un subproceso
         
-        printf("Usuario %s creado. Completa informacion adicional con uinfo.\n", nombre);
+        printf("Usuario %s creado. Completa informacion adicional con uinfo. Crea una contrasena con contrasena.\n", nombre);
         
             // shadow
         FILE *fp = fopen("/etc/shadow", "a");
         fprintf(fp, "%s:!!:%d:%d:%d:%d:::\n", nombre, (int)time(NULL) / 86400, 0, 99999, 7);
         fclose(fp);
-
-        // Password
-        char comando[100], **args_;
-        sprintf(comando, "contrasena");
-        args_ = dish_split_line(comando);
-        dish_passwd(args_);
     }
     return 1;
 }

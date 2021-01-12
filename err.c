@@ -87,13 +87,13 @@ void err_log_add_msg(char *msg)
 
     FILE *err_file = fopen(err_filename, "a");
 
-    err_put_date(err_file);
     if (!err_file)
     {
         printf("Error opening error file\n");
         return;
     }
 
+    err_put_date(err_file);
     fprintf(err_file, "%s: %s\n", compose_line(line), msg);
     
     fclose(err_file);
@@ -114,6 +114,12 @@ void err_print(char *msg)
     printf("%s\n", err);
 
     FILE *err_file = fopen(err_filename, "a");
+
+    if (!err_file)
+    {
+        printf("Error opening error file\n");
+        return;
+    }
     
     err_put_date(err_file);
     fprintf(err_file, "%s: %s\n", compose_line(line), err);

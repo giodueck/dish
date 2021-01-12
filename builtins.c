@@ -581,7 +581,7 @@ int dish_useradd(char **args)
         // Creacion del usuario
         passwd_f = fopen("/etc/passwd", "a");
         sprintf(home, "/home/%s", nombre);
-        fprintf(passwd_f, "%s:x:%d:%d::%s:/bin/bash\n", nombre, uid, gid, home);
+        fprintf(passwd_f, "%s:x:%d:%d::%s:/programs/bin/dish\n", nombre, uid, gid, home);
         fclose(passwd_f);
 
         // se crea el directorio home para el usuario nuevo
@@ -606,9 +606,9 @@ int dish_useradd(char **args)
 // Modifica la contrasenha del usuario dado
 int dish_passwd(char **args)
 {
-
     // Esta funcion no funciona de la forma que quiero, por lo que se queda sin terminar
-    // por ahora. Si esto llega a la version final que pena.
+    // Para que el programa en si funcione hice que use el comando sys para llamar al comando
+    // passwd
     return 1;
 
     char *options[] = 
@@ -645,6 +645,13 @@ int dish_passwd(char **args)
         dish_print_help(builtin_str[6]);
     } else
     {
+        char command[100], **args_;
+        sprintf(command, "sys passwd ");
+        if (args[1]) strcat(command, args[1]);
+        args_ = dish_split_line(command);
+        dish_sys(args_);
+
+        /*
         // contrasena nombre
         char *nombre = args[1];
         if (nombre == NULL)
@@ -761,6 +768,7 @@ int dish_passwd(char **args)
         term.c_lflag |= ECHO;
         tcsetattr(fileno(stdin), 0, &term);
         printf("\n");
+        */
     }
     return 1;
 }

@@ -89,7 +89,7 @@ void check_logs()
     }
 
     // Horarios
-    sprintf(user_horarios_log_filename, "%s/.dish_%s_horarios_log", home, username);
+    sprintf(user_horarios_log_filename, "/var/log/shell/%s_horarios_log", username);
 
     if ((file = fopen(user_horarios_log_filename, "r")))
     {

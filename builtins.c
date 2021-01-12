@@ -588,13 +588,7 @@ int dish_useradd(char **args)
         char command[100];
         char **args_;
 
-        sprintf(command, "mkdir %s", home);
-        args_ = dish_split_line(command);
-        if (execvp(args_[1], &args_[1]) == -1)
-        {
-            err_print("execvp");
-        }
-
+        mkdir(home, 0777);
         sprintf(command, "chown -hR %s:%s %s", nombre, grupo, home);
         args_ = dish_split_line(command);
         if (execvp(args_[1], &args_[1]) == -1)
@@ -602,6 +596,7 @@ int dish_useradd(char **args)
             err_print("execvp");
         }
 
+        
         printf("Usuario %s creado. Completa informacion adicional con uinfo.\n", nombre);
         
             // shadow

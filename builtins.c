@@ -77,7 +77,7 @@ int dish_print_help(char *command_name)
     int c;
     FILE *file;
     
-    filename = malloc(FILENAME_LENGTH * sizeof(char));
+    filename = malloc(FILENAME_MAX * sizeof(char));
     if (!filename)  // error de malloc
     {
         fprintf(stderr, "dish: allocation error\n");
@@ -510,7 +510,7 @@ int dish_useradd(char **args)
         char *grupo;
         char *tok;
         int gid, uid;
-        char *home = malloc(sizeof(char) * FILENAME_LENGTH);
+        char *home = malloc(sizeof(char) * FILENAME_MAX);
         long unsigned int n = 64;
         char *line = malloc(sizeof(char) * n);
         char group_exists = FALSE;
@@ -852,7 +852,7 @@ int dish_cp(char **args)
             if (args[i - 2] == filename)
             {
                 // No se da
-                new_filename = malloc(sizeof(char) * FILENAME_LENGTH);
+                new_filename = malloc(sizeof(char) * FILENAME_MAX);
                 sprintf(new_filename, "%s", filename);
                 new_filename_given = FALSE;
             } else
@@ -949,7 +949,7 @@ int dish_cp(char **args)
             char new_filename_given = (new_filename) ? TRUE : FALSE;
             if (!new_filename_given)
             {
-                new_filename = malloc(sizeof(char) * FILENAME_LENGTH);
+                new_filename = malloc(sizeof(char) * FILENAME_MAX);
                 sprintf(new_filename, "%s-Copia", args[1]);
             }
 
@@ -1710,7 +1710,7 @@ int dish_userinfo(char **args)
         struct uinfo info;
         char *name, *homedir;
         char *msg;
-        char uinfo_filename[FILENAME_LENGTH];
+        char uinfo_filename[FILENAME_MAX];
         char aux[HOST_NAME_MAX];
         FILE *log;
 
@@ -1776,7 +1776,7 @@ int dish_userinfo(char **args)
         struct uinfo info;
         char *name, *homedir;
         char *msg;
-        char uinfo_filename[FILENAME_LENGTH];
+        char uinfo_filename[FILENAME_MAX];
         FILE *log;
 
         if (args[i] != NULL)

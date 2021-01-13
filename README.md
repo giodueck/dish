@@ -16,12 +16,12 @@ Changelog:\
         El directorio home cambia de propietario despues de crearse para que\
         el nuevo propietario sea el usuario en cuestion.\
     - varios cambios para que dish funcione en un sistema LFS, para cualquier\
-        usuario.\
+        usuario.
 
 # Instalacion
-1. Ejecuta el script check.sh para revisar que esta lo que se necesita\
-2. Ejecuta el script install.sh para compilar e instalar dish\
-3. El path de instalacion debe ser agregado al PATH, este es /programs/bin\
+1. Ejecuta el script check.sh para revisar que esta lo que se necesita
+2. Ejecuta el script install.sh para compilar e instalar dish
+3. El path de instalacion debe ser agregado al PATH, este es /programs/bin
 
 # Manual de uso
 El comando "ayuda" lista todos los comandos disponibles. Para leer el manual\

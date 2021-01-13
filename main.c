@@ -22,9 +22,9 @@
 char *username;
 char hostname[HOST_NAME_MAX];
 char *hostname_short;
-char log_filename[FILENAME_LENGTH];
+char log_filename[FILENAME_MAX];
 char *err_filename = "/var/log/shell/sistema_error.log";
-char user_horarios_log_filename[FILENAME_LENGTH];
+char user_horarios_log_filename[FILENAME_MAX];
 char *home;
 
 // para que otros archivos tengan acceso a traves de extern

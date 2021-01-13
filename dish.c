@@ -158,11 +158,10 @@ int dish_execute(char **args)
 // Imprime un mensaje de error en caso de que el comando dado no existe
 int dish_command_not_found(char **args)
 {
-    char *shell_name = "dish";
     char *msg = "Comando no existe.";
     char *help = "Usa \"sys [comando]\" para ejecutar comandos del sistema,\n\to usa \"ayuda\" para obtener mas ayuda.";
 
-    printf("%s: %s\n\t%s\n", shell_name, msg, help);
+    printf("dish: %s\n\t%s\n", msg, help);
 
     return 1;
 }

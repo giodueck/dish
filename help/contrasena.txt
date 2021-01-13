@@ -1,7 +1,7 @@
 Modifica la contrasena de un usuario.
 
 Uso:
-    contrasena <USUSARIO>
+    contrasena <USUARIO>
     contrasena [OPCION]
 
     USUARIO     Nombre de usuario a cambiar de contrasena.

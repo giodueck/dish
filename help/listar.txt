@@ -1,8 +1,7 @@
-Lista archivos y directorios en el directorio dado o el 
-actual si no se especifica.
+Lista archivos y directorios en el directorio actual.
 
 Uso:
-    listar <OPCIONES> <DIRECTORIO>
+    listar <OPCION>
 
     OPCIONES
      -a                 Imprime todos los archivos, hasta los ocultos.

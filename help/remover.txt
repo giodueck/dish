@@ -2,10 +2,9 @@ Elimina un archivo. Se pide confirmacion antes de cada
 eliminacion.
 
 Uso:
-    remover <OPCIONES> [ARCHIVO]
+    remover <OPCION> [ARCHIVO]
+    remover [OPCION]
 
     OPCIONES
      -f                 Elimina sin confirmacion.
-     -s,    --silencio  Deja de mostrar mensajes que no sean de
-                        confirmacion.
      -h,    --ayuda     Muestra esta ayuda y termina.

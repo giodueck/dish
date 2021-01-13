@@ -79,6 +79,7 @@ char *compose_line(char *dest)
     return dest;
 }
 
+// Agrega un mensaje al registro de errores
 void err_log_add_msg(char *msg)
 {
     char line[LINE_BUFSIZE] = "";
@@ -99,6 +100,7 @@ void err_log_add_msg(char *msg)
     fclose(err_file);
 }
 
+// Imprime el error apropiado dependiendo de errno y agrega al registro
 void err_print(char *msg)
 {
     // Lo primero que se hace es revisar errno, ya que cualquier funcion de libreria

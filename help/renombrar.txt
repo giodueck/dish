@@ -1,11 +1,11 @@
 Cambia el nombre del archivo dado
 
 Uso:
-    renombrar <OPCION> [ARCHIVO] [NOMBRE]
+    renombrar [ARCHIVO] [NOMBRE]
+    renombrar [OPCION]
 
     ARCHIVO     Nombre actual del archivo.
     NOMBRE      Nuevo nombre.
 
     OPCIONES
-     -s,    --silencio  Deja de mostrar mensajes informativos.
      -h,    --ayuda     Muestra esta ayuda y termina.

@@ -4,8 +4,8 @@
 # Executables
 *.exe
 
+# Misc Word file
+~$*.docx
+
 # Bash scripts
 # *.sh
-
-# Special
-template.txt

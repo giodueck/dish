@@ -1,5 +1,5 @@
 /*
-    Todoas las constantes definidas con #define
+    Todas las constantes definidas con #define
 */
 
 #ifndef DEFINES_H

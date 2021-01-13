@@ -8,7 +8,7 @@ Uso:
     OPCIONES    Opciones para el comando a ejecutarse.
     ARGUMENTOS  Argumentos para el comando a ejecutarse.
 
-     Ojo: los comandos no propios de este shell no se
+     Ojo: los comandos no propios de DISH no se
           encuentran documentados aqui.
 
     OPCIONES

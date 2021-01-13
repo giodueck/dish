@@ -169,6 +169,7 @@ void dish_loop()
     free(current_dir);
 }
 
+// Agrega una entrada el log de horarios
 void dish_log(char mode)
 {
     FILE *uinfof, *user_log;

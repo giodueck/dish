@@ -783,8 +783,7 @@ int dish_cp(char **args)
     char *options[] = 
     {
         "-h",
-        "--ayuda",
-        "-d"
+        "--ayuda"
     };
     char help_flag = FALSE;
     char dir_flag = FALSE;
@@ -803,9 +802,6 @@ int dish_cp(char **args)
         {
             help_flag = TRUE;
             break;
-        } else if (strcmp(args[i], options[2]) == 0)
-        {
-            dir_flag = TRUE;
         } else
         {
             printf("dish: Opcion invalida.\n      Ingresa \"%s --ayuda\" para ver las opciones disponibles.\n", args[0]);
@@ -827,119 +823,8 @@ int dish_cp(char **args)
             fprintf(stderr, msg);
             err_log_add_msg(msg);
             free(msg);
-        } else if (dir_flag)
-        {
-            // Se especifica un directorio
-            // args[n] = nombre del archivo
-            // args[n+1] = nombre del nuevo archivo o nombre del directorio
-            // args[n+2] = si args[2] es el nombre del nuevo archivo, nombre del directorio; si no, NULL
-            // el argumento que esta antes del args[n] = NULL es el directorio
-
-            // args[i] debe ser el nombre del archivo ya que es el primer argumento que no es opcion
-            char *filename = args[i];
-            char *new_filename;
-            char new_filename_given;
-            char *dir;
-            char *curr_dir = malloc(sizeof(char) * DIR_BUFSIZE);
-
-            // Encuentra el indice del argumento NULL
-            while (args[i] != NULL) i++;
-
-            // El elemento antes del argumento NULL debe ser el directorio, ya que se especifica la opcion -d
-            dir = args[i - 1];
-
-            // Revisa si el nombre del nuevo archivo se da
-            if (args[i - 2] == filename)
-            {
-                // No se da
-                new_filename = malloc(sizeof(char) * FILENAME_MAX);
-                sprintf(new_filename, "%s", filename);
-                new_filename_given = FALSE;
-            } else
-            {
-                // Si se da
-                new_filename = args[i - 2];
-                new_filename_given = TRUE;
-            }
-            
-            // Copia
-            FILE *file;
-            FILE *new_file;
-
-            // Se abre al archivo origen
-            if (!(file = fopen(filename, "r")))
-            {
-                // si no existe
-                char *msg = malloc(sizeof(char) * MSG_LENGTH);
-                sprintf(msg, "archivo de origen no existe o no se pudo abrir.\n");
-                fprintf(stderr, msg);
-                err_log_add_msg(msg);
-                free(msg);
-            } else
-            {
-                // si existe
-                int c;
-
-                // Cambia el directorio al directorio dado
-                curr_dir = getcwd(curr_dir, DIR_BUFSIZE);
-                if (chdir(dir) != 0)
-                {
-                    err_print("dish");
-                } else
-                {
-
-                    // Se verifica si el archivo de destino ya existe
-                    if (new_filename_given)
-                    {
-                        // Si se dio el nombre nuevo, se alerta al usuario y se interrumpe la copia
-                        if ((new_file = fopen(new_filename, "r")))
-                        {
-                            char *msg = malloc(sizeof(char) * MSG_LENGTH);
-                            sprintf(msg, "archivo de destino ya existe.\n");
-                            fprintf(stderr, msg);
-                            err_log_add_msg(msg);
-                            free(msg);
-                            fclose(new_file);
-                            return 1;
-                        } else
-                        {
-                            new_file = fopen(new_filename, "w");
-                        }
-                    } else
-                    {
-                        // Si el nombre es autogenerado, se modifica el nombre
-                        i = 0;
-                        while ((new_file = fopen(new_filename, "r")))
-                        {
-                            fclose(new_file);
-                            if (i) sprintf(new_filename, "%s-Copia%d", filename, i);
-                            else sprintf(new_filename, "%s-Copia", filename);
-                            i++;
-                        }
-                        new_file = fopen(new_filename, "w");
-                    }
-
-                    // La copia en si
-                    c = fgetc(file);
-                    while (c != EOF)
-                    {
-                        fputc(c, new_file);
-                        c = fgetc(file);
-                    }
-                    
-                    fclose(file);
-                    fclose(new_file);
-                    // Vuelve al directorio original
-                    chdir(curr_dir);
-                }
-            }
-
-            free(curr_dir);
-            if (!new_filename_given) free(new_filename);
-
         } else
         {
-            // No se especifica un directorio
             // args[1] = nombre del archivo
             // args[2] = nombre del nuevo archivo (opcional)
 
@@ -1070,12 +955,14 @@ int dish_mv(char **args)
         // args[i+2] = directorio de destino
 
         // Renombramiento
-        char rn_arg0[] = "renombrar";
-        char rn_arg1[] = "-s";
-        char *rn_arg2 = args[i];
-        char *rn_arg3 = args[i + 1];
-        char *rn_args[5] = { rn_arg0, rn_arg1, rn_arg2, rn_arg3, NULL };
-        dish_rn(rn_args);
+        if (rn_flag)
+        {
+            char rn_arg0[] = "renombrar";
+            char *rn_arg1 = args[i];
+            char *rn_arg2 = args[i + 1];
+            char *rn_args[4] = { rn_arg0, rn_arg1, rn_arg2, NULL };
+            dish_rn(rn_args);
+        }
 
         // Copia
         char cp_arg0[] = "copiar";
@@ -1102,12 +989,9 @@ int dish_rn(char **args)
     char *options[] = 
     {
         "-h",
-        "--ayuda",
-        "-s",
-        "--silencio"
+        "--ayuda"
     };
     char help_flag = FALSE;
-    char quiet_flag = FALSE;
     int i;
 
     // Opciones
@@ -1123,10 +1007,6 @@ int dish_rn(char **args)
         {
             help_flag = TRUE;
             break;
-        } else if (strcmp(args[i], options[2]) == 0 || strcmp(args[i], options[3]) == 0)
-        {
-            quiet_flag = TRUE;
-            continue;
         } else
         {
             printf("dish: Opcion invalida.\n      Ingresa \"%s --ayuda\" para ver las opciones disponibles.\n", args[0]);
@@ -1217,14 +1097,11 @@ int dish_rm(char **args)
     {
         "-h",
         "--ayuda",
-        "-f",
-        "-s",
-        "--silencio"
+        "-f"
     };
     char help_flag = FALSE;
     char force_flag = FALSE;
     char recursive_flag = FALSE;
-    char quiet_flag = FALSE;
     char rm = FALSE;
     int i;
 
@@ -1244,10 +1121,6 @@ int dish_rm(char **args)
         } else if (strcmp(args[i], options[2]) == 0)
         {
             force_flag = TRUE;
-            continue;
-        } else if (strcmp(args[i], options[3]) == 0 || strcmp(args[i], options[4]) == 0)
-        {
-            quiet_flag = TRUE;
             continue;
         } else 
         {

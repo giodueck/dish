@@ -1,7 +1,8 @@
-Elimina un directorio
+Elimina un directorio vacio.
 
 Uso:
     removerdir <OPCION> [NOMBRE]
+    removerdir [OPCION]
 
     OPCIONES
      -h,    --ayuda     Muestra esta ayuda y termina.
